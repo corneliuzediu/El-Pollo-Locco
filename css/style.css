@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0;
     display: flex;
     justify-content: center;
@@ -7,6 +7,6 @@ body{
     min-height: 100vh;
 }
 
-canvas{
-    background-color: black;
+canvas {
+
 }
