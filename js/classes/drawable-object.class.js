@@ -31,4 +31,14 @@ class DrawableObject {
 
     }
 
+    drawFrame(ctx) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof EndBoss) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.width - 10, this.height);
+            ctx.stroke();
+        }
+    }
+
 }
