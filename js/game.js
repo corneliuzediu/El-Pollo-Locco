@@ -7,16 +7,10 @@ let num = 0;
 
 
 function init() {
-    if (num % 2 != 0) {
-        window.canvas.requestFullscreen();
         canvas = document.getElementById('canvas');
         world = new World(canvas, keyboard, level);
         console.log('My char is', world.character)
     }
-    
-// } else if (num % 2 == 0){
-//     document.exitFullscreen();
-}
 
 document.addEventListener('keydown', (e) => {
     if (e.keyCode == 65) {
@@ -113,16 +107,16 @@ function selectLevel(i) {
 }
 
 
-function fullscreen() {
-    num += 1;
-    if (num % 2 != 0) {
-        document.body.requestFullscreen();
-    } else if (num % 2 == 0) {
-        document.exitFullscreen();
-        canvas.exitFullscreen();
-    }
-    let a = (num % 1);
-    console.log(a);
+// function fullscreen() {
+//     num += 1;
+//     if (num % 2 != 0) {
+//         document.body.requestFullscreen();
+//     } else if (num % 2 == 0) {
+//         document.exitFullscreen();
+//         canvas.exitFullscreen();
+//     }
+//     let a = (num % 1);
+//     console.log(a);
 
-}
+// }
     // document.canvas.requestFullscreen();
