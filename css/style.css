@@ -1,12 +1,166 @@
+@font-face {
+    font-family: 'zabras';
+    src: url('/fonts/Zabars.ttf') format('truetype')
+}
+
+
+*{
+    margin: 0;
+}
+
+
 body {
+    position: relative;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
+    
+    font-family: 'zabras', 'Arial', 'sans-serfif';
 }
 
-canvas {
+.bg{
+    height: 100%;
+    background-image: url('/img/desert-bg.jpg');
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+
+
+.d-none {
+    display: none !important;
+}
+
+h1 {
+    text-align: center;
+    font-size: 10rem;
+    background: -webkit-linear-gradient(red, yellow, red);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 10px;
+    filter: drop-shadow(2px 4px 6px black);
+    margin-bottom: 3rem;
+}
+
+
+.preStart__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.start-btn,
+.level-btn,
+.options-btn,
+.instructions-btn {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    width: auto;
+    min-height: 50px;
+    font-family: 'zabras';
+    letter-spacing: 5px;
+    background-color: hsl(0, 0%, 100%, 30%);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    border: unset;
+    border-radius: 20px;
+    font-size: 3rem;
+
+}
+
+
+.start-btn:hover,
+.level-btn:hover,
+.options-btn:hover,
+.instructions-btn:hover {
+    cursor: pointer;
+    background-color: hsl(0, 0%, 100%, 50%);
+}
+
+.start-btn img,
+.level-btn img,
+.instructions-btn img {
+    padding: 10px 10px;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+
+.preStart__level,
+.preStart__instructions{
+position: relative;
+display: flex;
+justify-content: center;
+width: 80vh;
+height: auto;
+}
+
+
+.preStart__level ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    gap: 20px;
+    font-size: 3rem;
+    font-family: 'zabras';
+    letter-spacing: 2px;
+}
+
+
+.preStart__level li {
+    text-align: center;
+    padding: 10px 20px;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    background-color: hsl(0, 0%, 100%, 30%);
+    border-radius: 20px;
+}
+
+
+.preStart__level li:hover {
+    background-color: hsl(0, 0%, 100%, 50%);
+    cursor: pointer;
+}
+
+.preStart__level p {
+    margin-block: 0;
+}
+
+
+.backToMenu {
+    position: absolute;
+    right: 0;
+    width: 100px;
+    height: 50px;
+    background-color: unset;
+    border: unset;
+}
+
+.backToMenu img {
+    width: 100%;
+    object-fit: contain;
+    rotate: 200deg;
+    -webkit-filter: invert(100%);
+}
+
+
+.backToMenu img:hover {
+    transform: scale(1.2);
+
+}
+
+.options__wrapper{
+    position: absolute;
+    top: 5rem;
+    right: 5rem;
 }

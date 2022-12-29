@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    level = level1;
+    level ;
     canvas;
     ctx; dwad
     keyboard;
@@ -9,10 +9,11 @@ class World {
     throwableObject = [];
 
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, level) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = level;
         this.draw();
         this.setWorld();
         this.runCollisions();

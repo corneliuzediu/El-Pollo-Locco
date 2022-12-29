@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,16 +19,100 @@
     <script src="/js/classes/throwable-object.class.js"></script>
     <script src="/js/classes/endBoss.class.js"></script>
     <script src="/js/levels/level1.js"></script>
+    <script src="/js/levels/level2.js"></script>
+    <script src="/js/levels/level3.js"></script>
+    <script src="/js/levels/level4.js"></script>
+    <script src="/js/levels/level5.js"></script>
     <script src="/js/game.js"></script>
     <title>El Pollo Locco</title>
 </head>
-<body onload="init()">
+
+<body class="bg" onload="preStart()">
+    <!-- Select Options DIV -->
+    <nav class="options__wrapper">
+        <button onclick=""><img src="/img/start/guitar.ico"></button>
+        <button onclick="fullscreen()"><img id="screen"src="img/start/fullscreen.ico"></button>
+    </nav>
 
     <h1> El pollo locco</h1>
 
-    <canvas id="canvas" width="720" height="480">
-    
-    </canvas>
-    
+    <div id="preStart__buttons" class="preStart__buttons">
+        <!-- Start button -->
+        <button id="start-btn" class="start-btn" onclick="showcanvas(); init()">
+            <p>Bottle up</p>
+            <img src="/img/start/play.png">
+        </button>
+        <!-- Select Level Button -->
+        <button id="level-btn" class="level-btn" onclick="openLevelSelector()">
+            <p>Rost the bigger Boss</p>
+            <img src="/img/start/levels.png">
+        </button>
+        <!-- Select Options Button
+        <button id="options-btn" class="options-btn" onclick="openOptionsSelector()">
+            <p>Make it confortable</p>
+            <img src="/img/start/settings.png">
+        </button> -->
+        <!-- Instructions Button -->
+        <button id="instructions-btn" class="instructions-btn" onclick="openInstructions()">
+            <p>Guide for non-gamers</p>
+            <img src="/img/start/instructions.png">
+        </button>
+    </div>
+
+    <div id="preStart__canvas" class="preStart__canvas d-none">
+        <canvas id="canvas" width="720" height="480"></canvas>
+    </div>
+
+    <!-- Select Level DIV -->
+    <div id="preStart__level" class="preStart__level d-none">
+        <button class="backToMenu" onclick="backToMenu()"><img src="/img/start/arrow.png"></button>
+        <ul>
+            <li id="level-1" onclick="selectLevel(1)">
+                <p>Level 1</p>
+            </li>
+            <li id="level-2" onclick="selectLevel(2)">
+                <p>Level 2</p>
+            </li>
+            <li id="level-3" onclick="selectLevel(3)">
+                <p>Level 3</p>
+            </li>
+            <li id="level-4" onclick="selectLevel(4)">
+                <p>Level 4</p>
+            </li>
+            <li id="level-5" onclick="selectLevel(5)">
+                <p>Level 5</p>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- Select Instructions DIV -->
+    <div id="preStart__instructions" class="preStart__instructions d-none">
+        <button class="backToMenu" onclick="backToMenu()"><img src="/img/start/arrow.png"></button>
+        <ul>
+            <li>
+                <img src="">
+                <p>UP / JUMP</p>
+            </li>
+            <li>
+                <img src="">
+                <p>DOWN</p>
+            </li>
+            <li>
+                <img src="">
+                <p>LEFT</p>
+            </li>
+            <li>
+                <img src="">
+                <p>RIGHT</p>
+            </li>
+            <li>
+                <img src="">
+                <p> THROW</p>
+            </li>
+        </ul>
+    </div>
+
 </body>
+
 </html>
