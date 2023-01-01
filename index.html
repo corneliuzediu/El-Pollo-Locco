@@ -25,13 +25,24 @@
     <script src="/js/levels/level5.js"></script>
     <script src="/js/game.js"></script>
     <title>El Pollo Locco</title>
+    <link rel="shortcut icon" href="/img/start/chicken-32.ico" type="image/x-icon">
 </head>
 
-<body class="bg" onload="preStart()">
+<body class="bg">
+    <div id="popup" class="popup-wrapper" onclick="preStart()">
+        <div class="popup">
+            <h3>
+                Click when you are ready to play!
+            </h3>
+            <img src="/img/start/Start_chicken.png">
+        </div>
+    </div>
     <!-- Select Options DIV -->
     <nav class="options__wrapper">
-        <button onclick=""><img src="/img/start/guitar.ico"></button>
-        <button onclick="fullscreen()"><img id="screen"src="img/start/fullscreen.ico"></button>
+        <button id="music-btn1" class="d-none" onclick="changeImgMusic()"><img id="music-img" src="/img/start/guitar.ico"></button>
+        <button id="music-btn2" class=""onclick="changeImgMusic()"><img id="music-img" src="/img/start/no-guitar.ico"></button>
+        <button id="fullscreen-btn1" class="" onclick="enterFullscreen()"><img id="fullScreen-btn" src="img/start/fullscreen.ico"></button>
+        <button id="fullscreen-btn2" class="d-none" onclick="enterFullscreen()"><img id="fullScreen-btn" src="img/start/minimize.ico"></button>
     </nav>
 
     <h1> El pollo locco</h1>
@@ -90,25 +101,29 @@
     <div id="preStart__instructions" class="preStart__instructions d-none">
         <button class="backToMenu" onclick="backToMenu()"><img src="/img/start/arrow.png"></button>
         <ul>
-            <li>
-                <img src="">
+            <li class="guideKey">
+                <img src="/img/start/key-W.png">
                 <p>UP / JUMP</p>
             </li>
-            <li>
-                <img src="">
+            <li class="guideKey">
+                <img src="/img/start/key-S.png">
                 <p>DOWN</p>
             </li>
-            <li>
-                <img src="">
+            <li class="guideKey">
+                <img src="/img/start/key-A.png">
                 <p>LEFT</p>
             </li>
-            <li>
-                <img src="">
+            <li class="guideKey">
+                <img src="/img/start/key-D.png">
                 <p>RIGHT</p>
             </li>
-            <li>
-                <img src="">
+            <li class="guideKey">
+                <img src="/img/start/key-SPACE.png">
                 <p> THROW</p>
+            </li>
+            <li class="guideKey">
+                <img src="/img/start/key-ESC.png">
+                <p> EXIT Fullscreen Mode</p>
             </li>
         </ul>
     </div>
