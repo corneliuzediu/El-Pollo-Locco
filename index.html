@@ -12,7 +12,9 @@
     <script src="/js/classes/character.class.js"></script>
     <script src="/js/classes/chicken.class.js"></script>
     <script src="/js/classes/cloud.class.js"></script>
-    <script src="/js/classes/status-bat.class.js"></script>
+    <script src="/js/classes/healthStatus.class.js"></script>
+    <script src="/js/classes/coinStatus.class.js"></script>
+    <script src="/js/classes/bottleStatus.class.js"></script>
     <script src="/js/classes/background-object.class.js"></script>
     <script src="/js/classes/keyboard.class.js"></script>
     <script src="/js/classes/level.class.js"></script>
@@ -28,8 +30,8 @@
     <link rel="shortcut icon" href="/img/start/chicken-32.ico" type="image/x-icon">
 </head>
 
-<body class="bg">
-    <div id="popup" class="popup-wrapper" onclick="preStart()">
+<body class="bg" onload="init()">
+    <div id="popup" class="popup-wrapper d-none" onclick="preStart()">
         <div class="popup">
             <h3>
                 Click when you are ready to play!
@@ -47,9 +49,9 @@
 
     <h1> El pollo locco</h1>
 
-    <div id="preStart__buttons" class="preStart__buttons">
+    <div id="preStart__buttons" class="preStart__buttons d-none">
         <!-- Start button -->
-        <button id="start-btn" class="start-btn" onclick="showcanvas(); init()">
+        <button id="start-btn" class="start-btn" onclick="showcanvas();">
             <p>Bottle up</p>
             <img src="/img/start/play.png">
         </button>
@@ -70,7 +72,7 @@
         </button>
     </div>
 
-    <div id="preStart__canvas" class="preStart__canvas d-none">
+    <div id="preStart__canvas" class="preStart__canvas">
         <canvas id="canvas" width="720" height="480"></canvas>
     </div>
 

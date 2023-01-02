@@ -16,13 +16,11 @@ function init() {
         window.canvas.requestFullscreen();
         canvas = document.getElementById('canvas');
         world = new World(canvas, keyboard, level);
-        console.log('My char is', world.character)
     } else {
         gameSwitch = true;
         stopPreStartSound()
         canvas = document.getElementById('canvas');
         world = new World(canvas, keyboard, level);
-        console.log('My char is', world.character)
     }
 }
 
@@ -47,7 +45,6 @@ document.addEventListener('keydown', (e) => {
     if (e.keyCode == 27) {
         keyboard.EXIT = true;
     }
-    console.log(e);
 });
 
 

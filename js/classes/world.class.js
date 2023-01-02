@@ -1,12 +1,16 @@
 class World {
     character = new Character();
-    level ;
+    level;
     canvas;
-    ctx; dwad
+    ctx;
     keyboard;
     camera_x = -100;
-    statusBar = new StatusBar();
+    healthBar = new HealthBar();
+    coinBar = new CoinBar();
+    bootleBar = new BottleBar();
     throwableObject = [];
+
+
 
 
     constructor(canvas, keyboard, level) {
@@ -35,17 +39,21 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.healthBar.setPercentage(this.character.energy);
             }
         })
     }
 
     checkThrow() {
-        if (this.keyboard.SPACE) {
-            let bottle = new ThrowableObject(this.character.x + 30  , this.character.y + 70 )
+        if (this.keyboard.SPACE && !this.character.otherDirection) {
+            let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection,)
+            this.throwableObject.push(bottle);
+        } else if (this.keyboard.SPACE && this.character.otherDirection) {
+            let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection)
             this.throwableObject.push(bottle);
         }
     }
+
 
 
     draw() {
@@ -57,7 +65,9 @@ class World {
         this.addToMap(this.character);
 
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBar);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bootleBar);
         this.ctx.translate(this.camera_x, 0);
 
         this.addObjectToMap(this.level.clouds);
@@ -92,4 +102,17 @@ class World {
         mo.drawFrame(this.ctx);
 
     }
+
+    // throwInterval() {
+    //     let lengthObj = this.throwableObject.length;
+    //     let lengthTime = this.timeThrowableObject.length;
+    //     if (lengthTime > 1) {
+    //         let index = lengthTime - 1;
+    //         let interval = this.timeThrowableObject[index] - this.timeThrowableObject[index - 1];
+    //         console.log(lengthObj)
+    //         console.log(lengthTime)
+    //         console.log(interval)
+    //         return interval
+    //     }
+    // }
 }
