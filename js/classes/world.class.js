@@ -7,7 +7,7 @@ class World {
     camera_x = -100;
     healthBar = new HealthBar();
     coinBar = new CoinBar();
-    bootleBar = new BottleBar();
+    bottleBar = new BottleBar();
     throwableObject = [];
 
 
@@ -42,16 +42,42 @@ class World {
                 this.healthBar.setPercentage(this.character.energy);
             }
         })
+
+        this.level.coins.forEach((coin) => {
+            if (this.character.isColliding(coin)) {
+                this.character.collectCoins();
+                coin.y = -500;
+                this.coinBar.setAmount(this.character.coinsBag, this.level.maxAmount);
+            }
+        })
+
+        this.level.bottles.forEach((bottle) => {
+            if (this.character.isColliding(bottle)) {
+                this.character.collectBottle();
+                bottle.y = -500;
+                this.bottleBar.setAmount(this.character.bottleFuel, this.level.maxAmount);
+            }
+        })
     }
 
     checkThrow() {
         if (this.keyboard.SPACE && !this.character.otherDirection) {
-            let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection,)
-            this.throwableObject.push(bottle);
+            let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection,);
+            this.throw(bottle);
         } else if (this.keyboard.SPACE && this.character.otherDirection) {
-            let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection)
+            let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection);
+            this.throw(bottle);
+        }
+    }
+
+
+    throw(bottle) {
+        if (this.character.bottleFuel != 0) {
+            this.character.bottleFuel -= 1;
+            this.bottleBar.setAmount(this.character.bottleFuel, this.level.maxAmount);
             this.throwableObject.push(bottle);
         }
+
     }
 
 
@@ -64,15 +90,18 @@ class World {
         this.addObjectToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
 
+        this.addObjectToMap(this.level.clouds);
+        this.addObjectToMap(this.level.enemies);
+        this.addObjectToMap(this.level.coins);
+        this.addObjectToMap(this.level.bottles);
+        this.addObjectToMap(this.throwableObject);
+
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
-        this.addToMap(this.bootleBar);
+        this.addToMap(this.bottleBar);
         this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectToMap(this.level.clouds);
-        this.addObjectToMap(this.level.enemies);
-        this.addObjectToMap(this.throwableObject);
 
         this.ctx.translate(-this.camera_x, 0);
 
@@ -103,16 +132,19 @@ class World {
 
     }
 
-    // throwInterval() {
-    //     let lengthObj = this.throwableObject.length;
-    //     let lengthTime = this.timeThrowableObject.length;
-    //     if (lengthTime > 1) {
-    //         let index = lengthTime - 1;
-    //         let interval = this.timeThrowableObject[index] - this.timeThrowableObject[index - 1];
-    //         console.log(lengthObj)
-    //         console.log(lengthTime)
-    //         console.log(interval)
-    //         return interval
-    //     }
-    // }
+
+    initlevel() {
+        if (currentLevel == level2) {
+            initlevel2();
+        } else if (currentLevel == level3) {
+            initlevel3();
+        } else if (currentLevel == level4) {
+            initlevel4();
+        } else if (currentLevel == level5) {
+            initlevel5();
+        } else {
+            initlevel1();
+        }
+    }
+
 }

@@ -13,7 +13,7 @@ class DrawableObject {
         this.img.src = path;
     }
 
-    
+
     /**
      * 
      * @param {Array} arr - ['img/image1.png', 'img/image1.png', ...] 
@@ -32,13 +32,57 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof EndBoss) {
-            ctx.beginPath();
-            ctx.lineWidth = '2';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width - 10, this.height);
-            ctx.stroke();
+        if (this instanceof Character) {
+            this.hitboxCharacter(ctx);
         }
+
+
+        if (this instanceof Chicken) {
+            this.hitboxChicken(ctx)
+        }
+
+
+        if (this instanceof EndBoss) {
+            this.hitboxEndBoss(ctx);
+        }
+
+
+        if (this instanceof Bottle || this instanceof Coin) {
+            this.hitboxResources(ctx);
+        }
+    }
+
+    hitboxCharacter(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x + 20, this.y + 70, this.width - 40, this.height - 80);
+        ctx.stroke();
+    }
+
+    hitboxChicken(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x + 10, this.y + 20, this.width - 30, this.height - 30);
+        ctx.stroke();
+    }
+
+
+    hitboxEndBoss(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x + 20, this.y + 50, this.width - 20, this.height - 50);
+        ctx.stroke();
+    }
+
+    hitboxResources(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
+        ctx.stroke();
     }
 
 }

@@ -4,6 +4,8 @@ class MovableObject extends DrawableObject{
     speedY = 0;
     acceleration = 4;
     energy = 100;
+    coinsBag = 0;
+    bottleFuel = 0;
     lastHit = 0;
 
 
@@ -28,7 +30,7 @@ class MovableObject extends DrawableObject{
     isColliding(obj) {
         return this.x + this.width > obj.x && this.y + this.height > obj.y && this.x < obj.x && this.y < obj.y + obj.height
 
-        // (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
+        // return (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
         //     (this.y + this.offsetY + this.height) >= obj.y &&
         //     (this.y + this.offsetY) <= (obj.y + obj.height) &&
         //     obj.onCollisionCourse;
@@ -93,4 +95,36 @@ class MovableObject extends DrawableObject{
     jump() {
         this.speedY = 30;
     }
+
+
+    collectCoins(){
+        let multiplier = level1.coins.length;
+        let units = (1/multiplier) * 100 ; 
+        this.coinsBag += units;
+        if( this.coinsBag > 90){
+            this.coinsBag = 100;
+        } else {
+            this.lastCollect = new Date().getTime();
+        }
+    }
+
+    hasCollected(){
+        let timePassed = new Date().getTime() - this.lastCollect;
+        timePassed /= 1000;
+        return timePassed < 1;
+    }
+
+
+    collectBottle(){
+        let unit = 1 ; 
+        this.bottleFuel += unit;
+        if( this.bottleFuel > 90){
+            this.bottleFuel = 100;
+        } else {
+            this.lastCollect = new Date().getTime();
+        }
+    }
+
+
+
 }

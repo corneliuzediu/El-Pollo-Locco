@@ -9,7 +9,7 @@ class CoinBar extends DrawableObject {
         
     ];
 
-    percentage = 100;
+    amount = 100;
 
     constructor() {
         super();
@@ -18,26 +18,26 @@ class CoinBar extends DrawableObject {
         this.y = 120;
         this.width = 150;
         this.height = 50;
-        this.setPercentage(0);
+        this.setAmount(0);
     }
 
 
-    setPercentage(percentage) {
-        this.percentage = percentage;
+    setAmount(amount) {
+        this.amount = amount;
         let path = this.IMAGES[this.getImageIndex()];
         this.img = this.imageCache[path];
     }
 
     getImageIndex() {
-        if (this.percentage == 100) {
+        if (this.amount == 100) {
             return 5;
-        } else if (this.percentage > 80) {
+        } else if (this.amount > 80) {
             return 4;
-        } else if (this.percentage > 60) {
+        } else if (this.amount > 60) {
             return 3;
-        } else if (this.percentage > 40) {
+        } else if (this.amount > 40) {
             return 2;
-        } else if (this.percentage > 20) {
+        } else if (this.amount > 15) {
             return 1;
         } else {
             return 0;

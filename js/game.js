@@ -1,7 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let level = level1;
+let currentLevel = 'level1';
 let gameSwitch = false;
 let musicSwitch = false;
 let canvasFullscreen = false;
@@ -15,12 +15,12 @@ function init() {
         stopPreStartSound();
         window.canvas.requestFullscreen();
         canvas = document.getElementById('canvas');
-        world = new World(canvas, keyboard, level);
+        initlevel();
     } else {
         gameSwitch = true;
         stopPreStartSound()
         canvas = document.getElementById('canvas');
-        world = new World(canvas, keyboard, level);
+        initlevel();
     }
 }
 
@@ -121,17 +121,37 @@ function backToMenu() {
 
 
 function selectLevel(i) {
-    level = level1;
+    currentLevel = level1;
     if (i == 2) {
-        level = level2;
+        currentLevel = level2;
     } else if (i == 3) {
-        level = level3;
+        currentLevel = level3;
     } else if (i == 4) {
-        level = level4;
+        currentLevel = level4;
     } else if (i == 5) {
-        level = level5;
+        currentLevel = level5;
     } else {
-        level = level1
+        currentLevel = level1
+    }
+}
+
+
+function initlevel() {
+    if (currentLevel === level1) {
+        currentLevel = initlevel1();
+        world = new World(canvas, keyboard, currentLevel);
+    } else if (currentLevel === level2) {
+        currentLevel = initlevel2();
+        world = new World(canvas, keyboard, currentLevel);
+    } else if (currentLevel === level3) {
+        currentLevel = initlevel3();
+        world = new World(canvas, keyboard, currentLevel);
+    } else if (currentLevel === level4) {
+        currentLevel = initlevel4();
+        world = new World(canvas, keyboard, currentLevel);
+    } else if (currentLevel === level5) {
+        currentLevel = initlevel5();
+        world = new World(canvas, keyboard, currentLevel);
     }
 }
 
