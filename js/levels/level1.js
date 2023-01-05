@@ -1,17 +1,20 @@
 let level1 = 'level1';
 let multiplier = 6;
+let ground = [];
 let enemies = [];
 let coins = [];
 let bottles = [];
 let clouds = [];
 let background = [];
 function initlevel1() {
+    getGround();
     getEnemies();
     getCoins();
     getBottles();
     getClouds();
-    getBackGround();
+    getBackground();
     return level1 = new Level(
+        ground,
         enemies,
         clouds,
         background,
@@ -20,6 +23,10 @@ function initlevel1() {
     );
 }
 
+
+function getGround(){
+    ground.push(new Ground());
+}
 function getEnemies() {
     for (let i = 0; i <= multiplier; i++) {
         enemies.push(new Chicken());
@@ -35,7 +42,7 @@ function getCoins() {
 }
 
 
-function getBottles(){
+function getBottles() {
     for (let i = 0; i < 5; i++) {
         bottles.push(new Bottle());
     }
@@ -49,10 +56,10 @@ function getClouds() {
 }
 
 
-function getBackGround() {
-    for (let i = 0; i < multiplier ; i++) {
+function getBackground() {
+    for (let i = 0; i < multiplier; i++) {
         let x = i % 2;
-        if ( x == 0) {
+        if (x == 0) {
             let position = -719 + (i * 719);
             background.push(new BackgroundObject('/img/5_background/layers/air.png', position));
             background.push(new BackgroundObject('img/5_background/layers/3_third_layer/1.png', position));

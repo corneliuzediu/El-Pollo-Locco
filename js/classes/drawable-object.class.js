@@ -50,12 +50,21 @@ class DrawableObject {
         if (this instanceof Bottle || this instanceof Coin) {
             this.hitboxResources(ctx);
         }
+
+
+        if (this instanceof ThrowableObject){
+            this.hitboxThrowableObject(ctx);
+        }
+
+        if (this instanceof Ground){
+            this.hitboxGround(ctx);
+        }
     }
 
     hitboxCharacter(ctx) {
         ctx.beginPath();
         ctx.lineWidth = '2';
-        ctx.strokeStyle = 'blue';
+        ctx.strokeStyle = 'red';
         ctx.rect(this.x + 20, this.y + 70, this.width - 40, this.height - 80);
         ctx.stroke();
     }
@@ -77,11 +86,30 @@ class DrawableObject {
         ctx.stroke();
     }
 
+
     hitboxResources(ctx) {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'blue';
         ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
+        ctx.stroke();
+    }
+
+
+    hitboxThrowableObject(ctx){
+        ctx.beginPath();
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
+        ctx.stroke();
+    }
+
+
+    hitboxGround(ctx){
+        ctx.beginPath();
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x + 700, this.y,  this.width - 1000, this.height);
         ctx.stroke();
     }
 

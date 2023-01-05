@@ -41,7 +41,6 @@ document.addEventListener('keydown', (e) => {
     if (e.keyCode == 32) {
         keyboard.SPACE = true;
     }
-
     if (e.keyCode == 27) {
         keyboard.EXIT = true;
     }

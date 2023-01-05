@@ -28,6 +28,11 @@ class World {
     }
 
 
+    setCollision() {
+        this.throwableObject.world = this;
+    }
+
+
     runCollisions() {
         setInterval(() => {
             this.checkCollisions();
@@ -36,29 +41,13 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.healthBar.setPercentage(this.character.energy);
-            }
-        })
-
-        this.level.coins.forEach((coin) => {
-            if (this.character.isColliding(coin)) {
-                this.character.collectCoins();
-                coin.y = -500;
-                this.coinBar.setAmount(this.character.coinsBag, this.level.maxAmount);
-            }
-        })
-
-        this.level.bottles.forEach((bottle) => {
-            if (this.character.isColliding(bottle)) {
-                this.character.collectBottle();
-                bottle.y = -500;
-                this.bottleBar.setAmount(this.character.bottleFuel, this.level.maxAmount);
-            }
-        })
+        this.checkCollisionsEnemies();
+        this.checkCollisionsCoins();
+        this.checkCollisionsBottles();
+        this.checkCollisionsBottlesEnemies();
+        this.checkCollisionsBottlesFloor();
     }
+
 
     checkThrow() {
         if (this.keyboard.SPACE && !this.character.otherDirection) {
@@ -90,6 +79,10 @@ class World {
         this.addObjectToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
 
+        this.ctx.translate(-this.camera_x, 0);
+        this.addObjectToMap(this.level.ground);
+        this.ctx.translate(this.camera_x, 0);
+
         this.addObjectToMap(this.level.clouds);
         this.addObjectToMap(this.level.enemies);
         this.addObjectToMap(this.level.coins);
@@ -101,7 +94,6 @@ class World {
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
         this.ctx.translate(this.camera_x, 0);
-
 
         this.ctx.translate(-this.camera_x, 0);
 
@@ -147,4 +139,69 @@ class World {
         }
     }
 
+    stopMovement(bottle, floor) {
+        bottle.collision = true;
+        bottle.y = floor.y - bottle.height;
+        bottle.speedY = 0;
+        bottle.speedX = 0;
+        console.log(bottle.collision)
+        bottle.breakBottle(bottle);
+        // this.throwableObject.bre);
+
+    }
+
+
+    checkCollisionsEnemies() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isCollidingCharacter(enemy)) {
+                this.character.hit();
+                this.healthBar.setPercentage(this.character.energy);
+            }
+        })
+    }
+
+
+    checkCollisionsCoins() {
+        this.level.coins.forEach((coin) => {
+            if (this.character.isCollidingCharacter(coin)) {
+                this.character.collectCoins();
+                coin.y = -500;
+                this.coinBar.setAmount(this.character.coinsBag, this.level.maxAmount);
+            }
+        })
+    }
+
+
+    checkCollisionsBottles() {
+        this.level.bottles.forEach((bottle) => {
+            if (this.character.isCollidingCharacter(bottle)) {
+                this.character.collectBottle();
+                bottle.y = -500;
+                this.bottleBar.setAmount(this.character.bottleFuel, this.level.maxAmount);
+            }
+        })
+    }
+
+
+    checkCollisionsBottlesEnemies() {
+        this.throwableObject.forEach((bottle) => {
+            this.level.enemies.forEach((enemy) => {
+                if (enemy.isCollidingCharacter(bottle)) {
+                    this.stopMovement(bottle, enemy);
+                    console.log('Enemy:', bottle.x, bottle.y)
+                }
+            });
+        })
+    }
+
+    checkCollisionsBottlesFloor() {
+        this.throwableObject.forEach((bottle) => {
+            this.level.ground.forEach((floor) => {
+                if (floor.isCollidingGround(bottle)) {
+                    this.stopMovement(bottle, floor);
+                    console.log('Ground:', bottle.x, bottle.y, 'Speed:', bottle.speedY)
+                }
+            });
+        });
+    }
 }

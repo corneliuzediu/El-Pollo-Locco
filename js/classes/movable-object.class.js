@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject{
     coinsBag = 0;
     bottleFuel = 0;
     lastHit = 0;
+    world;
 
 
     applyGravity() {
@@ -27,8 +28,8 @@ class MovableObject extends DrawableObject{
     }
 
 
-    isColliding(obj) {
-        return this.x + this.width > obj.x && this.y + this.height > obj.y && this.x < obj.x && this.y < obj.y + obj.height
+    isCollidingCharacter(obj) {
+        return (this.x +20) + (this.width - 40)  > (obj.x + 10) && (this.y + 70) + (this.height - 80) > (obj.y + 20) && (this.x +20) < (obj.x + 10) && (this.y + 70) < (obj.y + 20) + (obj.height -30);
 
         // return (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
         //     (this.y + this.offsetY + this.height) >= obj.y &&
@@ -36,6 +37,12 @@ class MovableObject extends DrawableObject{
         //     obj.onCollisionCourse;
 
     }
+
+
+    isCollidingGround(obj) {
+        return this.y < obj.y + obj.height 
+    }
+
 
 
     hit(){
@@ -124,6 +131,9 @@ class MovableObject extends DrawableObject{
             this.lastCollect = new Date().getTime();
         }
     }
+
+    
+
 
 
 
