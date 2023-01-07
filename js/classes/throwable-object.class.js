@@ -1,6 +1,9 @@
 class ThrowableObject extends MovableObject {
     y = 240;
     collision = false;
+    inAir = true;
+    throwInterval; 
+
     IMAGES_THROW = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -17,7 +20,7 @@ class ThrowableObject extends MovableObject {
     ]
 
 
-    constructor(x, y, otherDirection) {
+    constructor(x, y, otherDirection, collision, inAir) {
         super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
         this.loadImages(this.IMAGES_THROW);
         this.loadImages(this.IMAGES_COLLISION);
@@ -25,23 +28,20 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 80;
         this.width = 80;
-        this.throw(otherDirection);
-
+        collision = this.collision;
+        inAir = this.inAir;
+        this.throw(otherDirection, collision, this.inAir);
     }
 
-    throw(otherDirection) {
-        if (!otherDirection) {
+    throw(otherDirection, collision, inAir) {
+        if (!collision && inAir) {
+            this.throwAnimation(this.collision);
             this.throwRight();
-            setInterval(() => {
-                this.playAnimation(this.IMAGES_THROW)
-            }, 1000 );
         } else if (otherDirection) {
+            this.throwAnimation();
             this.throwLeft();
-            if (!this.collision) {
-                setInterval(() => {
-                    this.playAnimation(this.IMAGES_THROW)
-                }, 1000);
-            }
+        } else if (collision && !inAir) {
+            this.throwAnimation(collision);
         }
     }
 
@@ -64,6 +64,29 @@ class ThrowableObject extends MovableObject {
             this.x -= 10;
         }, 20);
     };
+
+
+    throwAnimation(collision) {
+        if (!collision) {
+           this.startAnimation();
+        } else if (collision) {
+            this.stopAnimation();
+            this.playAnimation(this.IMAGES_COLLISION);
+            console.log("I Stop Animation")
+            console.log(this);
+        }
+    }
+
+    startAnimation(){
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_THROW)
+        }, 1000 / 15);
+    }
+
+    stopAnimation(){
+        clearInterval(this.startAnimation);
+    }
+
 
 
     breakBottle(bottle) {

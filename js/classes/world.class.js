@@ -9,6 +9,7 @@ class World {
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
     throwableObject = [];
+    previousThrow = 0;
 
 
 
@@ -44,30 +45,41 @@ class World {
         this.checkCollisionsEnemies();
         this.checkCollisionsCoins();
         this.checkCollisionsBottles();
-        this.checkCollisionsBottlesEnemies();
+        // this.checkCollisionsBottlesEnemies();
         this.checkCollisionsBottlesFloor();
     }
 
 
+
     checkThrow() {
         if (this.keyboard.SPACE && !this.character.otherDirection) {
-            let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection,);
+            let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection, this.throwableObject.collision, this.throwableObject.inAir);
             this.throw(bottle);
+            this.previousThrow = new Date().getTime();
         } else if (this.keyboard.SPACE && this.character.otherDirection) {
-            let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection);
+            let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection, false);
             this.throw(bottle);
+            this.previousThrow = new Date().getTime();
         }
     }
-
-
+    
+    
     throw(bottle) {
-        if (this.character.bottleFuel != 0) {
+        if (this.character.bottleFuel != 0 && this.timeThrow(200)) {
             this.character.bottleFuel -= 1;
             this.bottleBar.setAmount(this.character.bottleFuel, this.level.maxAmount);
             this.throwableObject.push(bottle);
+            console.log("Worlds collision", bottle.collision)
         }
-
     }
+
+
+    timeThrow(ms) {
+        let timeGap = new Date().getTime() - this.previousThrow;
+        console.log("Time Gap",timeGap);
+        return timeGap > ms;
+    }
+
 
 
 
@@ -141,11 +153,13 @@ class World {
 
     stopMovement(bottle, floor) {
         bottle.collision = true;
+        bottle.inAir = false;
+        bottle.throw(this.character.otherDirection, bottle.collision, bottle.inAir);
         bottle.y = floor.y - bottle.height;
         bottle.speedY = 0;
         bottle.speedX = 0;
-        console.log(bottle.collision)
-        bottle.breakBottle(bottle);
+        // console.log(bottle.collision)
+        // bottle.breakBottle(bottle);
         // this.throwableObject.bre);
 
     }
@@ -183,21 +197,23 @@ class World {
     }
 
 
-    checkCollisionsBottlesEnemies() {
-        this.throwableObject.forEach((bottle) => {
-            this.level.enemies.forEach((enemy) => {
-                if (enemy.isCollidingCharacter(bottle)) {
-                    this.stopMovement(bottle, enemy);
-                    console.log('Enemy:', bottle.x, bottle.y)
-                }
-            });
-        })
-    }
+    // checkCollisionsBottlesEnemies() {
+    //     this.throwableObject.forEach((bottle) => {
+    //         this.level.enemies.forEach((enemy) => {
+    //             if (enemy.isCollidingCharacter(bottle)) {
+    //                 this.stopMovement(bottle, enemy);
+    //                 // console.log('Enemy:', bottle.x, bottle.y)
+    //             }
+    //         });
+    //     })
+    // }
 
     checkCollisionsBottlesFloor() {
         this.throwableObject.forEach((bottle) => {
             this.level.ground.forEach((floor) => {
                 if (floor.isCollidingGround(bottle)) {
+                    this.collision = true;
+                    this.inAir = false;
                     this.stopMovement(bottle, floor);
                     console.log('Ground:', bottle.x, bottle.y, 'Speed:', bottle.speedY)
                 }
