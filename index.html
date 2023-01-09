@@ -5,32 +5,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/classes/world.class.js"></script>
-    <script src="/js/classes/drawable-object.class.js"></script>
-    <script src="/js/classes/movable-object.class.js"></script>
-    <script src="/js/classes/ground.class.js"></script>
-    <script src="/js/classes/character.class.js"></script>
-    <script src="/js/classes/chicken.class.js"></script>
-    <script src="/js/classes/cloud.class.js"></script>
-    <script src="/js/classes/healthStatus.class.js"></script>
-    <script src="/js/classes/coinStatus.class.js"></script>
-    <script src="/js/classes/bottleStatus.class.js"></script>
-    <script src="/js/classes/background-object.class.js"></script>
-    <script src="/js/classes/keyboard.class.js"></script>
-    <script src="/js/classes/coin.class.js"></script>
-    <script src="/js/classes/bottle.class.js"></script>
-    <script src="/js/classes/level.class.js"></script>
-    <script src="/js/classes/throwable-object.class.js"></script>
-    <script src="/js/classes/endBoss.class.js"></script>
-    <script src="/js/levels/level1.js"></script>
-    <script src="/js/levels/level2.js"></script>
-    <script src="/js/levels/level3.js"></script>
-    <script src="/js/levels/level4.js"></script>
-    <script src="/js/levels/level5.js"></script>
-    <script src="/js/game.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/classes/world.class.js"></script>
+    <script src="./js/classes/drawable-object.class.js"></script>
+    <script src="./js/classes/movable-object.class.js"></script>
+    <script src="./js/classes/ground.class.js"></script>
+    <script src="./js/classes/character.class.js"></script>
+    <script src="./js/classes/chicken.class.js"></script>
+    <script src="./js/classes/cloud.class.js"></script>
+    <script src="./js/classes/healthStatus.class.js"></script>
+    <script src="./js/classes/coinStatus.class.js"></script>
+    <script src="./js/classes/bottleStatus.class.js"></script>
+    <script src="./js/classes/background-object.class.js"></script>
+    <script src="./js/classes/keyboard.class.js"></script>
+    <script src="./js/classes/coin.class.js"></script>
+    <script src="./js/classes/bottle.class.js"></script>
+    <script src="./js/classes/level.class.js"></script>
+    <script src="./js/classes/throwable-object.class.js"></script>
+    <script src="./js/classes/endBoss.class.js"></script>
+    <script src="./js/levels/level1.js"></script>
+    <script src="./js/levels/level2.js"></script>
+    <script src="./js/levels/level3.js"></script>
+    <script src="./js/levels/level4.js"></script>
+    <script src="./js/levels/level5.js"></script>
+    <script src="./js/game.js"></script>
     <title>El Pollo Locco</title>
-    <link rel="shortcut icon" href="/img/start/chicken-32.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./img/start/chicken-32.ico" type="image/x-icon">
 </head>
 
 <body class="bg" onload="init()">
@@ -39,15 +39,15 @@
             <h3>
                 Click when you are ready to play!
             </h3>
-            <img src="/img/start/Start_chicken.png">
+            <img src="./img/start/Start_chicken.png">
         </div>
     </div>
     <!-- Select Options DIV -->
     <nav class="options__wrapper">
-        <button id="music-btn1" class="d-none" onclick="changeImgMusic()"><img id="music-img" src="/img/start/guitar.ico"></button>
-        <button id="music-btn2" class=""onclick="changeImgMusic()"><img id="music-img" src="/img/start/no-guitar.ico"></button>
-        <button id="fullscreen-btn1" class="" onclick="enterFullscreen()"><img id="fullScreen-btn" src="img/start/fullscreen.ico"></button>
-        <button id="fullscreen-btn2" class="d-none" onclick="enterFullscreen()"><img id="fullScreen-btn" src="img/start/minimize.ico"></button>
+        <button id="music-btn1" class="d-none" onclick="changeImgMusic()"><img id="music-img" src="./img/start/guitar.ico"></button>
+        <button id="music-btn2" class=""onclick="changeImgMusic()"><img id="music-img" src="./img/start/no-guitar.ico"></button>
+        <button id="fullscreen-btn1" class="" onclick="enterFullscreen()"><img id="fullScreen-btn" src="./img/start/fullscreen.ico"></button>
+        <button id="fullscreen-btn2" class="d-none" onclick="enterFullscreen()"><img id="fullScreen-btn" src="./img/start/minimize.ico"></button>
     </nav>
 
     <h1> El pollo locco</h1>
@@ -56,12 +56,12 @@
         <!-- Start button -->
         <button id="start-btn" class="start-btn" onclick="showcanvas();">
             <p>Bottle up</p>
-            <img src="/img/start/play.png">
+            <img src="./img/start/play.png">
         </button>
         <!-- Select Level Button -->
         <button id="level-btn" class="level-btn" onclick="openLevelSelector()">
             <p>Rost the bigger Boss</p>
-            <img src="/img/start/levels.png">
+            <img src="./img/start/levels.png">
         </button>
         <!-- Select Options Button
         <button id="options-btn" class="options-btn" onclick="openOptionsSelector()">
@@ -71,7 +71,7 @@
         <!-- Instructions Button -->
         <button id="instructions-btn" class="instructions-btn" onclick="openInstructions()">
             <p>Guide for non-gamers</p>
-            <img src="/img/start/instructions.png">
+            <img src="./img/start/instructions.png">
         </button>
     </div>
 
@@ -83,7 +83,7 @@
 
     <!-- Select Level DIV -->
     <div id="preStart__level" class="preStart__level d-none">
-        <button class="backToMenu" onclick="backToMenu()"><img src="/img/start/arrow.png"></button>
+        <button class="backToMenu" onclick="backToMenu()"><img src="./img/start/arrow.png"></button>
         <ul>
             <li id="level-1" onclick="selectLevel(1)">
                 <p>Level 1</p>
@@ -106,30 +106,30 @@
 
     <!-- Select Instructions DIV -->
     <div id="preStart__instructions" class="preStart__instructions d-none">
-        <button class="backToMenu" onclick="backToMenu()"><img src="/img/start/arrow.png"></button>
+        <button class="backToMenu" onclick="backToMenu()"><img src="./img/start/arrow.png"></button>
         <ul>
             <li class="guideKey">
-                <img src="/img/start/key-W.png">
+                <img src="./img/start/key-W.png">
                 <p>UP / JUMP</p>
             </li>
             <li class="guideKey">
-                <img src="/img/start/key-S.png">
+                <img src="./img/start/key-S.png">
                 <p>DOWN</p>
             </li>
             <li class="guideKey">
-                <img src="/img/start/key-A.png">
+                <img src="./img/start/key-A.png">
                 <p>LEFT</p>
             </li>
             <li class="guideKey">
-                <img src="/img/start/key-D.png">
+                <img src="./img/start/key-D.png">
                 <p>RIGHT</p>
             </li>
             <li class="guideKey">
-                <img src="/img/start/key-SPACE.png">
+                <img src="./img/start/key-SPACE.png">
                 <p> THROW</p>
             </li>
             <li class="guideKey">
-                <img src="/img/start/key-ESC.png">
+                <img src="./img/start/key-ESC.png">
                 <p> EXIT Fullscreen Mode</p>
             </li>
         </ul>

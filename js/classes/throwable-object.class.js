@@ -2,7 +2,7 @@ class ThrowableObject extends MovableObject {
     y = 240;
     collision = false;
     inAir = true;
-    throwInterval; 
+    throwInterval;
 
     IMAGES_THROW = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -20,7 +20,7 @@ class ThrowableObject extends MovableObject {
     ]
 
 
-    constructor(x, y, otherDirection, collision, inAir) {
+    constructor(x, y, otherDirection) {
         super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
         this.loadImages(this.IMAGES_THROW);
         this.loadImages(this.IMAGES_COLLISION);
@@ -28,21 +28,31 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 80;
         this.width = 80;
-        collision = this.collision;
-        inAir = this.inAir;
-        this.throw(otherDirection, collision, this.inAir);
+        this.throw();
+        // console.log("Initial x:", this.x)
+        // console.log("Initial y:", this.y)
+        if (otherDirection) { this.throwLeft() } else { this.throwRight() }
     }
 
-    throw(otherDirection, collision, inAir) {
-        if (!collision && inAir) {
-            this.throwAnimation(this.collision);
-            this.throwRight();
-        } else if (otherDirection) {
-            this.throwAnimation();
-            this.throwLeft();
-        } else if (collision && !inAir) {
-            this.throwAnimation(collision);
-        }
+    throw() {
+        let x = 75;
+        setInterval(() => {
+            if(this.y > 350){
+                debugger;
+            }
+            if (this.inAir && !this.collision) {
+                this.playAnimation(this.IMAGES_THROW);
+                console.log(this.y);
+            } else if (this.collision && !this.inAir) {
+                x = 170;
+                this.playAnimation(this.IMAGES_COLLISION)
+                setTimeout(() => {
+                    this.y = -500;
+                }, x * 1.1);
+            }
+        }, x)
+        // console.log("I am after")
+        // return;
     }
 
     throwRight() {
@@ -52,7 +62,6 @@ class ThrowableObject extends MovableObject {
         setInterval(() => {
             this.x += this.speedX;
         }, 20);
-
     }
 
 
@@ -64,39 +73,4 @@ class ThrowableObject extends MovableObject {
             this.x -= 10;
         }, 20);
     };
-
-
-    throwAnimation(collision) {
-        if (!collision) {
-           this.startAnimation();
-        } else if (collision) {
-            this.stopAnimation();
-            this.playAnimation(this.IMAGES_COLLISION);
-            console.log("I Stop Animation")
-            console.log(this);
-        }
-    }
-
-    startAnimation(){
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_THROW)
-        }, 1000 / 15);
-    }
-
-    stopAnimation(){
-        clearInterval(this.startAnimation);
-    }
-
-
-
-    breakBottle(bottle) {
-        if (bottle.collision) {
-            this.playAnimation(this.IMAGES_COLLISION)
-        }
-    }
-
-
-
-
-
 }
