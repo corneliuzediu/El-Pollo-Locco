@@ -7,15 +7,15 @@ class Bottle extends MovableObject {
     // ]
 
     IMAGES_ROTATION = [
-        'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
-        'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
-        'img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
-        'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
+        './img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
+        './img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
+        './img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
+        './img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
     ];
 
     IMAGES_TOOGLE = [
-        'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-        'img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
+        './img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+        './img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
     ]
 
     constructor() {
@@ -32,12 +32,12 @@ class Bottle extends MovableObject {
 
     animate(){
         if(this.y < 340){
-            this.loadImage('img/6_salsa_bottle/salsa_bottle.png'); 
+            this.loadImage('./img/6_salsa_bottle/salsa_bottle.png'); 
             setInterval(() =>{
                 this.playAnimation(this.IMAGES_ROTATION);
             }, this.speed)
         } else if ( this.y > 100){
-            this.loadImage('img/6_salsa_bottle/2_salsa_bottle_on_ground.png'); 
+            this.loadImage('./img/6_salsa_bottle/2_salsa_bottle_on_ground.png'); 
             setInterval(() =>{
                 this.playAnimation(this.IMAGES_TOOGLE);
             }, this.speed)

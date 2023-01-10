@@ -45,7 +45,8 @@ class World {
         this.checkCollisionsEnemies();
         this.checkCollisionsCoins();
         this.checkCollisionsBottles();
-        // this.checkCollisionsBottlesEnemies();
+        this.checkCollisionsBottlesEnemies();
+        this.checkCollisionsBottlesEndBoss();
         this.checkCollisionsBottlesFloor();
     }
 
@@ -73,7 +74,6 @@ class World {
 
     timeThrow(ms) {
         let timeGap = new Date().getTime() - this.previousThrow;
-        console.log("Time Gap", timeGap);
         return timeGap > ms;
     }
 
@@ -94,6 +94,7 @@ class World {
 
         this.addObjectToMap(this.level.clouds);
         this.addObjectToMap(this.level.enemies);
+        this.addObjectToMap(this.level.endBoss);
         this.addObjectToMap(this.level.coins);
         this.addObjectToMap(this.level.bottles);
         this.addObjectToMap(this.throwableObject);
@@ -155,7 +156,21 @@ class World {
         bottle.acceleration = 0;
         bottle.speedX = 0;
         bottle.speedY = 0;
+    } 
+
+    stopMovementBoss(bottle, floor) {
+        bottle.y = floor.y + bottle.height / 2;
+        bottle.collision = true;
+        bottle.inAir = false;
+        bottle.acceleration = 0;
+        bottle.speedX = 0;
+        bottle.speedY = 0;
+        setTimeout(()=>{
+            bottle.y = -500;
+        }, 100)
     }
+
+
 
 
     checkCollisionsEnemies() {
@@ -193,32 +208,49 @@ class World {
     checkCollisionsBottlesEnemies() {
         this.throwableObject.forEach((bottle) => {
             this.level.enemies.forEach((enemy) => {
-                console.log('Enemy:', enemy.x, enemy.y)
-                console.log('Bottle:', bottle.x, bottle.y)
+                // console.log('Enemy:', enemy.x, enemy.y)
+                // console.log('Bottle:', bottle.x, bottle.y)
                 if (enemy.isCollidingEnemy(bottle)) {
                     this.stopMovement(bottle, enemy);
-                    console.log('Enemy:', enemy.x, enemy.y)
-                    console.log('Bottle:', bottle.x, bottle.y)
-                    if(enemy.constructor.name == "EndBoss"){
+                    // console.log('Enemy:', enemy.x, enemy.y)
+                    // console.log('Bottle:', bottle.x, bottle.y)
+                    if (enemy.constructor.name == "EndBoss") {
                         bottle.x = enemy.center_x;
                         bottle.y = enemy.center_y;
                     }
                 }
             });
         })
-    }d
+    }
 
     checkCollisionsBottlesFloor() {
         this.throwableObject.forEach((bottle) => {
             this.level.ground.forEach((floor) => {
-                console.log('Enemy:', floor.x, floor.y)
-                console.log('Bottle:', bottle.x, bottle.y)
+                // console.log('Enemy:', floor.x, floor.y)
+                // console.log('Bottle:', bottle.x, bottle.y)
                 if (floor.isCollidingGround(bottle)) {
                     this.stopMovement(bottle, floor);
-                    console.log('Enemy:', floor.x, floor.y)
-                    console.log('Bottle:', bottle.x, bottle.y)
+                    // console.log('Enemy:', floor.x, floor.y)
+                    // console.log('Bottle:', bottle.x, bottle.y)
                 }
             });
         });
     }
+
+    checkCollisionsBottlesEndBoss() {
+        this.throwableObject.forEach((bottle) => {
+            this.level.endBoss.forEach((boss) => {
+                // console.log('Enemy:', floor.x, floor.y)
+                // console.log('Bottle:', bottle.x, bottle.y)
+                if (boss.isCollidingCharacterEnemy(bottle)) {
+                    this.stopMovementBoss(bottle, boss);
+                    boss.hitBoss();
+                    // console.log('Enemy:', floor.x, floor.y)
+                    // console.log('Bottle:', bottle.x, bottle.y)
+                }
+            });
+        });
+    }
+
+
 }

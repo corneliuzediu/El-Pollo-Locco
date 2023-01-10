@@ -130,10 +130,10 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 10);
 
-        let hurtAndDead = setInterval(() => {
+        setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-                // clearInterval(hurtAndDead);
+                
             }
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
@@ -148,6 +148,12 @@ class Character extends MovableObject {
         let actualTime = new Date().getTime();
         let timePassed = actualTime - this.initialTime;
         return this.timePassed = timePassed;
+    }
+
+    bringBossCloser(){
+        if( this.x > level_end_x * 0.9){
+            
+        }
     }
 }
 

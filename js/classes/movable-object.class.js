@@ -56,7 +56,6 @@ class MovableObject extends DrawableObject {
 
 
     isCollidingEnemy(obj) {
-
         return this.y + this.height < obj.y;
     }
 
@@ -112,7 +111,13 @@ class MovableObject extends DrawableObject {
 
     moveRight() {
         this.x += this.speed * 24;
+        if (this.x > level_end_x * 0.8) {
+            endBoss.forEach(boss => {
+                boss.isCloser();
+            })
+        }
     }
+
 
 
     moveLeft() {
@@ -171,11 +176,4 @@ class MovableObject extends DrawableObject {
             contact_right && contact_vertical ||                    // Contact right
             contact_left && contact_vertical                        // Contact left
     }
-
-
-
-
-
-
-
 }

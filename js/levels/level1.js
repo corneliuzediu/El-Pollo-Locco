@@ -1,9 +1,10 @@
 let level1 = 'level1';
 let multiplier = 6;
 let energyRate = 1;
-let level_end_x = 5000;
+let level_end_x = 1000;
 let ground = [];
 let enemies = [];
+let endBoss = [];
 let coins = [];
 let bottles = [];
 let clouds = [];
@@ -11,6 +12,7 @@ let background = [];
 function initlevel1() {
     getGround();
     getEnemies();
+    getEndBoss();
     getCoins();
     getBottles();
     getClouds();
@@ -18,6 +20,7 @@ function initlevel1() {
     return level1 = new Level(
         ground,
         enemies,
+        endBoss,
         clouds,
         background,
         coins,
@@ -35,7 +38,11 @@ function getEnemies() {
     for (let i = 0; i <= multiplier; i++) {
         enemies.push(new Chicken());
     };
-    enemies.push(new EndBoss());
+}
+
+
+function getEndBoss(){
+    endBoss.push(new EndBoss());
 }
 
 
