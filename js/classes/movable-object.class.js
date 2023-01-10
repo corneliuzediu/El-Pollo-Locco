@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObject{
+class MovableObject extends DrawableObject {
     speed = 1;
     otherDirection = false;
     speedY = 0;
@@ -19,8 +19,9 @@ class MovableObject extends DrawableObject{
         }, 1000 / 25)
     }
 
+
     isAboveGround() {
-        if( this instanceof ThrowableObject ){
+        if (this instanceof ThrowableObject) {
             return true;
         } else {
             return this.y < 240;
@@ -28,26 +29,46 @@ class MovableObject extends DrawableObject{
     }
 
 
-    isCollidingCharacter(obj) {
-        return (this.x +20) + (this.width - 40)  > (obj.x + 10) && (this.y + 70) + (this.height - 80) > (obj.y + 20) && (this.x +20) < (obj.x + 10) && (this.y + 70) < (obj.y + 20) + (obj.height -30);
+    isCollidingCharacterEnemy(obj) {
+        let character_left = (this.x);
+        let character_right = (this.x + this.width);
+        let character_top = (this.y + 70);
+        let character_bottom = (this.y + (this.height - 30));
+        let enemy_left = (obj.x + 20);
+        let enemy_right = (obj.x + (obj.width - 10));
+        let enemy_top = (obj.y + 20);
+        let enemy_bottom = (obj.y + (obj.height - 20));
+        return this.getContactsCollision(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom);
+    }
 
-        // return (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
-        //     (this.y + this.offsetY + this.height) >= obj.y &&
-        //     (this.y + this.offsetY) <= (obj.y + obj.height) &&
-        //     obj.onCollisionCourse;
 
+    isCollidingCharacterResources(obj) {
+        let character_left = (this.x + 20);
+        let character_right = (this.x + (this.width - 20));
+        let character_top = (this.y + 90);
+        let character_bottom = (this.y + (this.height - 30));
+        let enemy_left = (obj.x + 30);
+        let enemy_right = (obj.x + (obj.width - 40));
+        let enemy_top = (obj.y);
+        let enemy_bottom = (obj.y + obj.height - 10);
+        return this.getContactsCollision(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom);
+    }
+
+
+    isCollidingEnemy(obj) {
+
+        return this.y + this.height < obj.y;
     }
 
 
     isCollidingGround(obj) {
-        return this.y < obj.y + obj.height 
+        return this.y < obj.y + obj.height
     }
 
 
-
-    hit(){
-        this.energy -= 5;
-        if( this.energy < 0){
+    hit() {
+        this.energy -= this.world.level.energyRate;
+        if (this.energy < 0) {
             this.energy = 0;
         } else {
             this.lastHit = new Date().getTime();
@@ -55,14 +76,14 @@ class MovableObject extends DrawableObject{
     }
 
 
-    isHurt(){
+    isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed /= 1000;
         return timePassed < 1;
     }
 
 
-    isDead(){
+    isDead() {
         return this.energy == 0;
     }
 
@@ -100,39 +121,59 @@ class MovableObject extends DrawableObject{
 
 
     jump() {
-        this.speedY = 30;
+        this.speedY = 40;
     }
 
 
-    collectCoins(){
+    collectCoins() {
         let multiplier = level1.coins.length;
-        let units = (1/multiplier) * 100 ; 
+        let units = (1 / multiplier) * 100;
         this.coinsBag += units;
-        if( this.coinsBag > 90){
+        if (this.coinsBag > 90) {
             this.coinsBag = 100;
         } else {
             this.lastCollect = new Date().getTime();
         }
     }
 
-    hasCollected(){
+
+    hasCollected() {
         let timePassed = new Date().getTime() - this.lastCollect;
         timePassed /= 1000;
         return timePassed < 1;
     }
 
 
-    collectBottle(){
-        let unit = 1 ; 
+    collectBottle() {
+        let unit = 1;
         this.bottleFuel += unit;
-        if( this.bottleFuel > 90){
+        if (this.bottleFuel > 90) {
             this.bottleFuel = 100;
         } else {
             this.lastCollect = new Date().getTime();
         }
     }
 
-    
+
+    getContactsCollision(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
+        let contact_right = character_right >= enemy_left && character_right <= enemy_right;
+        let contact_left = character_left >= enemy_left && character_left <= enemy_right;
+        let contact_top = character_top <= enemy_bottom && character_top >= enemy_top;
+        let contact_bottom = character_bottom <= enemy_bottom && character_bottom >= enemy_top;
+        let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
+        let contact_vertical = character_top < enemy_top && character_bottom > enemy_bottom;
+        return contact_right && contact_bottom ||                   // Contact on right bottom
+            contact_right && contact_top ||                         // Contact on right top
+            contact_left && contact_bottom ||                       // Contact on left top 
+            contact_left && contact_top ||                          // Contact on left 
+            contact_bottom && contact_horizontal ||                 // Contact low
+            contact_top && contact_horizontal ||                    // Contact top
+            contact_right && contact_vertical ||                    // Contact right
+            contact_left && contact_vertical                        // Contact left
+    }
+
+
+
 
 
 

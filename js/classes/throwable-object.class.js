@@ -3,6 +3,7 @@ class ThrowableObject extends MovableObject {
     collision = false;
     inAir = true;
     throwInterval;
+    smash = new Audio('./audio/smash.mp3')
 
     IMAGES_THROW = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -35,24 +36,18 @@ class ThrowableObject extends MovableObject {
     }
 
     throw() {
-        let x = 75;
-        setInterval(() => {
-            if(this.y > 350){
-                debugger;
-            }
+        let animation = setInterval(() => {
             if (this.inAir && !this.collision) {
                 this.playAnimation(this.IMAGES_THROW);
-                console.log(this.y);
             } else if (this.collision && !this.inAir) {
-                x = 170;
                 this.playAnimation(this.IMAGES_COLLISION)
                 setTimeout(() => {
                     this.y = -500;
-                }, x * 1.1);
+                }, 200);
+                this.smash.play();
+                clearInterval(animation)
             }
-        }, x)
-        // console.log("I am after")
-        // return;
+        }, 75)
     }
 
     throwRight() {

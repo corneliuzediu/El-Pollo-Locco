@@ -1,5 +1,7 @@
 let level1 = 'level1';
 let multiplier = 6;
+let energyRate = 1;
+let level_end_x = 5000;
 let ground = [];
 let enemies = [];
 let coins = [];
@@ -19,13 +21,15 @@ function initlevel1() {
         clouds,
         background,
         coins,
-        bottles
+        bottles,
+        energyRate,
+        level_end_x
     );
 }
 
 
-function getGround(){
-    ground.push(new Ground());
+function getGround() {
+    ground.push(new Ground);
 }
 function getEnemies() {
     for (let i = 0; i <= multiplier; i++) {
@@ -36,7 +40,7 @@ function getEnemies() {
 
 
 function getCoins() {
-    for (let i = 0; i < multiplier; i++) {
+    for (let i = 0; i <= multiplier; i++) {
         coins.push(new Coin());
     }
 }
@@ -57,7 +61,7 @@ function getClouds() {
 
 
 function getBackground() {
-    for (let i = 0; i < multiplier; i++) {
+    for (let i = 0; i < (level_end_x / 719) + 2; i++) {
         let x = i % 2;
         if (x == 0) {
             let position = -719 + (i * 719);

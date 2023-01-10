@@ -2,6 +2,8 @@ class EndBoss extends MovableObject{
     height = 350;
     width = 250;
     y = 120;
+    center_x = this.height / 2;
+    center_y = this.width / 2;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -29,7 +31,7 @@ class EndBoss extends MovableObject{
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
-        this.x =  1500; // zahl zwichen 200 und 700
+        this.x =  level_end_x + 200; // zahl zwichen 200 und 700
         this.animate();
 
         // this.moveLeft(this.x)

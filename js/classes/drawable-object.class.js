@@ -65,7 +65,8 @@ class DrawableObject {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'red';
-        ctx.rect(this.x + 20, this.y + 70, this.width - 40, this.height - 80);
+        // ctx.rect(this.x, this.y, this.width, this.height)d;
+        // ctx.rect(this.x + 20, this.y + 70, this.width - 40, this.height - 80);
         ctx.stroke();
     }
 
@@ -73,7 +74,8 @@ class DrawableObject {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'blue';
-        ctx.rect(this.x + 10, this.y + 20, this.width - 30, this.height - 30);
+        // ctx.rect(this.x, this.y, this.width, this.height);
+        // ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
         ctx.stroke();
     }
 
@@ -82,7 +84,7 @@ class DrawableObject {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'blue';
-        ctx.rect(this.x + 20, this.y + 50, this.width - 20, this.height - 50);
+        // ctx.rect(this.x + 20, this.y + 50, this.width - 20, this.height - 50);
         ctx.stroke();
     }
 
@@ -91,7 +93,8 @@ class DrawableObject {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'blue';
-        ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
+        // ctx.rect(this.x + 35, this.y, this.width, this.height);
+        // ctx.rect(this.x + 20, this.y + 10, this.width - 40, this.height - 20);
         ctx.stroke();
     }
 
@@ -100,7 +103,7 @@ class DrawableObject {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'blue';
-        ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
+        // ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
         ctx.stroke();
     }
 
@@ -109,7 +112,7 @@ class DrawableObject {
         ctx.beginPath();
         ctx.lineWidth = '2';
         ctx.strokeStyle = 'blue';
-        ctx.rect(this.x + 700, this.y,  this.width - 1000, this.height);
+        // ctx.rect(this.x + 700, this.y,  this.width - 1000, this.height);
         ctx.stroke();
     }
 
