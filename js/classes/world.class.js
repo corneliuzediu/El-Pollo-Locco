@@ -5,6 +5,7 @@ class World {
     ctx;
     keyboard;
     camera_x = -100;
+    hits = 0;
     healthBar = new HealthBar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
@@ -38,6 +39,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrow();
+
         }, 20)
     }
 
@@ -48,6 +50,7 @@ class World {
         this.checkCollisionsBottlesEnemies();
         this.checkCollisionsBottlesEndBoss();
         this.checkCollisionsBottlesFloor();
+        this.checkPositionOnMap();
     }
 
 
@@ -95,6 +98,7 @@ class World {
         this.addObjectToMap(this.level.clouds);
         this.addObjectToMap(this.level.enemies);
         this.addObjectToMap(this.level.endBoss);
+        this.addObjectToMap(this.level.bossTotalLife);
         this.addObjectToMap(this.level.coins);
         this.addObjectToMap(this.level.bottles);
         this.addObjectToMap(this.throwableObject);
@@ -149,35 +153,39 @@ class World {
         }
     }
 
-    stopMovement(bottle, floor) {
-        bottle.y = floor.y - bottle.height;
+    stopMovement(bottle, floor, i) {
+        bottle.y = floor.y * i - bottle.height / 2;
         bottle.collision = true;
         bottle.inAir = false;
         bottle.acceleration = 0;
         bottle.speedX = 0;
         bottle.speedY = 0;
-    } 
-
-    stopMovementBoss(bottle, floor) {
-        bottle.y = floor.y + bottle.height / 2;
-        bottle.collision = true;
-        bottle.inAir = false;
-        bottle.acceleration = 0;
-        bottle.speedX = 0;
-        bottle.speedY = 0;
-        setTimeout(()=>{
-            bottle.y = -500;
-        }, 100)
+        // setTimeout(() => {
+        //     bottle.y = -500;
+        // }, 1)
     }
 
-
+    // stopMovementBoss(bottle, floor) {
+    //     bottle.y = floor.y + bottle.height / 2;
+    //     bottle.collision = true;
+    //     bottle.inAir = false;
+    //     bottle.acceleration = 0;
+    //     bottle.speedX = 0;
+    //     bottle.speedY = 0;
+    //     // setTimeout(() => {
+    //     //     bottle.y = -500;
+    //     // }, 1)
+    // }
 
 
     checkCollisionsEnemies() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isCollidingCharacterEnemy(enemy)) {
+            if (this.character.isCollidingCharacterEnemy(enemy) && !this.character.isCollidingCharacterEnemyFromBottom(enemy) && !enemy.crashed) {
+                enemy.crashed = false;
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
+            } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy)) {
+                enemy.crashed = true;
             }
         })
     }
@@ -210,8 +218,8 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 // console.log('Enemy:', enemy.x, enemy.y)
                 // console.log('Bottle:', bottle.x, bottle.y)
-                if (enemy.isCollidingEnemy(bottle)) {
-                    this.stopMovement(bottle, enemy);
+                if (enemy.isCollidingCharacterEnemy(bottle)) {
+                    this.stopMovement(bottle, enemy, 1);
                     // console.log('Enemy:', enemy.x, enemy.y)
                     // console.log('Bottle:', bottle.x, bottle.y)
                     if (enemy.constructor.name == "EndBoss") {
@@ -229,9 +237,7 @@ class World {
                 // console.log('Enemy:', floor.x, floor.y)
                 // console.log('Bottle:', bottle.x, bottle.y)
                 if (floor.isCollidingGround(bottle)) {
-                    this.stopMovement(bottle, floor);
-                    // console.log('Enemy:', floor.x, floor.y)
-                    // console.log('Bottle:', bottle.x, bottle.y)
+                    this.stopMovement(bottle, floor, 1); a
                 }
             });
         });
@@ -240,16 +246,33 @@ class World {
     checkCollisionsBottlesEndBoss() {
         this.throwableObject.forEach((bottle) => {
             this.level.endBoss.forEach((boss) => {
-                // console.log('Enemy:', floor.x, floor.y)
-                // console.log('Bottle:', bottle.x, bottle.y)
                 if (boss.isCollidingCharacterEnemy(bottle)) {
-                    this.stopMovementBoss(bottle, boss);
-                    boss.hitBoss();
-                    // console.log('Enemy:', floor.x, floor.y)
-                    // console.log('Bottle:', bottle.x, bottle.y)
-                }
+                    this.stopMovement(bottle, boss, 1.5);
+                    this.hitBoss++
+                    boss.hitBoss(this.hitBoss);
+                    console.log(this.hitBoss);
+                    return;
+                };
             });
         });
+    }
+
+
+    checkPositionOnMap() {
+        if (this.character.x >= level_end_x * 0.8) {
+            this.level.bossTotalLife.forEach((life) => {
+                life.getPosition(this.character.x)
+            })
+        }
+        if (this.level.endBoss[0].energy <= 75 && this.hits == 0) {
+            this.hits++;
+            this.level.bossTotalLife.pop();
+        } else if (this.level.endBoss[0].energy < 40 && this.hits == 1) {
+            this.hits++
+            this.level.bossTotalLife.pop();
+        } else if (this.level.endBoss[0].energy < 1 && this.hits == 2) {
+            this.level.bossTotalLife.pop();
+        }
     }
 
 

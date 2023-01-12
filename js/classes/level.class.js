@@ -2,6 +2,8 @@ class Level {
     ground;
     enemies;
     endBoss;
+    bossTotalLife;
+    hitsBoss;
     clouds;
     backgroundObjects;
     coins;
@@ -9,10 +11,12 @@ class Level {
     energyRate;
     level_end_x;
 
-    constructor(ground, enemies, endBoss, clouds, backgroundObjects, coins, bottles, energyRate, level_end_x){
+    constructor(ground, enemies, endBoss, bossTotalLife, hitsBoss, clouds, backgroundObjects, coins, bottles, energyRate, level_end_x) {
         this.ground = ground;
         this.enemies = enemies;
         this.endBoss = endBoss;
+        this.bossTotalLife = bossTotalLife;
+        this.hitsBoss = hitsBoss;
         this.clouds = clouds;
         this.backgroundObjects = backgroundObjects;
         this.coins = coins;

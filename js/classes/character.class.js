@@ -63,6 +63,10 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ]
 
+    IMAGES_LOST = [
+        './img/9_intro_outro_screens/game_over/oh no you lost!.png'
+    ]
+
     currentImage = 0;
     world;
     walking_sound = new Audio('audio/running.mp3');
@@ -80,32 +84,33 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SLEEP);
+        this.loadImages(this.IMAGES_LOST);
         this.applyGravity();
         this.getTimePassed();
         this.animate();
     }
 
     animate() {
-        setInterval(() => {
+        let stateAnimation = setInterval(() => {
             this.getTimePassed();
             if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.timePassed > this.sleeping_time) {
                 // Sleep Animation
                 this.playAnimation(this.IMAGES_SLEEP);
-            } else if (this.timePassed < this.sleeping_time && this.timePassed > this.idle_time || this.world.keyboard.SPACE ) {
+            } else if (this.timePassed < this.sleeping_time && this.timePassed > this.idle_time || this.world.keyboard.SPACE) {
                 // Idle animationd
-                this.playAnimation(this.IMAGES_IDLE );
+                this.playAnimation(this.IMAGES_IDLE);
             } else if (this.world.keyboard.RIGHT && this.timePassed < this.idle_time || this.world.keyboard.LEFT && this.timePassed < this.idle_time) {
                 // Walk Animation
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 1000 / 12);
 
-        setInterval(() => {
+        let movementAnimation = setInterval(() => {
             this.getTimePassed();
             this.walking_sound.pause();
-            if (this.world.keyboard.SPACE){
+            if (this.world.keyboard.SPACE) {
                 this.initialTime = new Date().getTime();
             }
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -130,17 +135,22 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 10);
 
-        setInterval(() => {
+        let hirtAnimation = setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-                
+
             }
+        }, 80)
+
+       let deadAnimation =  setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                clearInterval(movementAnimation);
+                clearInterval(stateAnimation);
+                clearInterval(hirtAnimation);
+                // clearInterval(deadAnimation);
             }
-        }, 1000 / 6)
-
-
+        }, 200)
 
     };
 
@@ -150,9 +160,9 @@ class Character extends MovableObject {
         return this.timePassed = timePassed;
     }
 
-    bringBossCloser(){
-        if( this.x > level_end_x * 0.9){
-            
+    bringBossCloser() {
+        if (this.x > level_end_x * 0.9) {
+
         }
     }
 }

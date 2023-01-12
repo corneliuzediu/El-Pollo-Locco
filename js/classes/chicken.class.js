@@ -28,20 +28,16 @@ class Chicken extends MovableObject {
 
     animate() {
         setInterval(() => {
-            this.moveLeft();
-        }, 1000 / 10);
-
-        if (!this.crashed) {
-
-            let chickenWalking = setInterval(() => {
+            if (!this.crashed) {
                 this.playAnimation(this.IMAGES_WALKING);
-            }, 1000 / 8);
-        } else {
-            let chickenDean = setInterval(() => {
+                this.moveLeft();
+            } else if (this.crashed) {
                 this.playAnimation(this.IMAGE_DEAD);
-                clearInterval(chickenWalking);
-            }, 20)
-        }
+                setTimeout(() => {
+                    this.y = -500;
+                }, 100)
+            }
+        }, 100)
     }
 
 }

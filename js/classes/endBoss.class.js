@@ -3,8 +3,6 @@ class EndBoss extends MovableObject {
     width = 250;
     x = level_end_x + 300; // zahl zwichen 200 und 700
     y = 120;
-    center_x = this.x + this.width / 2;
-    center_y = this.y + this.height / 2;
     alert = false;
     toTheLeft = false;
 
@@ -52,7 +50,10 @@ class EndBoss extends MovableObject {
         './img/4_enemie_boss_chicken/5_dead/G24.png',
         './img/4_enemie_boss_chicken/5_dead/G25.png',
         './img/4_enemie_boss_chicken/5_dead/G26.png'
+    ]
 
+    IMAGES_LIFE = [
+        './img/7_statusbars/3_icons/icon_health_endboss.png'
     ]
 
     constructor() {
@@ -62,6 +63,7 @@ class EndBoss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_LIFE)
         this.animate();
     }
 
@@ -97,7 +99,7 @@ class EndBoss extends MovableObject {
     }
 
     hitBoss() {
-        this.energy -= energyRate * 5;
+        this.energy -= energyRate * 4;
         if (this.energy < 0) {
             this.energy = 0;
         } else {

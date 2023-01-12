@@ -1,10 +1,12 @@
 let level1 = 'level1';
-let multiplier = 6;
+let multiplier = -1;
 let energyRate = 1;
-let level_end_x = 1000;
+let hitsBoss = 3
+let level_end_x = 500;
 let ground = [];
 let enemies = [];
 let endBoss = [];
+let bossTotalLife = [];
 let coins = [];
 let bottles = [];
 let clouds = [];
@@ -13,6 +15,7 @@ function initlevel1() {
     getGround();
     getEnemies();
     getEndBoss();
+    getBossLife();
     getCoins();
     getBottles();
     getClouds();
@@ -21,6 +24,8 @@ function initlevel1() {
         ground,
         enemies,
         endBoss,
+        bossTotalLife,
+        hitsBoss,
         clouds,
         background,
         coins,
@@ -41,8 +46,15 @@ function getEnemies() {
 }
 
 
-function getEndBoss(){
+function getEndBoss() {
     endBoss.push(new EndBoss());
+}
+
+
+function getBossLife() {
+    for (let i = 1; i < hitsBoss + 1; i++) {
+        bossTotalLife.push(new BossLife(i));
+    }
 }
 
 

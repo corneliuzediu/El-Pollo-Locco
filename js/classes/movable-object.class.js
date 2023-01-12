@@ -42,6 +42,21 @@ class MovableObject extends DrawableObject {
     }
 
 
+    isCollidingCharacterEnemyFromBottom(obj) {
+        let character_left = (this.x);
+        let character_right = (this.x + this.width);
+        let character_top = (this.y + 70);
+        let character_bottom = (this.y + (this.height - 30));
+        let enemy_left = (obj.x + 20);
+        let enemy_right = (obj.x + (obj.width - 10));
+        let enemy_top = (obj.y + 20);
+        let enemy_bottom = (obj.y + (obj.height - 20));
+        return this.getContactsCollisionFromBottom(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom);
+    }
+
+
+
+
     isCollidingCharacterResources(obj) {
         let character_left = (this.x + 20);
         let character_right = (this.x + (this.width - 20));
@@ -66,10 +81,10 @@ class MovableObject extends DrawableObject {
 
 
     hit() {
-        this.energy -= this.world.level.energyRate;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
+            this.energy -= this.world.level.energyRate;
             this.lastHit = new Date().getTime();
         }
     }
@@ -78,7 +93,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed /= 1000;
-        return timePassed < 1;
+        return timePassed < 3;
     }
 
 
@@ -171,9 +186,16 @@ class MovableObject extends DrawableObject {
             contact_right && contact_top ||                         // Contact on right top
             contact_left && contact_bottom ||                       // Contact on left top 
             contact_left && contact_top ||                          // Contact on left 
-            contact_bottom && contact_horizontal ||                 // Contact low
+            // contact_bottom && contact_horizontal ||                 // Contact low
             contact_top && contact_horizontal ||                    // Contact top
             contact_right && contact_vertical ||                    // Contact right
             contact_left && contact_vertical                        // Contact left
+    }
+
+    getContactsCollisionFromBottom(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
+        let contact_bottom = character_bottom + 1 <= enemy_bottom && character_bottom >= enemy_top;
+        let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
+        return contact_bottom && contact_horizontal                 // Contact low
+
     }
 }
