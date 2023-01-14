@@ -11,6 +11,8 @@ class World {
     bottleBar = new BottleBar();
     throwableObject = [];
     previousThrow = 0;
+    outro = new Outro();
+    reload = new Reload();
 
 
 
@@ -23,6 +25,15 @@ class World {
         this.draw();
         this.setWorld();
         this.runCollisions();
+        this.checkReload();
+    }
+
+    checkReload() {
+        setInterval(() => {
+            if (this.keyboard.RELOAD == true) {
+                window.location.reload();
+            }
+        }, 100)
     }
 
     setWorld() {
@@ -37,9 +48,10 @@ class World {
 
     runCollisions() {
         setInterval(() => {
-            this.checkCollisions();
-            this.checkThrow();
-
+            if (this.keyboard.RELOAD != true) {
+                this.checkCollisions();
+                this.checkThrow();
+            }
         }, 20)
     }
 
@@ -51,6 +63,8 @@ class World {
         this.checkCollisionsBottlesEndBoss();
         this.checkCollisionsBottlesFloor();
         this.checkPositionOnMap();
+        this.checkPositionClick();
+        this.checkWinOrLost();
     }
 
 
@@ -84,38 +98,55 @@ class World {
 
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        if (this.keyboard.RELOAD != true || this.keyboard.CLICK != true) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-        this.ctx.translate(this.camera_x, 0);
+            this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectToMap(this.level.backgroundObjects);
-        this.addToMap(this.character);
+            this.addObjectToMap(this.level.backgroundObjects);
 
-        this.ctx.translate(-this.camera_x, 0);
-        this.addObjectToMap(this.level.ground);
-        this.ctx.translate(this.camera_x, 0);
+            this.addObjectToMap(this.level.clouds);
+            this.addObjectToMap(this.level.enemies);
+            this.addObjectToMap(this.level.endBoss);
+            this.addObjectToMap(this.level.bossTotalLife);
+            this.addObjectToMap(this.level.coins);
+            this.addObjectToMap(this.level.bottles);
+            this.addObjectToMap(this.throwableObject);
 
-        this.addObjectToMap(this.level.clouds);
-        this.addObjectToMap(this.level.enemies);
-        this.addObjectToMap(this.level.endBoss);
-        this.addObjectToMap(this.level.bossTotalLife);
-        this.addObjectToMap(this.level.coins);
-        this.addObjectToMap(this.level.bottles);
-        this.addObjectToMap(this.throwableObject);
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.healthBar);
+            this.addToMap(this.coinBar);
+            this.addToMap(this.bottleBar);
+            this.ctx.translate(this.camera_x, 0);
 
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.healthBar);
-        this.addToMap(this.coinBar);
-        this.addToMap(this.bottleBar);
-        this.ctx.translate(this.camera_x, 0);
+            this.addToMap(this.character);
 
-        this.ctx.translate(-this.camera_x, 0);
+            this.ctx.translate(-this.camera_x, 0);
+            this.addObjectToMap(this.level.ground);
+            this.ctx.translate(this.camera_x, 0);
 
-        //draw() wird immer wieder angerufen
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
+
+
+            this.ctx.translate(-this.camera_x, 0);
+
+            //draw() wird immer wieder angerufen
+            let self = this;
+            if (!this.character.isDead()) {
+                requestAnimationFrame(function () {
+                    self.draw();
+                });
+            } else {
+                setTimeout(() => {
+                    this.addToMap(this.outro);
+                    this.reload.isVisible = true;
+                    setInterval(() => {
+                        this.addToMap(this.reload);
+                    })
+                }, 100)
+            }
+        } else {
+            console.log("sometzhing")
+        }
     }
 
 
@@ -135,7 +166,6 @@ class World {
             mo.removeFlipImg(this.ctx)
         }
         mo.drawFrame(this.ctx);
-
     }
 
 
@@ -160,22 +190,7 @@ class World {
         bottle.acceleration = 0;
         bottle.speedX = 0;
         bottle.speedY = 0;
-        // setTimeout(() => {
-        //     bottle.y = -500;
-        // }, 1)
     }
-
-    // stopMovementBoss(bottle, floor) {
-    //     bottle.y = floor.y + bottle.height / 2;
-    //     bottle.collision = true;
-    //     bottle.inAir = false;
-    //     bottle.acceleration = 0;
-    //     bottle.speedX = 0;
-    //     bottle.speedY = 0;
-    //     // setTimeout(() => {
-    //     //     bottle.y = -500;
-    //     // }, 1)
-    // }
 
 
     checkCollisionsEnemies() {
@@ -184,7 +199,7 @@ class World {
                 enemy.crashed = false;
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
-            } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy)) {
+            } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy) && this.character.isCollidingCharacterEnemyFromHorizontal(enemy)) {
                 enemy.crashed = true;
             }
         })
@@ -216,12 +231,8 @@ class World {
     checkCollisionsBottlesEnemies() {
         this.throwableObject.forEach((bottle) => {
             this.level.enemies.forEach((enemy) => {
-                // console.log('Enemy:', enemy.x, enemy.y)
-                // console.log('Bottle:', bottle.x, bottle.y)
                 if (enemy.isCollidingCharacterEnemy(bottle)) {
                     this.stopMovement(bottle, enemy, 1);
-                    // console.log('Enemy:', enemy.x, enemy.y)
-                    // console.log('Bottle:', bottle.x, bottle.y)
                     if (enemy.constructor.name == "EndBoss") {
                         bottle.x = enemy.center_x;
                         bottle.y = enemy.center_y;
@@ -234,10 +245,8 @@ class World {
     checkCollisionsBottlesFloor() {
         this.throwableObject.forEach((bottle) => {
             this.level.ground.forEach((floor) => {
-                // console.log('Enemy:', floor.x, floor.y)
-                // console.log('Bottle:', bottle.x, bottle.y)
                 if (floor.isCollidingGround(bottle)) {
-                    this.stopMovement(bottle, floor, 1); a
+                    this.stopMovement(bottle, floor, 1);
                 }
             });
         });
@@ -249,9 +258,7 @@ class World {
                 if (boss.isCollidingCharacterEnemy(bottle)) {
                     this.stopMovement(bottle, boss, 1.5);
                     this.hitBoss++
-                    boss.hitBoss(this.hitBoss);
-                    console.log(this.hitBoss);
-                    return;
+                    boss.hitBoss();
                 };
             });
         });
@@ -275,5 +282,32 @@ class World {
         }
     }
 
+
+    checkPositionClick() {
+        if (this.keyboard.CLICK == true && this.reload.isVisible == true) {
+            if (this.keyboard.CLICK_X >= this.reload.x && this.keyboard.CLICK_X <= this.reload.x + this.reload.width &&
+                this.keyboard.CLICK_Y >= this.reload.y && this.keyboard.CLICK_Y <= this.reload.y + this.reload.height) {
+                this.reload.feedbackClick();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 400)
+
+
+            }
+        }
+        // If position click is in 'Colision' with reload image
+        // reload
+    }
+
+
+    checkWinOrLost() {
+        if (this.character.isDead()) {
+            console.log("You Lost")
+            // this.drawEnd();
+        } else if (this.character.energy > 0 && endBoss[0].energy <= 0) {
+            console.log("You won")
+        }
+    }
+    
 
 }

@@ -24,6 +24,8 @@
     <script src="./js/classes/level.class.js"></script>
     <script src="./js/classes/throwable-object.class.js"></script>
     <script src="./js/classes/endBoss.class.js"></script>
+    <script src ="./js/classes/reload_button.class.js"></script>
+    <script src ="./js/classes/outro.class.js"></script>
     <script src="./js/levels/level1.js"></script>
     <script src="./js/levels/level2.js"></script>
     <script src="./js/levels/level3.js"></script>
@@ -45,15 +47,19 @@
     </div>
     <!-- Select Options DIV -->
     <nav class="options__wrapper">
-        <button id="music-btn1" class="d-none" onclick="changeImgMusic()"><img id="music-img" src="./img/start/guitar.ico"></button>
-        <button id="music-btn2" class=""onclick="changeImgMusic()"><img id="music-img" src="./img/start/no-guitar.ico"></button>
-        <button id="fullscreen-btn1" class="" onclick="enterFullscreen()"><img id="fullScreen-btn" src="./img/start/fullscreen.ico"></button>
-        <button id="fullscreen-btn2" class="d-none" onclick="enterFullscreen()"><img id="fullScreen-btn" src="./img/start/minimize.ico"></button>
+        <button id="music-btn1" class="d-none" onclick="changeImgMusic()"><img id="music-img"
+                src="./img/start/guitar.ico"></button>
+        <button id="music-btn2" class="" onclick="changeImgMusic()"><img id="music-img"
+                src="./img/start/no-guitar.ico"></button>
+        <button id="fullscreen-btn1" class="" onclick="enterFullscreen()"><img id="fullScreen-btn"
+                src="./img/start/fullscreen.ico"></button>
+        <button id="fullscreen-btn2" class="d-none" onclick="enterFullscreen()"><img id="fullScreen-btn"
+                src="./img/start/minimize.ico"></button>
     </nav>
 
-    <h1> El pollo locco</h1>
 
     <div id="preStart__buttons" class="preStart__buttons d-none">
+        <h1> El pollo locco</h1>
         <!-- Start button -->
         <button id="start-btn" class="start-btn" onclick="showcanvas();">
             <p>Bottle up</p>
@@ -77,7 +83,7 @@
     </div>
 
     <div id="preStart__canvas" class="preStart__canvas">
-        <button class="restart-btn" onclick="window.location.reload()">restart</button>
+        <!-- <button class="restart-btn" onclick="window.location.reload()">restart</button> -->
         <canvas id="canvas" class="canvas" width="720" height="480">
         </canvas>
     </div>
@@ -135,6 +141,10 @@
             </li>
         </ul>
     </div>
+
+
+    <!-- "You win" or "You Lost"  -->
+
 
 </body>
 

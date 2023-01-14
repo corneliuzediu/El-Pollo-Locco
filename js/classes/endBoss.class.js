@@ -5,6 +5,7 @@ class EndBoss extends MovableObject {
     y = 120;
     alert = false;
     toTheLeft = false;
+    bossUnderAtack = false;
 
     IMAGES_WALKING = [
         './img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -99,12 +100,25 @@ class EndBoss extends MovableObject {
     }
 
     hitBoss() {
-        this.energy -= energyRate * 4;
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
+        if(!this.bossUnderAtack){
+            this.bossUnderAtack = true;
+            // console.log("Boss Not Under Attack",this.energy)
+            if(this.bossUnderAtack){
+                this.energy -= 35;
+                // console.log("Boss Under Attack",this.energy)
+                if (this.energy < 0) {
+                    this.energy = 0;
+                    // console.log("Boss Under Attack if less",this.energy)
+                } else {
+                    this.lastHit = new Date().getTime();
+                }
+            }
         }
+        console.log("Before reset",this.energy)
+        setTimeout(() => {
+            this.bossUnderAtack = false;
+            console.log("After reset",this.energy)
+        }, 380)
     }
 
 

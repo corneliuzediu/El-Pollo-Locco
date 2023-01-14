@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let currentLevel = 'level1';
+let newLevel = false;
 let gameSwitch = false;
 let musicSwitch = false;
 let canvasFullscreen = false;
@@ -10,16 +11,29 @@ let gameFullscreen = false;
 
 
 function init() {
+    setInterval(()=>{
+        checkForNextLevel();
+    })
     if (canvasFullscreen) {
         gameSwitch = true;
         stopPreStartSound();
         window.canvas.requestFullscreen();
         canvas = document.getElementById('canvas');
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
         initlevel();
     } else {
         gameSwitch = true;
         stopPreStartSound()
         canvas = document.getElementById('canvas');
+        initlevel();
+    }
+}
+
+
+function checkForNextLevel(){
+    if(keyboard.NEW_LEVEL == true){
+        currentLevel = 'level2';
         initlevel();
     }
 }
@@ -44,6 +58,12 @@ document.addEventListener('keydown', (e) => {
     if (e.keyCode == 27) {
         keyboard.EXIT = true;
     }
+    if (e.keyCode == 82) {
+        keyboard.RELOAD = true;
+    }
+    if (e.keyCode == 72) {
+        keyboard.NEW_LEVEL = true;
+    }
 });
 
 
@@ -66,7 +86,28 @@ document.addEventListener('keyup', (e) => {
     if (e.keyCode == 27) {
         keyboard.EXIT = false;
     }
+    if (e.keyCode == 82) {
+        keyboard.RELOAD = false;
+    }
+    if (e.keyCode == 72) {
+        keyboard.NEW_LEVEL = false;
+    }
 });
+
+
+document.addEventListener('mousedown', (e) => {
+    canvas = document.getElementById('canvas')
+    keyboard.CLICK = true;
+    keyboard.CLICK_X = e.clientX - canvas.offsetLeft;
+    keyboard.CLICK_Y = e.clientY - canvas.offsetTop;
+    ;
+})
+
+
+document.addEventListener('mouseup', (e) => {
+    keyboard.CLICK = false;
+})
+
 
 let preStartSound = new Audio('audio/pre_start.mp3')
 
@@ -135,23 +176,29 @@ function selectLevel(i) {
 }
 
 
-function initlevel() {
+async function initlevel() {
     if (currentLevel === level1) {
-        currentLevel = initlevel1();
+        currentLevel = await initlevel1();
         world = new World(canvas, keyboard, currentLevel);
+        console.log(world)
     } else if (currentLevel === level2) {
-        currentLevel = initlevel2();
+        console.log("B r:", world)
+        world = 0;
+        console.log("A r:", world)
+        currentLevel = await initlevel2();
         world = new World(canvas, keyboard, currentLevel);
-    } else if (currentLevel === level3) {
-        currentLevel = initlevel3();
-        world = new World(canvas, keyboard, currentLevel);
-    } else if (currentLevel === level4) {
-        currentLevel = initlevel4();
-        world = new World(canvas, keyboard, currentLevel);
-    } else if (currentLevel === level5) {
-        currentLevel = initlevel5();
-        world = new World(canvas, keyboard, currentLevel);
+        console.log("N s:", world)
     }
+    //  else if (currentLevel === level3) {
+    //     currentLevel = initlevel3();
+    //     world = new World(canvas, keyboard, currentLevel);
+    // } else if (currentLevel === level4) {
+    //     currentLevel = initlevel4();
+    //     world = new World(canvas, keyboard, currentLevel);
+    // } else if (currentLevel === level5) {
+    //     currentLevel = initlevel5();
+    //     world = new World(canvas, keyboard, currentLevel);
+    // }
 }
 
 

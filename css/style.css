@@ -64,17 +64,17 @@ body {
     filter: sepia(0.6);
 }
 
-.popup h3{
+.popup h3 {
     text-align: center;
     font-size: 3rem;
     letter-spacing: 5px;
     margin: auto;
 }
+
 .popup img {
     width: 200px;
     margin: auto;
 }
-
 
 
 h1 {
@@ -198,7 +198,6 @@ h1 {
 
 .backToMenu img:hover {
     transform: scale(1.2);
-
 }
 
 .options__wrapper {
@@ -207,7 +206,7 @@ h1 {
     right: 5rem;
 }
 
-.options__wrapper button{
+.options__wrapper button {
     background-color: unset;
     border: unset;
     width: 100px;
@@ -216,12 +215,12 @@ h1 {
     cursor: pointer;
 }
 
-.options__wrapper img{
+.options__wrapper img {
     height: 100%;
     object-fit: contain;
 }
 
-.guideKey{
+.guideKey {
     display: flex;
     align-items: center;
     gap: 3rem;
@@ -229,4 +228,3 @@ h1 {
     margin-block: 1rem;
     -webkit-filter: invert(100%);
 }
-

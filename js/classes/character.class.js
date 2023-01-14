@@ -74,7 +74,8 @@ class Character extends MovableObject {
     idle_time = 200;
     sleeping_time = 6000;
     initialTime = 0;
-    timePassed;
+    timePaworssed;
+    
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png')
@@ -138,9 +139,8 @@ class Character extends MovableObject {
         let hirtAnimation = setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-
             }
-        }, 80)
+        }, 100)
 
        let deadAnimation =  setInterval(() => {
             if (this.isDead()) {
@@ -158,12 +158,6 @@ class Character extends MovableObject {
         let actualTime = new Date().getTime();
         let timePassed = actualTime - this.initialTime;
         return this.timePassed = timePassed;
-    }
-
-    bringBossCloser() {
-        if (this.x > level_end_x * 0.9) {
-
-        }
     }
 }
 

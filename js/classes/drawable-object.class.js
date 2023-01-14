@@ -28,14 +28,16 @@ class DrawableObject {
 
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
 
+    addElement(ctx){
+        ctx.drawFrame(this.x, this.y, this.width, this.height)
     }
 
     drawFrame(ctx) {
         if (this instanceof Character) {
             this.hitboxCharacter(ctx);
         }
-
 
         if (this instanceof Chicken) {
             this.hitboxChicken(ctx)
@@ -115,5 +117,7 @@ class DrawableObject {
         // ctx.rect(this.x + 700, this.y,  this.width - 1000, this.height);
         ctx.stroke();
     }
+
+   
 
 }

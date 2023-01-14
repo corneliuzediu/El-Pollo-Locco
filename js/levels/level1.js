@@ -1,8 +1,8 @@
 let level1 = 'level1';
-let multiplier = -1;
-let energyRate = 1;
+let multiplier = 6;
+let energyRate = 2;
 let hitsBoss = 3
-let level_end_x = 500;
+let level_end_x = 1000;
 let ground = [];
 let enemies = [];
 let endBoss = [];
@@ -11,15 +11,15 @@ let coins = [];
 let bottles = [];
 let clouds = [];
 let background = [];
-function initlevel1() {
-    getGround();
-    getEnemies();
-    getEndBoss();
-    getBossLife();
-    getCoins();
-    getBottles();
-    getClouds();
-    getBackground();
+async function initlevel1() {
+    await getGround();
+    await getEnemies();
+    await getEndBoss();
+    await getBossLife();
+    await getCoins();
+    await getBottles();
+    await getClouds();
+    await getBackground();
     return level1 = new Level(
         ground,
         enemies,

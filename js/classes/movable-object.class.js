@@ -8,6 +8,7 @@ class MovableObject extends DrawableObject {
     bottleFuel = 0;
     lastHit = 0;
     world;
+    underAtack = false;
 
 
     applyGravity() {
@@ -54,6 +55,18 @@ class MovableObject extends DrawableObject {
         return this.getContactsCollisionFromBottom(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom);
     }
 
+    isCollidingCharacterEnemyFromHorizontal(obj) {
+        let character_left = (this.x);
+        let character_right = (this.x + this.width);
+        let character_top = (this.y + 70);
+        let character_bottom = (this.y + (this.height - 30));
+        let enemy_left = (obj.x + 20);
+        let enemy_right = (obj.x + (obj.width - 10));
+        let enemy_top = (obj.y + 20);
+        let enemy_bottom = (obj.y + (obj.height - 20));
+        return this.getContactsCollisionFromHorizontal(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom);
+    }
+
 
 
 
@@ -81,19 +94,27 @@ class MovableObject extends DrawableObject {
 
 
     hit() {
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else {
-            this.energy -= this.world.level.energyRate;
-            this.lastHit = new Date().getTime();
+        if (!this.underAtack) {
+            this.underAtack = true;
+            if (this.underAtack) {
+                this.energy -= this.world.level.energyRate;
+                if (this.energy < 0) {
+                    this.energy = 0;
+                } else {
+                    this.lastHit = new Date().getTime();
+                }
+            }
         }
+        setTimeout(() => {
+            this.underAtack = false;
+        }, 200)
     }
-
 
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed /= 1000;
-        return timePassed < 3;
+        // console.log("Hit Time", this.timePassed)
+        return timePassed < 1;
     }
 
 
@@ -194,8 +215,13 @@ class MovableObject extends DrawableObject {
 
     getContactsCollisionFromBottom(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
         let contact_bottom = character_bottom + 1 <= enemy_bottom && character_bottom >= enemy_top;
-        let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
-        return contact_bottom && contact_horizontal                 // Contact low
+        // let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
+        return contact_bottom                  // Contact low
+    }
 
+    getContactsCollisionFromHorizontal(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
+        // let contact_bottom = character_bottom + 1 <= enemy_bottom && character_bottom >= enemy_top;
+        let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
+        return contact_horizontal                 // Contact low
     }
 }
