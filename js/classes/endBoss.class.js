@@ -6,6 +6,9 @@ class EndBoss extends MovableObject {
     alert = false;
     toTheLeft = false;
     bossUnderAtack = false;
+    walkingInterval;
+    bossHurtOrDeadInterval;
+    speedInterval = 100;
 
     IMAGES_WALKING = [
         './img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -41,12 +44,12 @@ class EndBoss extends MovableObject {
         './img/4_enemie_boss_chicken/3_attack/G20.png',
     ];
 
-    IMAGES_HURT =[
+    IMAGES_HURT = [
         './img/4_enemie_boss_chicken/4_hurt/G21.png',
         './img/4_enemie_boss_chicken/4_hurt/G22.png',
         './img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
-    
+
     IMAGES_DEAD = [
         './img/4_enemie_boss_chicken/5_dead/G24.png',
         './img/4_enemie_boss_chicken/5_dead/G25.png',
@@ -70,7 +73,7 @@ class EndBoss extends MovableObject {
 
 
     animate() {
-        let walking = setInterval(() => {
+        this.walkingInterval = setInterval(() => {
             if (this.toTheLeft && this.x > level_end_x + 200) {
                 this.moveLeft();
                 this.playAnimation(this.IMAGES_WALKING);
@@ -79,18 +82,23 @@ class EndBoss extends MovableObject {
                 this.playAnimation(this.IMAGES_ALERT);
                 this.playAnimation(this.IMAGES_ATTACK);
             }
-        }, 1000 / 10);
+        }, this.speedInterval);
 
-        setInterval(() => {
-            if (this.isHurt() ) {
+        this.bossHurtOrDeadInterval = setInterval(() => {
+            if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             }
             // this.playAnimation(this.IMAGES_ATTACK);
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
-                clearInterval(walking);
+                clearInterval(this.walkingInterval);
+                setTimeout(() => {
+                    clearInterval(this.bossHurtOrDeadInterval)
+                }, this.setTimeInterval * 5);
             }
-        }, 150);
+        }, this.speedInterval * 1.5);
+
+
 
 
     }
@@ -100,24 +108,19 @@ class EndBoss extends MovableObject {
     }
 
     hitBoss() {
-        if(!this.bossUnderAtack){
+        if (!this.bossUnderAtack) {
             this.bossUnderAtack = true;
-            // console.log("Boss Not Under Attack",this.energy)
-            if(this.bossUnderAtack){
+            if (this.bossUnderAtack) {
                 this.energy -= 35;
-                // console.log("Boss Under Attack",this.energy)
                 if (this.energy < 0) {
                     this.energy = 0;
-                    // console.log("Boss Under Attack if less",this.energy)
                 } else {
                     this.lastHit = new Date().getTime();
                 }
             }
         }
-        console.log("Before reset",this.energy)
         setTimeout(() => {
             this.bossUnderAtack = false;
-            console.log("After reset",this.energy)
         }, 380)
     }
 
@@ -131,6 +134,18 @@ class EndBoss extends MovableObject {
 
     isBossDead() {
         return this.energy == 0;
+    }
+
+
+    resetBoss() {
+        this.currentImage = 0;
+        this.bossUnderAtack = false;
+        this.toTheLeft = false;
+        this.x = level_end_x + 300;
+        this.walkingInterval = 0;
+        this.bossHurtOrDeadInterval = 0
+        this.speedInterval *= 0.5;
+        this.animate();
     }
 
 

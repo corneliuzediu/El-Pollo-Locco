@@ -24,4 +24,8 @@ class Level {
         this.energyRate = energyRate;
         this.level_end_x = level_end_x;
     }
+
+    getBossLifeBack(){
+        this.bossTotalLife = getBossLife();
+    }
 }

@@ -74,8 +74,11 @@ class Character extends MovableObject {
     idle_time = 200;
     sleeping_time = 6000;
     initialTime = 0;
-    timePaworssed;
-    
+    movementAnimation;
+    stateAnimation;
+    hirtAnimation;
+    deadAnimation;
+
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png')
@@ -92,7 +95,7 @@ class Character extends MovableObject {
     }
 
     animate() {
-        let stateAnimation = setInterval(() => {
+        this.stateAnimation = setInterval(() => {
             this.getTimePassed();
             if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
@@ -106,15 +109,15 @@ class Character extends MovableObject {
                 // Walk Animation
                 this.playAnimation(this.IMAGES_WALKING);
             }
-        }, 1000 / 12);
+        }, this.setTimeInterval);
 
-        let movementAnimation = setInterval(() => {
+        this.movementAnimation = setInterval(() => {
             this.getTimePassed();
             this.walking_sound.pause();
             if (this.world.keyboard.SPACE) {
                 this.initialTime = new Date().getTime();
             }
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x +500) {
                 this.initialTime = new Date().getTime();
                 this.otherDirection = false;
                 this.moveRight();
@@ -134,23 +137,23 @@ class Character extends MovableObject {
                 this.jumping_sound.play();
             }
             this.world.camera_x = -this.x + 100;
-        }, 1000 / 10);
+        }, this.setTimeInterval);
 
-        let hirtAnimation = setInterval(() => {
+        this.hirtAnimation = setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             }
-        }, 100)
+        }, this.setTimeInterval)
 
-       let deadAnimation =  setInterval(() => {
+        this.deadAnimation = setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
-                clearInterval(movementAnimation);
-                clearInterval(stateAnimation);
-                clearInterval(hirtAnimation);
+                clearInterval(this.movementAnimation);
+                clearInterval(this.stateAnimation);
+                clearInterval(this.hirtAnimation);
                 // clearInterval(deadAnimation);
             }
-        }, 200)
+        }, this.idle_timer)
 
     };
 
@@ -158,6 +161,16 @@ class Character extends MovableObject {
         let actualTime = new Date().getTime();
         let timePassed = actualTime - this.initialTime;
         return this.timePassed = timePassed;
+    }
+
+    characterReset() {
+        clearInterval(this.deadAnimation);
+        this.currentImage = 0;
+        // this.energy = 100;
+        this.x = 150;
+        this.stateAnimation;
+        this.movementAnimation;
+        this.animate();
     }
 }
 

@@ -9,6 +9,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     world;
     underAtack = false;
+    setTimeInterval = 100;
 
 
     applyGravity() {
@@ -223,5 +224,17 @@ class MovableObject extends DrawableObject {
         // let contact_bottom = character_bottom + 1 <= enemy_bottom && character_bottom >= enemy_top;
         let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
         return contact_horizontal                 // Contact low
+    }
+
+    resetMovableObj() {
+        this.speed = 1;
+        this.otherDirection = false;
+        this.speedY = 0;
+        this.acceleration = 4;
+        this.energy = 100;
+        this.coinsBag = 0;
+        this.bottleFuel = 0;
+        this.lastHit = 0;
+        this.underAtack = false;
     }
 }

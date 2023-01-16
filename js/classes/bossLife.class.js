@@ -33,4 +33,8 @@ class BossLife extends MovableObject {
             this.goToLeft = false;
         }
     }
+
+    resetBossLifePosition(){
+        this.y += 500;
+    }
 }

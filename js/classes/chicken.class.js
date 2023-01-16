@@ -4,6 +4,7 @@ class Chicken extends MovableObject {
     width = 60;
     speed = 0.1;
     crashed = false;
+    walkingInterval;
     IMAGES_WALKING = [
         './img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         './img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -27,7 +28,7 @@ class Chicken extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+       this.walkingInterval = setInterval(() => {
             if (!this.crashed) {
                 this.playAnimation(this.IMAGES_WALKING);
                 this.moveLeft();
@@ -38,6 +39,14 @@ class Chicken extends MovableObject {
                 }, 100)
             }
         }, 100)
+    }
+
+    resetChicken() {
+        // clearInterval(this.walkingInterval);
+        this.crashed = false;
+        this.y = 370;
+        this.x = 300 + Math.random() * level_end_x; // zahl zwichen 200 und 700
+        this.speed = 0.1 + Math.random() * 0.3;
     }
 
 }

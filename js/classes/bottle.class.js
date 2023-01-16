@@ -21,7 +21,7 @@ class Bottle extends MovableObject {
     constructor() {
         super();
         this.x = 300 + Math.random() * (level_end_x - 300); // zahl zwichen 200 und 700
-        this.y = 200 + Math.random() * 200; 
+        this.y = 200 + Math.random() * 200;
         this.speed = 500 + Math.random() * 200;
         this.loadImages(this.IMAGES_ROTATION);
         this.loadImages(this.IMAGES_TOOGLE);
@@ -30,19 +30,25 @@ class Bottle extends MovableObject {
         // this.animate();
     }
 
-    animate(){
-        if(this.y < 340){
-            this.loadImage('./img/6_salsa_bottle/salsa_bottle.png'); 
-            setInterval(() =>{
+    animate() {
+        if (this.y < 340) {
+            this.loadImage('./img/6_salsa_bottle/salsa_bottle.png');
+            setInterval(() => {
                 this.playAnimation(this.IMAGES_ROTATION);
             }, this.speed)
-        } else if ( this.y > 100){
-            this.loadImage('./img/6_salsa_bottle/2_salsa_bottle_on_ground.png'); 
-            setInterval(() =>{
+        } else if (this.y > 100) {
+            this.loadImage('./img/6_salsa_bottle/2_salsa_bottle_on_ground.png');
+            setInterval(() => {
                 this.playAnimation(this.IMAGES_TOOGLE);
             }, this.speed)
         }
     }
 
-    
+    resetBottle() {
+        this.x = 300 + Math.random() * (level_end_x - 300); // zahl zwichen 200 und 700
+        this.y = 200 + Math.random() * 200;
+        this.speed = 500 + Math.random() * 200;
+    }
+
+
 }

@@ -1,7 +1,8 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let currentLevel = 'level1';
+let runningLevel = level1
+let currentLevel;
 let newLevel = false;
 let gameSwitch = false;
 let musicSwitch = false;
@@ -11,9 +12,9 @@ let gameFullscreen = false;
 
 
 function init() {
-    setInterval(()=>{
-        checkForNextLevel();
-    })
+    // setInterval(() => {
+    //     checkForNextLevel();
+    // })
     if (canvasFullscreen) {
         gameSwitch = true;
         stopPreStartSound();
@@ -31,11 +32,11 @@ function init() {
 }
 
 
-function checkForNextLevel(){
-    if(keyboard.NEW_LEVEL == true){
-        currentLevel = 'level2';
-        initlevel();
-    }
+function checkForNextLevel() {
+    // if(keyboard.NEW_LEVEL == true){
+    runningLevel = level2;
+    initlevel();
+    // }
 }
 
 
@@ -161,33 +162,43 @@ function backToMenu() {
 
 
 function selectLevel(i) {
-    currentLevel = level1;
+    runningLevel = level1;
     if (i == 2) {
-        currentLevel = level2;
+        runningLevel = level2;
     } else if (i == 3) {
-        currentLevel = level3;
+        runningLevel = level3;
     } else if (i == 4) {
-        currentLevel = level4;
+        runningLevel = level4;
     } else if (i == 5) {
-        currentLevel = level5;
+        runningLevel = level5;
     } else {
-        currentLevel = level1
+        runningLevel = level1
     }
 }
 
 
 async function initlevel() {
-    if (currentLevel === level1) {
+    if (runningLevel === level1) {
         currentLevel = await initlevel1();
         world = new World(canvas, keyboard, currentLevel);
-        console.log(world)
-    } else if (currentLevel === level2) {
-        console.log("B r:", world)
+        console.log("l1w:", world)
+        console.log("l1lvl:", currentLevel)
+    } else if (runningLevel === level2) {
+        console.log("B R:", world)
+        console.log("B R:", currentLevel)
+        currentLevel = 0;
         world = 0;
+        // setTimeout(()=>{
+            currentLevel = await initlevel2();
+            world = new World(canvas, keyboard, currentLevel);
+            console.log("A R:", world)
+            console.log("A R:", currentLevel)
+        // }, 3000)
+        // world.character.x = 0;
+        // world.level.enemies = 0;
+        // world.level.enemies = ;
         console.log("A r:", world)
-        currentLevel = await initlevel2();
-        world = new World(canvas, keyboard, currentLevel);
-        console.log("N s:", world)
+        // currentLevel = await initlevel2();
     }
     //  else if (currentLevel === level3) {
     //     currentLevel = initlevel3();

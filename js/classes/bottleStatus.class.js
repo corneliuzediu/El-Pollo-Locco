@@ -8,7 +8,7 @@ class BottleBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png',
     ];
 
-    amount = 100;
+    // amount = 100;
 
     constructor() {
         super();

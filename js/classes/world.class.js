@@ -13,6 +13,7 @@ class World {
     previousThrow = 0;
     outro = new Outro();
     reload = new Reload();
+    a = 0;
 
 
 
@@ -31,9 +32,40 @@ class World {
     checkReload() {
         setInterval(() => {
             if (this.keyboard.RELOAD == true) {
-                window.location.reload();
+                this.a++;
+                if (this.a == 1) {
+                    this.restartWorld();
+                }
+                setTimeout(() => {
+                    this.a = 0
+                }, 2000)
             }
         }, 100)
+    }
+
+
+    restartWorld() {
+        this.camera_x = -100;
+        this.character.resetMovableObj();
+        this.character.characterReset();
+        this.level.endBoss[0].resetBoss();
+        this.healthBar.setPercentage(100);
+        this.coinBar.setAmount(0);
+        this.bottleBar.setAmount(0);
+        this.hits = 0;
+        this.level.bossTotalLife.forEach((life) => {
+            life.resetBossLifePosition();
+        });
+        this.level.enemies.forEach((enemy) => {
+            enemy.resetChicken();
+        });
+        this.level.coins.forEach((coin) => {
+            coin.resetCoin();
+        });
+        this.level.bottles.forEach((bottle) => {
+            bottle.resetBottle();
+        });
+        this.draw();
     }
 
     setWorld() {
@@ -57,6 +89,7 @@ class World {
 
     checkCollisions() {
         this.checkCollisionsEnemies();
+        this.checkCollisionsEndBoss();
         this.checkCollisionsCoins();
         this.checkCollisionsBottles();
         this.checkCollisionsBottlesEnemies();
@@ -131,21 +164,19 @@ class World {
 
             //draw() wird immer wieder angerufen
             let self = this;
-            if (!this.character.isDead()) {
+            if (this.character.isDead() && this.keyboard.RELOAD == false) {
+                // setTimeout(() => {
+                this.addToMap(this.outro);
+                this.reload.isVisible = true;
+                setInterval(() => {
+                    this.addToMap(this.reload);
+                })
+                // }, 100)}
+            } else {
                 requestAnimationFrame(function () {
                     self.draw();
                 });
-            } else {
-                setTimeout(() => {
-                    this.addToMap(this.outro);
-                    this.reload.isVisible = true;
-                    setInterval(() => {
-                        this.addToMap(this.reload);
-                    })
-                }, 100)
             }
-        } else {
-            console.log("sometzhing")
         }
     }
 
@@ -201,6 +232,16 @@ class World {
                 this.healthBar.setPercentage(this.character.energy);
             } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy) && this.character.isCollidingCharacterEnemyFromHorizontal(enemy)) {
                 enemy.crashed = true;
+            }
+        })
+    }
+
+
+    checkCollisionsEndBoss() {
+        this.level.endBoss.forEach((boss) => {
+            if (this.character.isCollidingCharacterEnemy(boss)) {
+                this.character.hit();
+                this.healthBar.setPercentage(this.character.energy);
             }
         })
     }
@@ -271,14 +312,18 @@ class World {
                 life.getPosition(this.character.x)
             })
         }
+        let maxLifes = this.level.bossTotalLife.length;
+        let life = this.level.bossTotalLife;
         if (this.level.endBoss[0].energy <= 75 && this.hits == 0) {
             this.hits++;
-            this.level.bossTotalLife.pop();
+            life[maxLifes - this.hits].y -= 500;
         } else if (this.level.endBoss[0].energy < 40 && this.hits == 1) {
             this.hits++
-            this.level.bossTotalLife.pop();
+            life[maxLifes - this.hits].y -= 500;
         } else if (this.level.endBoss[0].energy < 1 && this.hits == 2) {
-            this.level.bossTotalLife.pop();
+            this.hits++;
+            life[maxLifes - this.hits].y -= 500;
+
         }
     }
 
@@ -288,8 +333,16 @@ class World {
             if (this.keyboard.CLICK_X >= this.reload.x && this.keyboard.CLICK_X <= this.reload.x + this.reload.width &&
                 this.keyboard.CLICK_Y >= this.reload.y && this.keyboard.CLICK_Y <= this.reload.y + this.reload.height) {
                 this.reload.feedbackClick();
+                console.log("br:", world)
                 setTimeout(() => {
-                    window.location.reload();
+                    this.a++;
+                    if (this.a == 1) {
+                        this.restartWorld();
+                        console.log("ar:", world)
+                    }
+                    setTimeout(() => {
+                        this.a = 0
+                    }, 2000);
                 }, 400)
 
 
@@ -308,6 +361,6 @@ class World {
             console.log("You won")
         }
     }
-    
+
 
 }
