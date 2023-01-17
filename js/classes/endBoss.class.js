@@ -6,8 +6,10 @@ class EndBoss extends MovableObject {
     alert = false;
     toTheLeft = false;
     bossUnderAtack = false;
+    bossAlive = true;
     walkingInterval;
-    bossHurtOrDeadInterval;
+    bossHurtInterval;
+    bossDeadInterval;
     speedInterval = 100;
 
     IMAGES_WALKING = [
@@ -68,39 +70,44 @@ class EndBoss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_LIFE)
-        this.animate();
+        this.animate()
     }
 
 
     animate() {
-        this.walkingInterval = setInterval(() => {
-            if (this.toTheLeft && this.x > level_end_x + 200) {
-                this.moveLeft();
-                this.playAnimation(this.IMAGES_WALKING);
-            }
-            if (this.x <= level_end_x + 200) {
-                this.playAnimation(this.IMAGES_ALERT);
-                this.playAnimation(this.IMAGES_ATTACK);
-            }
-        }, this.speedInterval);
+        if (this.bossAlive == true) {
+            clearInterval(this.bossDeadInterval);
+            this.walkingInterval = setInterval(() => {
+                if (this.toTheLeft && this.x > level_end_x + 200) {
+                    this.moveLeft();
+                    this.playAnimation(this.IMAGES_WALKING);
+                }
+                if (this.x <= level_end_x + 200) {
+                    this.playAnimation(this.IMAGES_ALERT);
+                    this.playAnimation(this.IMAGES_ATTACK);
+                }
+            }, this.speedInterval);
 
-        this.bossHurtOrDeadInterval = setInterval(() => {
-            if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-            }
+            this.bossHurtInterval = setInterval(() => {
+                if (this.isHurt()) {
+                    this.playAnimation(this.IMAGES_HURT);
+                }
+            }, this.speedInterval * 0.5);
             // this.playAnimation(this.IMAGES_ATTACK);
-            if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-                clearInterval(this.walkingInterval);
-                setTimeout(() => {
-                    clearInterval(this.bossHurtOrDeadInterval)
-                }, this.setTimeInterval * 5);
-            }
-        }, this.speedInterval * 1.5);
+        }
+    }
 
 
-
-
+    animateDead() {
+        if (this.bossAlive == false) {
+            this.bossDeadInterval = setInterval(() => {
+                if (this.isDead()) {
+                    this.playAnimation(this.IMAGES_DEAD);
+                    clearInterval(this.walkingInterval);
+                    clearInterval(this.bossHurtInterval);
+                }
+            }, this.speedInterval);
+        }
     }
 
     isCloser() {
@@ -113,7 +120,9 @@ class EndBoss extends MovableObject {
             if (this.bossUnderAtack) {
                 this.energy -= 35;
                 if (this.energy < 0) {
+                    this.bossAlive = false;
                     this.energy = 0;
+                    this.animateDead();
                 } else {
                     this.lastHit = new Date().getTime();
                 }
@@ -138,13 +147,17 @@ class EndBoss extends MovableObject {
 
 
     resetBoss() {
+        clearInterval(this.walkingInterval);
+        clearInterval(this.bossHurtInterval);
+        clearInterval(this.bossDeadInterval);
         this.currentImage = 0;
         this.bossUnderAtack = false;
         this.toTheLeft = false;
         this.x = level_end_x + 300;
-        this.walkingInterval = 0;
-        this.bossHurtOrDeadInterval = 0
-        this.speedInterval *= 0.5;
+        this.walkingInterval;
+        this.speedInterval = 100;
+        this.bossAlive = true;
+        this.energy = 100;
         this.animate();
     }
 

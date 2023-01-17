@@ -33,8 +33,11 @@ class World {
         setInterval(() => {
             if (this.keyboard.RELOAD == true) {
                 this.a++;
+                console.log("button", this.a)
                 if (this.a == 1) {
+                    console.log("ar:", this.a)
                     this.restartWorld();
+                    console.log("button", world)
                 }
                 setTimeout(() => {
                     this.a = 0
@@ -48,14 +51,18 @@ class World {
         this.camera_x = -100;
         this.character.resetMovableObj();
         this.character.characterReset();
-        this.level.endBoss[0].resetBoss();
         this.healthBar.setPercentage(100);
         this.coinBar.setAmount(0);
         this.bottleBar.setAmount(0);
         this.hits = 0;
-        this.level.bossTotalLife.forEach((life) => {
-            life.resetBossLifePosition();
-        });
+        this.reload.resetReload()
+        if (this.level.endBoss[0].isDead()) {
+
+            this.level.bossTotalLife.forEach((life) => {
+                life.resetBossLifePosition();
+            });
+        }
+        this.level.endBoss[0].resetBoss();
         this.level.enemies.forEach((enemy) => {
             enemy.resetChicken();
         });
@@ -230,7 +237,7 @@ class World {
                 enemy.crashed = false;
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
-            } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy) && this.character.isCollidingCharacterEnemyFromHorizontal(enemy)) {
+            } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy) && this.character.isCollidingCharacterEnemyFromHorizontal(enemy) && !this.keyboard.UP) {
                 enemy.crashed = true;
             }
         })
@@ -336,6 +343,7 @@ class World {
                 console.log("br:", world)
                 setTimeout(() => {
                     this.a++;
+                    console.log("click", this.a)
                     if (this.a == 1) {
                         this.restartWorld();
                         console.log("ar:", world)

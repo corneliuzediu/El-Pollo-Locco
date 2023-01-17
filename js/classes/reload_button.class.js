@@ -32,4 +32,12 @@ class Reload extends MovableObject {
         this.width += 4;
         this.height += 4;
     }
+
+    resetReload(){
+        this.isVisible = false;
+        this.x += 2;
+        this.y += 2;
+        this.width -= 4;
+        this.height -= 4;
+    }
 }
