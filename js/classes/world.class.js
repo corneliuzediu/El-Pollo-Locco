@@ -103,7 +103,7 @@ class World {
         this.checkCollisionsBottlesEndBoss();
         this.checkCollisionsBottlesFloor();
         this.checkPositionOnMap();
-        this.checkPositionClick();
+        // this.checkPositionClick();
         this.checkWinOrLost();
     }
 
@@ -334,31 +334,6 @@ class World {
         }
     }
 
-
-    checkPositionClick() {
-        if (this.keyboard.CLICK == true && this.reload.isVisible == true) {
-            if (this.keyboard.CLICK_X >= this.reload.x && this.keyboard.CLICK_X <= this.reload.x + this.reload.width &&
-                this.keyboard.CLICK_Y >= this.reload.y && this.keyboard.CLICK_Y <= this.reload.y + this.reload.height) {
-                this.reload.feedbackClick();
-                console.log("br:", world)
-                setTimeout(() => {
-                    this.a++;
-                    console.log("click", this.a)
-                    if (this.a == 1) {
-                        this.restartWorld();
-                        console.log("ar:", world)
-                    }
-                    setTimeout(() => {
-                        this.a = 0
-                    }, 2000);
-                }, 400)
-
-
-            }
-        }
-        // If position click is in 'Colision' with reload image
-        // reload
-    }
 
 
     checkWinOrLost() {

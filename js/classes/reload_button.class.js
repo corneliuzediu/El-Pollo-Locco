@@ -2,8 +2,8 @@ class Reload extends MovableObject {
     isVisible = false;
     width = 80;
     height = 80;
-    y = canvas.height * 0.75;
-    x = canvas.width / 2 - this.width / 2;
+    y = -(window.innerHeight * 0.5);
+    x = window.innerWidth * 0.5;
 
     IMAGE_RELOAD = [
         './img/start/sync.png',
@@ -17,9 +17,9 @@ class Reload extends MovableObject {
     }
 
 
-    animate(){
-        setInterval(()=>{
-            if(this.isVisible == true){
+    animate() {
+        setInterval(() => {
+            if (this.isVisible == true) {
                 this.playAnimation(this.IMAGE_RELOAD);
             }
         })
@@ -33,7 +33,7 @@ class Reload extends MovableObject {
         this.height += 4;
     }
 
-    resetReload(){
+    resetReload() {
         this.isVisible = false;
         this.x += 2;
         this.y += 2;

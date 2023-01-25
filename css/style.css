@@ -89,6 +89,29 @@ h1 {
 }
 
 
+canvas {
+    display: block;
+    height: 100%;
+    margin: auto;
+}
+
+
+.preStart__canvas {
+    position: relative;
+    display: flex;
+}
+
+
+.preStart__canvas:fullscreen {
+    max-height: 100% !important;
+}
+
+
+:not(:root):fullscreen{
+    width: auto !important;
+}
+
+
 .preStart__buttons {
     display: flex;
     flex-direction: column;
@@ -202,15 +225,18 @@ h1 {
 
 .options__wrapper {
     position: absolute;
-    top: 5rem;
-    right: 5rem;
+    display: flex;
+    gap: 20px;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, 100%);
 }
 
 .options__wrapper button {
     background-color: unset;
     border: unset;
-    width: 100px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     -webkit-filter: invert(100%);
     cursor: pointer;
 }
@@ -227,4 +253,77 @@ h1 {
     font-size: 3rem;
     margin-block: 1rem;
     -webkit-filter: invert(100%);
+}
+
+
+/* Classes for mobile */
+
+.buttons__overlay {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    bottom: 0;
+    width: 90%;
+    padding-inline: 5%;
+}
+
+
+.buttons__wrapper {
+    display: flex;
+    gap: 5px
+}
+
+
+.button__mobile {
+    width: 60px;
+    height: 60px;
+    background-color: unset;
+    border: unset;
+}
+
+
+.button__mobile img {
+    width: 80%;
+    object-fit: cover;
+    -webkit-filter: invert(90%);
+}
+
+
+.button__mobile img:hover {
+    width: 100%;
+    -webkit-filter: invert(100%);
+}
+
+
+.mobil__hide {
+    display: none;
+}
+
+@media only screen and (max-width: 750px) {
+    .mobil__hide {
+        display: flex;
+    }
+
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    .mobil__hide {
+        display: flex;
+    }
+
+    canvas {
+        height: 100vh !important;
+    }
+
+
+    .preStart__canvas {
+        width: 100%;
+    }
+
+    .options__wrapper {
+        display: none;
+    }
 }

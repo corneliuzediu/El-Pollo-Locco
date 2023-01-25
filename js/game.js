@@ -11,6 +11,7 @@ let gameFullscreen = false;
 
 
 
+
 function init() {
     // setInterval(() => {
     //     checkForNextLevel();
@@ -18,7 +19,9 @@ function init() {
     if (canvasFullscreen) {
         gameSwitch = true;
         stopPreStartSound();
-        window.canvas.requestFullscreen();
+        let elementHTML = document.getElementById('preStart__canvas');
+        window.canvas.style = "width: 100%";
+        elementHTML.requestFullscreen();
         canvas = document.getElementById('canvas');
         canvas.style.width = "100%";
         canvas.style.height = "100%";
@@ -95,14 +98,13 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
-
 document.addEventListener('mousedown', (e) => {
-    canvas = document.getElementById('canvas')
     keyboard.CLICK = true;
     keyboard.CLICK_X = e.clientX - canvas.offsetLeft;
     keyboard.CLICK_Y = e.clientY - canvas.offsetTop;
-    ;
-})
+    console.log("E x:", e.x, "E y:", e.y);
+    console.log("Canvas w", canvas.width, "Canvas h:", canvas.height);
+}, false)
 
 
 document.addEventListener('mouseup', (e) => {
@@ -189,10 +191,10 @@ async function initlevel() {
         currentLevel = 0;
         world = 0;
         // setTimeout(()=>{
-            currentLevel = await initlevel2();
-            world = new World(canvas, keyboard, currentLevel);
-            console.log("A R:", world)
-            console.log("A R:", currentLevel)
+        currentLevel = await initlevel2();
+        world = new World(canvas, keyboard, currentLevel);
+        console.log("A R:", world)
+        console.log("A R:", currentLevel)
         // }, 3000)
         // world.character.x = 0;
         // world.level.enemies = 0;
@@ -220,10 +222,14 @@ function enterFullscreen() {
         gameFullscreen = true;
         changeImgFullscreen();
     } else if (window.screen.availHeight != window.screen.height && gameSwitch) {
-        window.canvas.requestFullscreen();
+        let elementHTML = document.getElementById('preStart__canvas');
+        window.canvas.style = "height 100vh;";
+        elementHTML.requestFullscreen();
         gameFullscreen = true;
         changeImgFullscreen();
     } else if (window.screen.availHeight == window.screen.height) {
+        window.canvas.style = "height: 100%";
+        window.canvas.style = "width: 100%";
         document.exitFullscreen();
         canvasFullscreen = false;
         gameFullscreen = false;
@@ -259,4 +265,19 @@ function changeImgFullscreen() {
         fullscreenON.classList.remove('d-none');
         fullscreenOFF.classList.add('d-none');
     }
+}
+
+
+function getClickReloadOrNext() {
+    // setTimeout(() => {
+        this.a++;
+        console.log("click", this.a)
+        if (this.a == 1) {
+            world.restartWorld();
+            console.log("ar:", world)
+        }
+        setTimeout(() => {
+            this.a = 0
+        }, 2000);
+    // }, 400)
 }
