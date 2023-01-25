@@ -11,8 +11,6 @@ class World {
     bottleBar = new BottleBar();
     throwableObject = [];
     previousThrow = 0;
-    outro = new Outro();
-    reload = new Reload();
     a = 0;
 
 
@@ -171,21 +169,12 @@ class World {
 
             //draw() wird immer wieder angerufen
             let self = this;
-            if (this.character.isDead() && this.keyboard.RELOAD == false) {
-                // setTimeout(() => {
-                this.addToMap(this.outro);
-                this.reload.isVisible = true;
-                setInterval(() => {
-                    this.addToMap(this.reload);
-                })
-                // }, 100)}
-            } else {
-                requestAnimationFrame(function () {
-                    self.draw();
-                });
-            }
+            requestAnimationFrame(function () {
+                self.draw();
+            });
         }
     }
+
 
 
     addObjectToMap(object) {
@@ -238,6 +227,7 @@ class World {
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
             } else if (this.character.isCollidingCharacterEnemyFromBottom(enemy) && this.character.isCollidingCharacterEnemyFromHorizontal(enemy) && !this.keyboard.UP) {
+                this.character.jump();
                 enemy.crashed = true;
             }
         })

@@ -14,7 +14,7 @@ class HealthBar extends DrawableObject {
         super();
         this.loadImages(this.IMAGES);
         this.x = 30;
-        this.y = 80;
+        this.y = 0;
         this.width = 150;
         this.height = 50;
         this.setPercentage(100);

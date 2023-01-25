@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
     world;
     underAtack = false;
     setTimeInterval = 100;
+    intervalsID = [];
 
 
     applyGravity() {
@@ -26,7 +27,7 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject) {
             return true;
         } else {
-            return this.y < 240;
+            return this.y < 220;
         }
     }
 
@@ -236,5 +237,11 @@ class MovableObject extends DrawableObject {
         this.bottleFuel = 0;
         this.lastHit = 0;
         this.underAtack = false;
+    }
+
+
+    setIntervalFrame(fn, time){
+        let id = setInterval(fn, time);
+        this.intervalsID.push(id);
     }
 }
