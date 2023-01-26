@@ -19,13 +19,21 @@ class BossLife extends MovableObject {
 
 
     animate() {
-        setInterval(() => {
-            if (this.goToLeft && this.x > endBoss[0].x + endBoss[0].width) {
-                this.moveLeft();
-            }
-        }, 20)
+        this.setIntervalFrame(() => this.moveLeftBoss, 20)
     }
 
+
+    moveLeftBoss() {
+        if (this.canMoveLeftBoss)
+            this.moveLeft();
+    }
+
+
+    canMoveLeftBoss() {
+        return this.goToLeft && this.x > endBoss[0].x + endBoss[0].width;
+    }
+
+    
     getPosition(position) {
         if (position >= level_end_x * 0.8) {
             this.goToLeft = true;
@@ -34,7 +42,7 @@ class BossLife extends MovableObject {
         }
     }
 
-    resetBossLifePosition(){
+    resetBossLifePosition() {
         this.y += 500;
     }
 }

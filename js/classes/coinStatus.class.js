@@ -1,15 +1,18 @@
 class CoinBar extends DrawableObject {
+    /***    Images for animations   ***/
     IMAGES = [
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png',
-        
+        'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'
     ];
 
+
+    /***    Variables   ***/
     amount = 100;
+
 
     constructor() {
         super();
@@ -19,30 +22,28 @@ class CoinBar extends DrawableObject {
         this.width = 150;
         this.height = 50;
         this.setAmount(0);
-    }
+    };
 
 
     setAmount(amount) {
         this.amount = amount;
         let path = this.IMAGES[this.getImageIndex()];
         this.img = this.imageCache[path];
-    }
+    };
+
 
     getImageIndex() {
-        if (this.amount == 100) {
+        if (this.amount == 100)
             return 5;
-        } else if (this.amount > 80) {
+        else if (this.amount > 80)
             return 4;
-        } else if (this.amount > 60) {
+        else if (this.amount > 60)
             return 3;
-        } else if (this.amount > 40) {
+        else if (this.amount > 40)
             return 2;
-        } else if (this.amount > 15) {
+        else if (this.amount > 15)
             return 1;
-        } else {
+        else
             return 0;
-        }
-    }
-
-    
-}
+    };
+};

@@ -1,23 +1,12 @@
 class EndBoss extends MovableObject {
-    height = 350;
-    width = 250;
-    x = level_end_x + 300; // zahl zwichen 200 und 700
-    y = 120;
-    alert = false;
-    toTheLeft = false;
-    bossUnderAtack = false;
-    bossAlive = true;
-    walkingInterval;
-    bossHurtInterval;
-    bossDeadInterval;
-    speedInterval = 100;
-
+    /***    Images for animations   ***/
     IMAGES_WALKING = [
         './img/4_enemie_boss_chicken/1_walk/G1.png',
         './img/4_enemie_boss_chicken/1_walk/G2.png',
         './img/4_enemie_boss_chicken/1_walk/G3.png',
         './img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
+
 
     IMAGES_ALERT = [
         './img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -29,6 +18,7 @@ class EndBoss extends MovableObject {
         './img/4_enemie_boss_chicken/2_alert/G11.png',
         './img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
+
 
     IMAGES_ATTACK = [
         './img/4_enemie_boss_chicken/2_alert/G8.png',
@@ -46,21 +36,41 @@ class EndBoss extends MovableObject {
         './img/4_enemie_boss_chicken/3_attack/G20.png',
     ];
 
+
     IMAGES_HURT = [
         './img/4_enemie_boss_chicken/4_hurt/G21.png',
         './img/4_enemie_boss_chicken/4_hurt/G22.png',
         './img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
+
     IMAGES_DEAD = [
         './img/4_enemie_boss_chicken/5_dead/G24.png',
         './img/4_enemie_boss_chicken/5_dead/G25.png',
         './img/4_enemie_boss_chicken/5_dead/G26.png'
-    ]
+    ];
+
 
     IMAGES_LIFE = [
         './img/7_statusbars/3_icons/icon_health_endboss.png'
-    ]
+    ];
+
+
+    /***    Variables   ***/
+    height = 350;
+    width = 250;
+    x = level_end_x + 300;
+    y = 120;
+    alert = false;
+    toTheLeft = false;
+    bossUnderAtack = false;
+    bossAlive = true;
+    walkingInterval;
+    bossHurtInterval;
+    bossDeadInterval;
+    speedInterval = 100;
+    hitRate = 35;
+
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -69,87 +79,123 @@ class EndBoss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.loadImages(this.IMAGES_LIFE)
-        this.animate()
+        this.loadImages(this.IMAGES_LIFE);
+        this.animateEndBoss();
     }
 
 
-    animate() {
-        if (this.bossAlive == true) {
-            clearInterval(this.bossDeadInterval);
-            this.walkingInterval = setInterval(() => {
-                if (this.toTheLeft && this.x > level_end_x + 200) {
-                    this.moveLeft();
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
-                if (this.x <= level_end_x + 200) {
-                    this.playAnimation(this.IMAGES_ALERT);
-                    this.playAnimation(this.IMAGES_ATTACK);
-                }
-            }, this.speedInterval);
-
-            this.bossHurtInterval = setInterval(() => {
-                if (this.isHurt()) {
-                    this.playAnimation(this.IMAGES_HURT);
-                }
-            }, this.speedInterval * 0.5);
-            // this.playAnimation(this.IMAGES_ATTACK);
-        }
-    }
+    animateEndBoss() {
+        this.setIntervalFrame(() => this.getEndBossStatus(), this.speedInterval);
+    };
 
 
-    animateDead() {
-        if (this.bossAlive == false) {
-            this.bossDeadInterval = setInterval(() => {
-                if (this.isDead()) {
-                    this.playAnimation(this.IMAGES_DEAD);
-                    clearInterval(this.walkingInterval);
-                    clearInterval(this.bossHurtInterval);
-                }
-            }, this.speedInterval);
-        }
-    }
+    getEndBossStatus() {
+        if (this.canComeCloser() && this.isBossAlive())
+            this.moveLeft();
+        if (this.isCloseToTheBoss() && this.isBossAlive())
+            this.bossAttackAnimation();
+        if (this.isHurt())
+            this.bossHurtAnimation();
+        if (this.isDead())
+            this.bossDeadAnimation();
+    };
+
+
+    isBossAlive() {
+        return this.bossAlive == true;
+    };
+
+
+    canComeCloser() {
+        return this.toTheLeft && this.x > level_end_x + 200;
+    };
+
+
+    moveLeft() {
+        super.moveLeft();
+        this.playAnimation(this.IMAGES_WALKING);
+        setTimeout(() => this.playAnimation(this.IMAGES_ALERT), 300);
+    };
+
+
+    isCloseToTheBoss() {
+        return this.x <= level_end_x + 200; // Register character close to the boss;
+    };
+
 
     isCloser() {
-        this.toTheLeft = true;
-    }
+        this.toTheLeft = true; //Allow boss to move
+    };
+
+
+    bossAttackAnimation() {
+        this.playAnimation(this.IMAGES_ATTACK);
+    };
+
+
+    bossHurtAnimation() {
+        this.playAnimation(this.IMAGES_HURT);
+    };
+
+
+    bossDeadAnimation() {
+        this.playAnimation(this.IMAGES_DEAD);
+    };
+
+
+    isUnderAttack() {
+        return this.bossUnderAtack;
+    };
+
+
+    startBattleBoss() {
+        this.hitBoss();
+        setTimeout(() => this.bossUnderAtack = false, 380)
+    };
+
 
     hitBoss() {
-        if (!this.bossUnderAtack) {
-            this.bossUnderAtack = true;
-            if (this.bossUnderAtack) {
-                this.energy -= 35;
-                if (this.energy < 0) {
-                    this.bossAlive = false;
-                    this.energy = 0;
-                    this.animateDead();
-                } else {
-                    this.lastHit = new Date().getTime();
-                }
-            }
-        }
-        setTimeout(() => {
-            this.bossUnderAtack = false;
-        }, 380)
-    }
+        if (!this.isUnderAttack()) {
+            this.bossUnderAtack = true; //To mitigate multiple colision;
+            if (this.isUnderAttack())
+                this.outcomeBattleBoss();
+        };
+    };
+
+
+    outcomeBattleBoss() {
+        this.energy -= this.hitRate;  //Remove energy
+        if (this.hasBossNoEnergy())
+            this.declareBossDead();
+        else
+            this.registerLastHit();
+    };
 
 
     isBossHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed /= 1000;
         return timePassed < 1;
-    }
+    };
 
 
-    isBossDead() {
-        return this.energy == 0;
-    }
+    hasBossNoEnergy() {
+        return this.energy < 0;
+    };
+
+
+    declareBossDead() {
+        this.bossAlive = false;
+        this.energy = 0;
+    };
+
+
+    registerLastHit() {
+        this.lastHit = new Date().getTime();
+    };
 
 
     resetBoss() {
-        clearInterval(this.walkingInterval);
-        clearInterval(this.bossHurtInterval);
-        clearInterval(this.bossDeadInterval);
         this.currentImage = 0;
         this.bossUnderAtack = false;
         this.toTheLeft = false;
@@ -158,8 +204,5 @@ class EndBoss extends MovableObject {
         this.speedInterval = 100;
         this.bossAlive = true;
         this.energy = 100;
-        this.animate();
-    }
-
-
-}
+    };
+};

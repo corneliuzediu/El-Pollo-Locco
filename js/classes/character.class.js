@@ -1,4 +1,5 @@
 class Character extends MovableObject {
+    /***    Images for animations   ***/
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -7,6 +8,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/2_walk/W-25.png',
         'img/2_character_pepe/2_walk/W-26.png',
     ];
+
 
     IMAGES_JUMPING = [
         'img/2_character_pepe/3_jump/J-31.png',
@@ -20,6 +22,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/3_jump/J-39.png'
     ];
 
+
     IMAGES_DEAD = [
         'img/2_character_pepe/5_dead/D-51.png',
         'img/2_character_pepe/5_dead/D-52.png',
@@ -29,6 +32,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-56.png',
         'img/2_character_pepe/5_dead/D-57.png',
     ];
+
 
     IMAGES_HURT = [
         'img/2_character_pepe/4_hurt/H-41.png',
@@ -50,6 +54,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/idle/I-10.png'
     ];
 
+
     IMAGES_SLEEP = [
         'img/2_character_pepe/1_idle/long_idle/I-11.png',
         'img/2_character_pepe/1_idle/long_idle/I-12.png',
@@ -63,10 +68,13 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ]
 
+    
     IMAGES_LOST = [
         './img/9_intro_outro_screens/game_over/oh no you lost!.png'
     ]
 
+
+    /***    Variables   ***/
     currentImage = 0;
     world;
     walking_sound = new Audio('audio/running.mp3');
@@ -74,10 +82,6 @@ class Character extends MovableObject {
     idle_time = 200;
     sleeping_time = 6000;
     initialTime = 0;
-    movementAnimation;
-    stateAnimation;
-    hirtAnimation;
-    deadAnimation;
 
 
     constructor() {
@@ -92,7 +96,7 @@ class Character extends MovableObject {
         this.applyGravity();
         this.getTimePassed();
         this.animateCharacter();
-    }
+    };
 
 
     animateCharacter() {
@@ -114,7 +118,7 @@ class Character extends MovableObject {
         if (this.canJump())
             this.jump();
         this.world.camera_x = -this.x + 100;
-    }
+    };
 
 
     getCharacterAnimation() {
@@ -129,25 +133,25 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_WALKING);
         else if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
-        }
-    }
+        };
+    };
 
 
     getTimePassed() {
         let actualTime = new Date().getTime();
         let timePassed = actualTime - this.initialTime;
         return this.timePassed = timePassed;
-    }
+    };
 
 
     hasThrow() {
         return this.world.keyboard.SPACE;
-    }
+    };
 
 
     canMoveRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 500;
-    }
+    };
 
 
     moveRight() {
@@ -156,53 +160,53 @@ class Character extends MovableObject {
         this.otherDirection = false;
         this.walking_sound.play();
         this.hurtAndDead;
-    }
+    };
 
 
     canMoveLeft() {
         return this.world.keyboard.LEFT && this.x > 0;
-    }
+    };
 
     moveLeft() {
         this.initialTime = new Date().getTime();
         this.otherDirection = true;
         super.moveLeft();
         this.walking_sound.play();
-    }
+    };
 
 
     canJump() {
         return this.world.keyboard.UP && !this.isAboveGround();
-    }
+    };
 
 
     jump() {
         this.initialTime = new Date().getTime();
         super.jump();
         this.jumping_sound.play();
-    }
+    };
 
 
     isAsleep() {
         return this.timePassed > this.sleeping_time;
-    }
+    };
 
 
     isIdle() {
         return this.timePassed < this.sleeping_time && this.timePassed > this.idle_time || this.world.keyboard.SPACE;
-    }
+    };
 
 
     isWalking() {
         return this.world.keyboard.RIGHT && this.timePassed < this.idle_time || this.world.keyboard.LEFT && this.timePassed < this.idle_time;
-    }
+    };
 
 
     getCharacterHurt() {
         if (this.isHurt() && !this.isDead())
             this.playAnimation(this.IMAGES_HURT);
-    }
-}
+    };
+};
 
 
 

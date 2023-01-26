@@ -192,7 +192,7 @@ class World {
         if (mo.otherDirection) {
             mo.removeFlipImg(this.ctx)
         }
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
     }
 
 
@@ -296,7 +296,7 @@ class World {
                 if (boss.isCollidingCharacterEnemy(bottle)) {
                     this.stopMovement(bottle, boss, 1.5);
                     this.hitBoss++
-                    boss.hitBoss();
+                    boss.startBattleBoss();
                 };
             });
         });
@@ -307,6 +307,7 @@ class World {
         if (this.character.x >= level_end_x * 0.8) {
             this.level.bossTotalLife.forEach((life) => {
                 life.getPosition(this.character.x)
+                life.x = endBoss[0].x + endBoss[0].width
             })
         }
         let maxLifes = this.level.bossTotalLife.length;

@@ -1,4 +1,5 @@
 class HealthBar extends DrawableObject {
+    /***    Images for animations   ***/
     IMAGES = [
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png',
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png',
@@ -8,7 +9,10 @@ class HealthBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ];
 
+
+    /***    Variables   ***/
     percentage = 100;
+
 
     constructor() {
         super();
@@ -18,30 +22,28 @@ class HealthBar extends DrawableObject {
         this.width = 150;
         this.height = 50;
         this.setPercentage(100);
-    }
+    };
 
 
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.getImageIndex()];
         this.img = this.imageCache[path];
-    }
+    };
+
 
     getImageIndex() {
-        if (this.percentage == 100) {
+        if (this.percentage == 100)
             return 5;
-        } else if (this.percentage > 80) {
+        else if (this.percentage > 80)
             return 4;
-        } else if (this.percentage > 60) {
+        else if (this.percentage > 60)
             return 3;
-        } else if (this.percentage > 40) {
+        else if (this.percentage > 40)
             return 2;
-        } else if (this.percentage > 20) {
+        else if (this.percentage > 20)
             return 1;
-        } else {
+        else
             return 0;
-        }
-    }
-
-    
-}
+    };
+};
