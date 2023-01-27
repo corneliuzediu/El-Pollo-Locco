@@ -1,4 +1,4 @@
-class DrawableObject {
+class DrawableObject{
     /***    Variables   ***/
     x = 150;
     y = 245;

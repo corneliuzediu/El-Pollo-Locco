@@ -85,7 +85,7 @@ class EndBoss extends MovableObject {
 
 
     animateEndBoss() {
-        this.setIntervalFrame(() => this.getEndBossStatus(), this.speedInterval);
+        setIntervalFrame(() => this.getEndBossStatus(), this.speedInterval);
     };
 
 
@@ -204,5 +204,6 @@ class EndBoss extends MovableObject {
         this.speedInterval = 100;
         this.bossAlive = true;
         this.energy = 100;
+        this.animateEndBoss();
     };
 };

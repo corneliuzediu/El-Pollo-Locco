@@ -1,4 +1,5 @@
 class World {
+    /***    Variables   ***/
     character = new Character();
     level;
     canvas;
@@ -12,7 +13,7 @@ class World {
     throwableObject = [];
     previousThrow = 0;
     a = 0;
-
+    intervalsID = [];
 
 
 
@@ -24,38 +25,18 @@ class World {
         this.draw();
         this.setWorld();
         this.runCollisions();
-        this.checkReload();
-    }
-
-    checkReload() {
-        setInterval(() => {
-            if (this.keyboard.RELOAD == true) {
-                this.a++;
-                console.log("button", this.a)
-                if (this.a == 1) {
-                    console.log("ar:", this.a)
-                    this.restartWorld();
-                    console.log("button", world)
-                }
-                setTimeout(() => {
-                    this.a = 0
-                }, 2000)
-            }
-        }, 100)
     }
 
 
     restartWorld() {
-        this.camera_x = -100;
+        this.camera_x = -50;
         this.character.resetMovableObj();
         this.character.characterReset();
         this.healthBar.setPercentage(100);
         this.coinBar.setAmount(0);
         this.bottleBar.setAmount(0);
         this.hits = 0;
-        this.reload.resetReload()
         if (this.level.endBoss[0].isDead()) {
-
             this.level.bossTotalLife.forEach((life) => {
                 life.resetBossLifePosition();
             });
@@ -70,7 +51,6 @@ class World {
         this.level.bottles.forEach((bottle) => {
             bottle.resetBottle();
         });
-        this.draw();
     }
 
     setWorld() {
@@ -92,6 +72,7 @@ class World {
         }, 20)
     }
 
+
     checkCollisions() {
         this.checkCollisionsEnemies();
         this.checkCollisionsEndBoss();
@@ -101,7 +82,6 @@ class World {
         this.checkCollisionsBottlesEndBoss();
         this.checkCollisionsBottlesFloor();
         this.checkPositionOnMap();
-        // this.checkPositionClick();
         this.checkWinOrLost();
     }
 
@@ -137,7 +117,7 @@ class World {
 
     draw() {
         if (this.keyboard.RELOAD != true || this.keyboard.CLICK != true) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+            this.clearCanvas();
 
             this.ctx.translate(this.camera_x, 0);
 
@@ -174,6 +154,11 @@ class World {
             });
         }
     }
+
+
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    };
 
 
 

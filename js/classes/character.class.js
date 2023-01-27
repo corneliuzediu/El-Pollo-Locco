@@ -68,7 +68,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ]
 
-    
+
     IMAGES_LOST = [
         './img/9_intro_outro_screens/game_over/oh no you lost!.png'
     ]
@@ -100,9 +100,9 @@ class Character extends MovableObject {
 
 
     animateCharacter() {
-        this.setIntervalFrame(() => this.getCharacterAnimation(), 100);
-        this.setIntervalFrame(() => this.getCharacterMovement(), 100);
-        this.setIntervalFrame(() => this.getCharacterHurt(), 100);
+        setIntervalFrame(() => this.getCharacterAnimation(), 100);
+        setIntervalFrame(() => this.getCharacterMovement(), 100);
+        setIntervalFrame(() => this.getCharacterHurt(), 100);
     };
 
 
@@ -206,6 +206,11 @@ class Character extends MovableObject {
         if (this.isHurt() && !this.isDead())
             this.playAnimation(this.IMAGES_HURT);
     };
+
+
+    characterReset(){
+        this.animateCharacter();
+    }
 };
 
 

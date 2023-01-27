@@ -273,10 +273,4 @@ class MovableObject extends DrawableObject {
         this.lastHit = 0;
         this.underAtack = false;
     };
-
-
-    setIntervalFrame(fn, time) {
-        let id = setInterval(fn, time);
-        this.intervalsID.push(id);
-    };
 }

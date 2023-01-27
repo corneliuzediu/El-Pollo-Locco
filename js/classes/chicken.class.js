@@ -19,7 +19,8 @@ class Chicken extends MovableObject {
     width = 60;
     speed = 0.1;
     crashed = false;
-    walkingInterval;
+    intervalsID = [];
+    // walkingInterval;
 
 
     constructor() {
@@ -32,7 +33,7 @@ class Chicken extends MovableObject {
     }
 
     animateChicken() {
-        this.setIntervalFrame(() => this.getChickenStatus(), 100);
+        setIntervalFrame(() => this.getChickenStatus(), 100);
     };
 
 
@@ -71,5 +72,6 @@ class Chicken extends MovableObject {
         this.y = 355;
         this.x = 300 + Math.random() * level_end_x;
         this.speed = 0.1 + Math.random() * 0.3;
+        this.animateChicken();
     };
 };

@@ -40,7 +40,7 @@ class Bottle extends MovableObject {
 
     rotateBottle() {
         this.loadImage('./img/6_salsa_bottle/salsa_bottle.png');
-        this.setIntervalFrame(() => this.playAnimation(this.IMAGES_ROTATION), this.speed);
+        setIntervalFrame(() => this.playAnimation(this.IMAGES_ROTATION), this.speed);
     };
     
     
@@ -51,7 +51,7 @@ class Bottle extends MovableObject {
     
     toogleBottle() {
         this.loadImage('./img/6_salsa_bottle/2_salsa_bottle_on_ground.png');
-        this.setIntervalFrame(() => this.playAnimation(this.IMAGES_TOOGLE), this.speed);
+        setIntervalFrame(() => this.playAnimation(this.IMAGES_TOOGLE), this.speed);
     };
 
     
@@ -64,5 +64,6 @@ class Bottle extends MovableObject {
         this.x = 300 + Math.random() * (level_end_x - 300);
         this.y = 200 + Math.random() * 150;
         this.speed = 500 + Math.random() * 200;
+        this.animate();
     };
 }

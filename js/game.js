@@ -8,6 +8,7 @@ let gameSwitch = false;
 let musicSwitch = false;
 let canvasFullscreen = false;
 let gameFullscreen = false;
+let intervalsID = []
 
 
 
@@ -180,17 +181,14 @@ function selectLevel(i) {
 
 
 async function initlevel() {
-    if (runningLevel === level1) {
+    if (runningLevel == level1) {
         currentLevel = await initlevel1();
         world = new World(canvas, keyboard, currentLevel);
         console.log("l1w:", world)
         console.log("l1lvl:", currentLevel)
-    } else if (runningLevel === level2) {
+    } else if (runningLevel == level2) {
         console.log("B R:", world)
         console.log("B R:", currentLevel)
-        currentLevel = 0;
-        world = 0;
-        // setTimeout(()=>{
         currentLevel = await initlevel2();
         world = new World(canvas, keyboard, currentLevel);
         console.log("A R:", world)
@@ -270,14 +268,41 @@ function changeImgFullscreen() {
 
 function getClickReloadOrNext() {
     // setTimeout(() => {
-        this.a++;
-        console.log("click", this.a)
-        if (this.a == 1) {
-            world.restartWorld();
-            console.log("ar:", world)
-        }
-        setTimeout(() => {
-            this.a = 0
-        }, 2000);
+    this.a++;
+    console.log("click", this.a)
+    if (this.a == 1) {
+        world.restartWorld();
+        console.log("ar:", world)
+    }
+    setTimeout(() => {
+        this.a = 0
+    }, 2000);
     // }, 400)
+}
+
+
+function setIntervalFrame(fn, time) {
+    let id = setInterval(fn, time);
+    intervalsID.push(id);
+};
+
+
+function stopGame() {
+    console.log(intervalsID);
+    intervalsID.forEach(clearInterval);
+    setTimeout(() => restartGame(), 200)
+}
+
+function restartGame() {
+    world.restartWorld();
+}
+
+
+function nextLevel() {
+    intervalsID.forEach(clearInterval);
+    world.clearCanvas();
+    debugger;
+    world = 0;
+    runningLevel = level2;
+    initlevel();
 }

@@ -37,7 +37,7 @@ class ThrowableObject extends MovableObject {
     }
 
     throw() {
-        let animation = setInterval(() => this.throwOutcome(animation), 75)
+        let animation = setIntervalFrame(() => this.throwOutcome(animation), 75)
     };
 
 
@@ -76,7 +76,7 @@ class ThrowableObject extends MovableObject {
         this.speedY = 40;
         this.speedX = 10
         this.applyGravity();
-        setInterval(() => this.x += this.speedX, 20);
+        setIntervalFrame(() => this.x += this.speedX, 20);
     };
 
 
@@ -84,6 +84,6 @@ class ThrowableObject extends MovableObject {
         this.speedY = 40;
         this.speedX = 10;
         this.applyGravity();
-        setInterval(() => this.x -= this.speedX, 20);
+        setIntervalFrame(() => this.x -= this.speedX, 20);
     };
 };
