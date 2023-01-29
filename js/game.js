@@ -1,22 +1,22 @@
 let canvas;
 let world;
+let indexLevel = 1;
 let keyboard = new Keyboard();
-let runningLevel = level1
+let runningLevel = level1;
 let currentLevel;
 let newLevel = false;
 let gameSwitch = false;
 let musicSwitch = false;
 let canvasFullscreen = false;
 let gameFullscreen = false;
+let gameStatusInterval;
 let intervalsID = []
 
 
 
 
 function init() {
-    // setInterval(() => {
-    //     checkForNextLevel();
-    // })
+    bindMobilBtns();
     if (canvasFullscreen) {
         gameSwitch = true;
         stopPreStartSound();
@@ -36,81 +36,88 @@ function init() {
 }
 
 
-function checkForNextLevel() {
-    // if(keyboard.NEW_LEVEL == true){
-    runningLevel = level2;
-    initlevel();
-    // }
-}
-
-
 document.addEventListener('keydown', (e) => {
-    if (e.keyCode == 65) {
+    if (e.keyCode == 65)
         keyboard.LEFT = true;
-    }
-    if (e.keyCode == 68) {
+    if (e.keyCode == 68)
         keyboard.RIGHT = true;
-    }
-    if (e.keyCode == 87) {
+    if (e.keyCode == 87)
         keyboard.UP = true;
-    }
-    if (e.keyCode == 83) {
+    if (e.keyCode == 83)
         keyboard.DOWN = true;
-    }
-    if (e.keyCode == 32) {
+    if (e.keyCode == 32)
         keyboard.SPACE = true;
-    }
-    if (e.keyCode == 27) {
+    if (e.keyCode == 27)
         keyboard.EXIT = true;
-    }
-    if (e.keyCode == 82) {
-        keyboard.RELOAD = true;
-    }
-    if (e.keyCode == 72) {
-        keyboard.NEW_LEVEL = true;
-    }
+    if (e.keyCode == 82)
+        tryAgain();
+    if (e.keyCode == 84)
+        nextLevel();
+
 });
 
 
 document.addEventListener('keyup', (e) => {
-    if (e.keyCode == 65) {
+    if (e.keyCode == 65)
         keyboard.LEFT = false;
-    }
-    if (e.keyCode == 68) {
+    if (e.keyCode == 68)
         keyboard.RIGHT = false;
-    }
-    if (e.keyCode == 87) {
+    if (e.keyCode == 87)
         keyboard.UP = false;
-    }
-    if (e.keyCode == 83) {
+    if (e.keyCode == 83)
         keyboard.DOWN = false;
-    }
-    if (e.keyCode == 32) {
+    if (e.keyCode == 32)
         keyboard.SPACE = false;
-    }
-    if (e.keyCode == 27) {
+    if (e.keyCode == 27)
         keyboard.EXIT = false;
-    }
-    if (e.keyCode == 82) {
-        keyboard.RELOAD = false;
-    }
-    if (e.keyCode == 72) {
-        keyboard.NEW_LEVEL = false;
-    }
 });
 
-document.addEventListener('mousedown', (e) => {
-    keyboard.CLICK = true;
-    keyboard.CLICK_X = e.clientX - canvas.offsetLeft;
-    keyboard.CLICK_Y = e.clientY - canvas.offsetTop;
-    console.log("E x:", e.x, "E y:", e.y);
-    console.log("Canvas w", canvas.width, "Canvas h:", canvas.height);
-}, false)
+function bindMobilBtns() {
+    document.getElementById('btnLeft').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.LEFT = true;
+    })
+    document.getElementById('btnLeft').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.LEFT = false;
+    })
 
 
-document.addEventListener('mouseup', (e) => {
-    keyboard.CLICK = false;
-})
+
+    document.getElementById('btnRight').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.RIGHT = true;
+    })
+
+    document.getElementById('btnRight').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.RIGHT = false;
+    })
+
+
+
+    document.getElementById('btnThrow').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.SPACE = true;
+    })
+
+    document.getElementById('btnThrow').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.SPACE = false;
+    })
+
+
+
+    document.getElementById('btnJump').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.UP = true;
+    })
+
+    document.getElementById('btnJump').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.UP = false;
+    })
+}
 
 
 let preStartSound = new Audio('audio/pre_start.mp3')
@@ -166,50 +173,27 @@ function backToMenu() {
 
 function selectLevel(i) {
     runningLevel = level1;
-    if (i == 2) {
+    if (i == 2)
         runningLevel = level2;
-    } else if (i == 3) {
+    else if (i == 3)
         runningLevel = level3;
-    } else if (i == 4) {
-        runningLevel = level4;
-    } else if (i == 5) {
-        runningLevel = level5;
-    } else {
+    else
         runningLevel = level1
-    }
 }
 
 
 async function initlevel() {
+    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
     if (runningLevel == level1) {
         currentLevel = await initlevel1();
         world = new World(canvas, keyboard, currentLevel);
-        console.log("l1w:", world)
-        console.log("l1lvl:", currentLevel)
     } else if (runningLevel == level2) {
-        console.log("B R:", world)
-        console.log("B R:", currentLevel)
         currentLevel = await initlevel2();
         world = new World(canvas, keyboard, currentLevel);
-        console.log("A R:", world)
-        console.log("A R:", currentLevel)
-        // }, 3000)
-        // world.character.x = 0;
-        // world.level.enemies = 0;
-        // world.level.enemies = ;
-        console.log("A r:", world)
-        // currentLevel = await initlevel2();
+    } else if (runningLevel == level3) {
+        currentLevel = await initlevel3();
+        world = new World(canvas, keyboard, currentLevel);
     }
-    //  else if (currentLevel === level3) {
-    //     currentLevel = initlevel3();
-    //     world = new World(canvas, keyboard, currentLevel);
-    // } else if (currentLevel === level4) {
-    //     currentLevel = initlevel4();
-    //     world = new World(canvas, keyboard, currentLevel);
-    // } else if (currentLevel === level5) {
-    //     currentLevel = initlevel5();
-    //     world = new World(canvas, keyboard, currentLevel);
-    // }
 }
 
 
@@ -266,21 +250,6 @@ function changeImgFullscreen() {
 }
 
 
-function getClickReloadOrNext() {
-    // setTimeout(() => {
-    this.a++;
-    console.log("click", this.a)
-    if (this.a == 1) {
-        world.restartWorld();
-        console.log("ar:", world)
-    }
-    setTimeout(() => {
-        this.a = 0
-    }, 2000);
-    // }, 400)
-}
-
-
 function setIntervalFrame(fn, time) {
     let id = setInterval(fn, time);
     intervalsID.push(id);
@@ -290,8 +259,8 @@ function setIntervalFrame(fn, time) {
 function stopGame() {
     console.log(intervalsID);
     intervalsID.forEach(clearInterval);
-    setTimeout(() => restartGame(), 200)
 }
+
 
 function restartGame() {
     world.restartWorld();
@@ -299,10 +268,81 @@ function restartGame() {
 
 
 function nextLevel() {
+    indexLevel++;
+    if (indexLevel > 3) {
+        indexLevel = 3;
+    }
     intervalsID.forEach(clearInterval);
+    world.redraw = false;
+    world.character.bottleFuel = 0;
     world.clearCanvas();
-    debugger;
+    console.log("Level: ", indexLevel);
     world = 0;
-    runningLevel = level2;
+    selectLevel(indexLevel)
     initlevel();
 }
+
+
+function checkGameStatus() {
+    if (world.character.isDead()) {
+        showTryAgain();
+        clearInterval(gameStatusInterval)
+    }
+    if (world.level.endBoss[0].energy <= 0) {
+        showGoNextLevel();
+        clearInterval(gameStatusInterval)
+    }
+}
+
+function tryAgain() {
+    hideOutroButtons();
+    stopGame();
+    restartGame();
+    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+}
+
+
+function showTryAgain() {
+    showPlayerLost();
+    setTimeout(getTryAgain, 2000);
+}
+
+
+function getTryAgain() {
+    document.getElementById('buttons__newOrNext').classList.remove('d-none');
+    document.getElementById('btnReload').classList.remove('d-none');
+}
+
+
+function goNextLevel() {
+    hideOutroButtons();
+    nextLevel();
+}
+
+
+function showGoNextLevel() {
+    if (runningLevel != level3) {
+        getTryAgain();
+        document.getElementById('btnNextLevel').classList.remove('d-none');
+    } else if (runningLevel == 'level3') {
+        document.getElementById('outro__wrapper').classList.remove('d-none');
+        document.getElementById('outro__img').src = "./img/9_intro_outro_screens/game_over/game over!.png";
+        //setTimeout: after 2 seconds. it shound go back to initial page.
+    };
+}
+
+
+function showPlayerLost() {
+    document.getElementById('outro__wrapper').classList.remove('d-none');
+    setTimeout(() => {
+        document.getElementById('outro__wrapper').classList.add('d-none');
+    }, 1900);
+};
+
+
+function hideOutroButtons() {
+    document.getElementById('buttons__newOrNext').classList.add('d-none');
+    document.getElementById('btnReload').classList.add('d-none');
+    document.getElementById('btnNextLevel').classList.add('d-none');
+}
+

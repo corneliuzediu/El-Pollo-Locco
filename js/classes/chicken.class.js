@@ -19,8 +19,7 @@ class Chicken extends MovableObject {
     width = 60;
     speed = 0.1;
     crashed = false;
-    intervalsID = [];
-    // walkingInterval;
+    chashed_sound = new Audio('./audio/chicken_crashed.mp3')
 
 
     constructor() {
@@ -63,7 +62,11 @@ class Chicken extends MovableObject {
 
     chickenToHeaven() {
         this.playAnimation(this.IMAGE_DEAD);
-        setTimeout(() => this.y = -500, 100);
+        this.chashed_sound.play();
+        setTimeout(() => {
+            this.y = -500;
+            this.crashed = false;
+        }, 100);
     };
 
 

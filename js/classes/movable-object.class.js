@@ -11,7 +11,6 @@ class MovableObject extends DrawableObject {
     world;
     underAtack = false;
     setTimeInterval = 100;
-    intervalsID = [];
 
 
     applyGravity() {
@@ -40,7 +39,7 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject)
             return true;
         else
-            return this.y < 220;
+            return this.y < 245;
     };
 
 
@@ -252,13 +251,13 @@ class MovableObject extends DrawableObject {
 
     getContactsCollisionFromBottom(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
         let contact_bottom = character_bottom + 1 <= enemy_bottom && character_bottom >= enemy_top;
-        return contact_bottom;                
+        return contact_bottom;
     };
 
 
     getContactsCollisionFromHorizontal(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
         let contact_horizontal = character_left < enemy_left && character_right > enemy_right;
-        return contact_horizontal;              
+        return contact_horizontal;
     };
 
 

@@ -70,6 +70,7 @@ class EndBoss extends MovableObject {
     bossDeadInterval;
     speedInterval = 100;
     hitRate = 35;
+    bossUnderAtack_sound = new Audio('./audio/boss_hit.mp3')
 
 
     constructor() {
@@ -92,12 +93,16 @@ class EndBoss extends MovableObject {
     getEndBossStatus() {
         if (this.canComeCloser() && this.isBossAlive())
             this.moveLeft();
-        if (this.isCloseToTheBoss() && this.isBossAlive())
+        if (this.isCloseToTheBoss(500) && this.isBossAlive()) {
+            this.moveLeft();
             this.bossAttackAnimation();
+        }
         if (this.isHurt())
             this.bossHurtAnimation();
         if (this.isDead())
             this.bossDeadAnimation();
+        if(this.x < -150)
+            world.character.energy = 0;
     };
 
 
@@ -113,13 +118,19 @@ class EndBoss extends MovableObject {
 
     moveLeft() {
         super.moveLeft();
+        if (this.isCloseToTheBoss(200)) {
+            this.speed = 0.5;
+        }
+        if (this.isCloseToTheBoss()) {
+            this.speed = 0.3;
+        }
         this.playAnimation(this.IMAGES_WALKING);
         setTimeout(() => this.playAnimation(this.IMAGES_ALERT), 300);
     };
 
 
-    isCloseToTheBoss() {
-        return this.x <= level_end_x + 200; // Register character close to the boss;
+    isCloseToTheBoss(distance) {
+        return this.x - world.character.x < distance; // Register character close to the boss;
     };
 
 
@@ -150,6 +161,7 @@ class EndBoss extends MovableObject {
 
     startBattleBoss() {
         this.hitBoss();
+        this.bossUnderAtack_sound.play();
         setTimeout(() => this.bossUnderAtack = false, 380)
     };
 
@@ -165,7 +177,7 @@ class EndBoss extends MovableObject {
 
     outcomeBattleBoss() {
         this.energy -= this.hitRate;  //Remove energy
-        if (this.hasBossNoEnergy())
+        if (this.isBossDead())
             this.declareBossDead();
         else
             this.registerLastHit();
@@ -179,8 +191,8 @@ class EndBoss extends MovableObject {
     };
 
 
-    hasBossNoEnergy() {
-        return this.energy < 0;
+    isBossDead() {
+        return this.energy <= 0;
     };
 
 

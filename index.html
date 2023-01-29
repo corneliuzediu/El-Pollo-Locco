@@ -27,8 +27,6 @@
     <script src="./js/levels/level1.js"></script>
     <script src="./js/levels/level2.js"></script>
     <script src="./js/levels/level3.js"></script>
-    <script src="./js/levels/level4.js"></script>
-    <script src="./js/levels/level5.js"></script>
     <script src="./js/game.js"></script>
     <title>El Pollo Locco</title>
     <link rel="shortcut icon" href="./img/start/chicken-32.ico" type="image/x-icon">
@@ -84,10 +82,18 @@
                     src="./img/start/minimize.ico"></button>
         </nav>
         <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
-        <div id="buttons__newOrNext" class="buttons__newOrNext">
-            <butto onclick="stopGame()" id="btnReload" class="btnReload"><img src="./img/start/sync.png">
-            </butto>
-            <butto onclick="nextLevel()" id="btnNextLevel" class="btnNextLevel"><img src="./img/start/sync.png"></butto>
+        <div id="buttons__newOrNext" class="buttons__newOrNext d-none">
+            <button onclick="tryAgain()" id="btnReload" class="btn btnReload d-none">
+                <h2>Try Again</h2>
+                <img src="./img/start/sync.png">
+            </button>
+            <button onclick="goNextLevel()" id="btnNextLevel" class="btn btnNextLevel d-none">
+                <h2>Next Level</h2>
+                <img src="./img/start/next_level.png">
+            </button>
+        </div>
+        <div id="outro__wrapper" class="outro__wrapper d-none">
+            <img id="outro__img" src="./img/9_intro_outro_screens/game_over/oh no you lost!.png">
         </div>
         <div class="buttons__overlay mobil__hide">
             <div class="buttons__wrapper">

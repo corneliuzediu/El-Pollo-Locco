@@ -12,8 +12,8 @@ class World {
     bottleBar = new BottleBar();
     throwableObject = [];
     previousThrow = 0;
-    a = 0;
-    intervalsID = [];
+    a = 0;  // Dummy to reset boss life
+    redraw = true;
 
 
 
@@ -29,6 +29,7 @@ class World {
 
 
     restartWorld() {
+        this.runCollisions();
         this.camera_x = -50;
         this.character.resetMovableObj();
         this.character.characterReset();
@@ -36,11 +37,12 @@ class World {
         this.coinBar.setAmount(0);
         this.bottleBar.setAmount(0);
         this.hits = 0;
-        if (this.level.endBoss[0].isDead()) {
-            this.level.bossTotalLife.forEach((life) => {
-                life.resetBossLifePosition();
-            });
-        }
+        this.level.bossTotalLife.forEach((life) => {
+            this.a++;
+            life.y = 0;
+            life.y += life.height * this.a;
+            setTimeout(() => this.a = 0, 200);
+        });
         this.level.endBoss[0].resetBoss();
         this.level.enemies.forEach((enemy) => {
             enemy.resetChicken();
@@ -64,7 +66,7 @@ class World {
 
 
     runCollisions() {
-        setInterval(() => {
+        setIntervalFrame(() => {
             if (this.keyboard.RELOAD != true) {
                 this.checkCollisions();
                 this.checkThrow();
@@ -82,17 +84,16 @@ class World {
         this.checkCollisionsBottlesEndBoss();
         this.checkCollisionsBottlesFloor();
         this.checkPositionOnMap();
-        this.checkWinOrLost();
     }
 
 
 
     checkThrow() {
-        if (this.keyboard.SPACE && !this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400)) {
+        if (this.keyboard.SPACE && !this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400) && !this.character.isDead() && !this.level.endBoss[0].isBossDead()) {
             let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection);
             this.throw(bottle);
             this.previousThrow = new Date().getTime();
-        } else if (this.keyboard.SPACE && this.character.otherDirection && this.character.bottleFuel != 0) {
+        } else if (this.keyboard.SPACE && this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400) && !this.character.isDead() && !this.level.endBoss[0].isBossDead()) {
             let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection);
             this.throw(bottle);
             this.previousThrow = new Date().getTime();
@@ -116,7 +117,8 @@ class World {
 
 
     draw() {
-        if (this.keyboard.RELOAD != true || this.keyboard.CLICK != true) {
+        if (this.redraw == true) {
+
             this.clearCanvas();
 
             this.ctx.translate(this.camera_x, 0);
@@ -289,9 +291,8 @@ class World {
 
 
     checkPositionOnMap() {
-        if (this.character.x >= level_end_x * 0.8) {
+        if (this.character.x > 0) {
             this.level.bossTotalLife.forEach((life) => {
-                life.getPosition(this.character.x)
                 life.x = endBoss[0].x + endBoss[0].width
             })
         }
@@ -299,27 +300,13 @@ class World {
         let life = this.level.bossTotalLife;
         if (this.level.endBoss[0].energy <= 75 && this.hits == 0) {
             this.hits++;
-            life[maxLifes - this.hits].y -= 500;
+            life[maxLifes - this.hits].y = -600;
         } else if (this.level.endBoss[0].energy < 40 && this.hits == 1) {
             this.hits++
-            life[maxLifes - this.hits].y -= 500;
+            life[maxLifes - this.hits].y = -600;
         } else if (this.level.endBoss[0].energy < 1 && this.hits == 2) {
             this.hits++;
-            life[maxLifes - this.hits].y -= 500;
-
+            life[maxLifes - this.hits].y = -600;
         }
     }
-
-
-
-    checkWinOrLost() {
-        if (this.character.isDead()) {
-            console.log("You Lost")
-            // this.drawEnd();
-        } else if (this.character.energy > 0 && endBoss[0].energy <= 0) {
-            console.log("You won")
-        }
-    }
-
-
 }

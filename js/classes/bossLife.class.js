@@ -2,8 +2,8 @@ class BossLife extends MovableObject {
     height = 80;
     width = 80;
     x = endBoss[0].x + endBoss[0].width;
-    y = 100;
-    goToLeft = false;
+    y = 0 + this.width;
+
 
     IMAGES = [
         './img/7_statusbars/3_icons/icon_health_endboss.png',
@@ -14,35 +14,5 @@ class BossLife extends MovableObject {
         super().loadImage(this.IMAGES[0]);
         this.loadImages(this.IMAGES)
         this.y = this.height * i;
-        this.animate();
-    }
-
-
-    animate() {
-        setIntervalFrame(() => this.moveLeftBoss, 20)
-    }
-
-
-    moveLeftBoss() {
-        if (this.canMoveLeftBoss)
-            this.moveLeft();
-    }
-
-
-    canMoveLeftBoss() {
-        return this.goToLeft && this.x > endBoss[0].x + endBoss[0].width;
-    }
-
-
-    getPosition(position) {
-        if (position >= level_end_x * 0.8) {
-            this.goToLeft = true;
-        } else {
-            this.goToLeft = false;
-        }
-    }
-
-    resetBossLifePosition() {
-        this.y += 500;
     }
 }

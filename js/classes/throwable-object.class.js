@@ -37,7 +37,8 @@ class ThrowableObject extends MovableObject {
     }
 
     throw() {
-        let animation = setIntervalFrame(() => this.throwOutcome(animation), 75)
+        let animation = setInterval(() => this.throwOutcome(animation), 75)
+        intervalsID.push(animation);
     };
 
 

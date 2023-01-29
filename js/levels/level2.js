@@ -27,9 +27,9 @@ async function initlevel2() {
 
 function getValues() {
     multiplier += 2;
-    energyRate = 3;
+    energyRate = 4;
     hitsBoss = 3
-    level_end_x = 1500;
+    level_end_x = 2000;
     ground = [];
     enemies = [];
     endBoss = [];

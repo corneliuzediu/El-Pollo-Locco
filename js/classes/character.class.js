@@ -77,8 +77,8 @@ class Character extends MovableObject {
     /***    Variables   ***/
     currentImage = 0;
     world;
-    walking_sound = new Audio('audio/running.mp3');
-    jumping_sound = new Audio('audio/jump2.mp3');
+    walking_sound = new Audio('./audio/running.mp3');
+    jumping_sound = new Audio('./audio/jump2.mp3');
     idle_time = 200;
     sleeping_time = 6000;
     initialTime = 0;
@@ -109,13 +109,13 @@ class Character extends MovableObject {
     getCharacterMovement() {
         this.getTimePassed();
         this.walking_sound.pause();
-        if (this.hasThrow())
+        if (this.hasThrow() && !this.isDead())
             this.initialTime = new Date().getTime();
-        if (this.canMoveRight())
+        if (this.canMoveRight() && !this.isDead())
             this.moveRight();
-        if (this.canMoveLeft())
+        if (this.canMoveLeft() && !this.isDead())
             this.moveLeft();
-        if (this.canJump())
+        if (this.canJump() && !this.isDead())
             this.jump();
         this.world.camera_x = -this.x + 100;
     };
@@ -131,9 +131,10 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_IDLE);
         else if (this.isWalking() && !this.isDead())
             this.playAnimation(this.IMAGES_WALKING);
-        else if (this.isDead()) {
+        else if (this.isDead())
             this.playAnimation(this.IMAGES_DEAD);
-        };
+        else if (this.y > 245)
+            this.y = 245;
     };
 
 
@@ -203,12 +204,16 @@ class Character extends MovableObject {
 
 
     getCharacterHurt() {
-        if (this.isHurt() && !this.isDead())
+        if (this.isHurt() && !this.isDead()) {
+            this.initialTime = new Date().getTime();
             this.playAnimation(this.IMAGES_HURT);
+        }
     };
 
 
-    characterReset(){
+    characterReset() {
+        this.x = 150;
+        this.initialTime = 0;
         this.animateCharacter();
     }
 };
