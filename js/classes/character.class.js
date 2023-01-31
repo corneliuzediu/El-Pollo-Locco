@@ -169,6 +169,7 @@ class Character extends MovableObject {
         return this.world.keyboard.LEFT && this.x > 0 && !this.isDead() && !this.world.level.endBoss[endBoss.length - 1].isDead();
     };
 
+
     moveLeft() {
         this.initialTime = new Date().getTime();
         this.otherDirection = true;
@@ -217,7 +218,7 @@ class Character extends MovableObject {
         this.initialTime = 0;
         this.canGetHit = true;
         this.animateCharacter();
-    }
+    };
 };
 
 

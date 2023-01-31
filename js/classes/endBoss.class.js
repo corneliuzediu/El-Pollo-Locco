@@ -82,7 +82,7 @@ class EndBoss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_LIFE);
         this.animateEndBoss();
-    }
+    };
 
 
     animateEndBoss() {
@@ -164,7 +164,7 @@ class EndBoss extends MovableObject {
     startBattleBoss() {
         this.hitBoss();
         this.bossUnderAtack_sound.play();
-        setTimeout(() => this.bossUnderAtack = false, 380)
+        setTimeout(() => this.bossUnderAtack = false, 380);
     };
 
 

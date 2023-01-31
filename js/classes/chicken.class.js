@@ -19,7 +19,7 @@ class Chicken extends MovableObject {
     width = 60;
     speed = 0.1;
     crashed = false;
-    chashed_sound = new Audio('./audio/chicken_crashed.mp3')
+    chashed_sound = new Audio('./audio/chicken_crashed.mp3');
 
 
     constructor() {
@@ -29,7 +29,8 @@ class Chicken extends MovableObject {
         this.x = 300 + Math.random() * level_end_x;
         this.speed = 0.1 + Math.random() * 0.3;
         this.animateChicken();
-    }
+    };
+
 
     animateChicken() {
         setIntervalFrame(() => this.getChickenStatus(), 100);

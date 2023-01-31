@@ -30,4 +30,4 @@ class Coin extends MovableObject {
         this.y = 200 + Math.random() * 100;
         this.animate();
     };
-}
+};

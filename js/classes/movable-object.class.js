@@ -61,8 +61,8 @@ class MovableObject extends DrawableObject {
         let character_right = (this.x + this.width);
         let character_top = (this.y + 70);
         let character_bottom = (this.y + (this.height - 30));
-        let enemy_left = (obj.x + 20);
-        let enemy_right = (obj.x + (obj.width - 10));
+        let enemy_left = (obj.x);
+        let enemy_right = (obj.x + (obj.width));
         let enemy_top = (obj.y + 20);
         let enemy_bottom = (obj.y + (obj.height - 20));
         return this.getContactsCollisionFromBottom(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom);
@@ -212,14 +212,14 @@ class MovableObject extends DrawableObject {
             this.coinsBag = 100;
         else
             this.lastCollect = new Date().getTime();
-    }
+    };
 
 
     hasCollected() {
         let timePassed = new Date().getTime() - this.lastCollect;
         timePassed /= 1000;
         return timePassed < 1;
-    }
+    };
 
 
     collectBottle() {
@@ -229,7 +229,7 @@ class MovableObject extends DrawableObject {
             this.bottleFuel = 100;
         else
             this.lastCollect = new Date().getTime();
-    }
+    };
 
 
     getContactsCollision(character_left, character_right, character_top, character_bottom, enemy_left, enemy_right, enemy_top, enemy_bottom) {
@@ -272,4 +272,4 @@ class MovableObject extends DrawableObject {
         this.lastHit = 0;
         this.underAtack = false;
     };
-}
+};

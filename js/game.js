@@ -25,9 +25,7 @@ async function init() {
         canvas.style.height = "100%";
         if (!reloadGame) {
             await initlevel();
-            gameStatusInterval = setInterval(() => checkGameStatus(), 100);
         }
-
         else if (reloadGame) {
             await nextLevel();
         }
@@ -37,15 +35,14 @@ async function init() {
         stopPreStartSound()
         if (!reloadGame) {
             await initlevel();
-            gameStatusInterval = setInterval(() => checkGameStatus(), 100);
         }
         else if (reloadGame) {
             await resetLevel();
             await initlevel();
             hideOutroButtons();
-            gameStatusInterval = setInterval(() => checkGameStatus(), 100);
         }
     }
+    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
 }
 
 
@@ -306,12 +303,12 @@ async function nextLevel() {
     world.clearCanvas();
     console.log("Level: ", indexLevel);
     currentLevel = undefined;
-    await selectLevel(indexLevel)
-    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+    await selectLevel(indexLevel);    
 }
 
 
 function checkGameStatus() {
+    console.log(gameStatusInterval);
     showLevelOnCanvas();
     if (world.character.isDead()) {
         stopGame();
@@ -362,7 +359,7 @@ function showGoNextLevel() {
         document.getElementById('canvas').classList.add('blur');
         document.getElementById('outro__wrapper').classList.remove('d-none');
         document.getElementById('outro__img').src = "./img/9_intro_outro_screens/game_over/game over!.png";
-        //setTimeout: after 2 seconds. it shound go back to initial page.
+        clearInterval(gameStatusInterval);
         setTimeout(() => {
             // world.clearCanvas();
             world = undefined;

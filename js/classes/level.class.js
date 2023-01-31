@@ -31,4 +31,4 @@ class Level {
     getBossLifeBack() {
         this.bossTotalLife = getBossLife();
     };
-}
+};

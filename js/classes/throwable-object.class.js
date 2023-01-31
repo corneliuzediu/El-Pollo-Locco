@@ -33,8 +33,8 @@ class ThrowableObject extends MovableObject {
         this.height = 80;
         this.width = 80;
         this.throw();
-        if (otherDirection) { this.throwLeft() } else { this.throwRight() }
-    }
+        if (otherDirection) { this.throwLeft() } else { this.throwRight() };
+    };
 
     throw() {
         let animation = setInterval(() => this.throwOutcome(animation), 75)
@@ -69,7 +69,7 @@ class ThrowableObject extends MovableObject {
         this.playAnimation(this.IMAGES_COLLISION)
         setTimeout(() => this.y = -500, 200);
         this.smash.play();
-        clearInterval(animation)
+        clearInterval(animation);
     };
 
 

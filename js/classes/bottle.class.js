@@ -66,4 +66,4 @@ class Bottle extends MovableObject {
         this.speed = 500 + Math.random() * 200;
         this.animate();
     };
-}
+};
