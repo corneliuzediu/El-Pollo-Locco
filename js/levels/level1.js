@@ -1,5 +1,5 @@
 let level1 = 'level1';
-let multiplier = 6;
+let multiplier = 6; //
 let energyRate = 2;
 let hitsBoss = 3
 let level_end_x = 1000;
@@ -20,7 +20,7 @@ async function initlevel1() {
     await getBottles();
     await getClouds();
     await getBackground();
-    return level1 = new Level(
+    return new Level(
         ground,
         enemies,
         endBoss,
@@ -96,4 +96,20 @@ function getBackground() {
             background.push(new BackgroundObject('./img/5_background/layers/1_first_layer/2.png', position));
         }
     }
+
 }
+function resetLevel() {
+    multiplier = 6;
+    energyRate = 2;
+    hitsBoss = 3
+    level_end_x = 1000;
+    ground = [];
+    enemies = [];
+    endBoss = [];
+    bossTotalLife = [];
+    coins = [];
+    bottles = [];
+    clouds = [];
+    background = [];
+}
+

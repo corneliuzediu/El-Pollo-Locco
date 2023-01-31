@@ -1,7 +1,7 @@
 class BossLife extends MovableObject {
     height = 80;
     width = 80;
-    x = endBoss[0].x + endBoss[0].width;
+    x = endBoss[endBoss.length - 1].x + endBoss[endBoss.length - 1].width;
     y = 0 + this.width;
 
 

@@ -4,18 +4,16 @@ let indexLevel = 1;
 let keyboard = new Keyboard();
 let runningLevel = level1;
 let currentLevel;
-let newLevel = false;
 let gameSwitch = false;
 let musicSwitch = false;
 let canvasFullscreen = false;
 let gameFullscreen = false;
+let reloadGame = false
 let gameStatusInterval;
 let intervalsID = []
 
 
-
-
-function init() {
+async function init() {
     bindMobilBtns();
     if (canvasFullscreen) {
         gameSwitch = true;
@@ -23,15 +21,30 @@ function init() {
         let elementHTML = document.getElementById('preStart__canvas');
         window.canvas.style = "width: 100%";
         elementHTML.requestFullscreen();
-        canvas = document.getElementById('canvas');
         canvas.style.width = "100%";
         canvas.style.height = "100%";
-        initlevel();
+        if (!reloadGame) {
+            await initlevel();
+            gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+        }
+
+        else if (reloadGame) {
+            await nextLevel();
+        }
     } else {
+        canvas = document.getElementById('canvas');
         gameSwitch = true;
         stopPreStartSound()
-        canvas = document.getElementById('canvas');
-        initlevel();
+        if (!reloadGame) {
+            await initlevel();
+            gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+        }
+        else if (reloadGame) {
+            await resetLevel();
+            await initlevel();
+            hideOutroButtons();
+            gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+        }
     }
 }
 
@@ -53,7 +66,6 @@ document.addEventListener('keydown', (e) => {
         tryAgain();
     if (e.keyCode == 84)
         nextLevel();
-
 });
 
 
@@ -72,6 +84,7 @@ document.addEventListener('keyup', (e) => {
         keyboard.EXIT = false;
 });
 
+
 function bindMobilBtns() {
     document.getElementById('btnLeft').addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -83,11 +96,11 @@ function bindMobilBtns() {
     })
 
 
-
     document.getElementById('btnRight').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.RIGHT = true;
     })
+
 
     document.getElementById('btnRight').addEventListener('touchend', (e) => {
         e.preventDefault();
@@ -95,17 +108,16 @@ function bindMobilBtns() {
     })
 
 
-
     document.getElementById('btnThrow').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.SPACE = true;
     })
 
+
     document.getElementById('btnThrow').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.SPACE = false;
     })
-
 
 
     document.getElementById('btnJump').addEventListener('touchstart', (e) => {
@@ -122,6 +134,7 @@ function bindMobilBtns() {
 
 let preStartSound = new Audio('audio/pre_start.mp3')
 
+
 function preStart() {
     const popup = document.getElementById('popup');
     popup.classList.add('d-none');
@@ -135,9 +148,11 @@ function startPreStartSound() {
     preStartSound.loop = true;
 }
 
+
 function stopPreStartSound() {
     preStartSound.pause();
 }
+
 
 function showcanvas() {
     document.getElementById('preStart__buttons').classList.add('d-none');
@@ -167,23 +182,37 @@ function backToMenu() {
     document.getElementById('preStart__buttons').classList.remove('d-none');
     document.getElementById('preStart__level').classList.add('d-none');
     document.getElementById('preStart__instructions').classList.add('d-none');
-
 }
 
 
-function selectLevel(i) {
+async function selectLevel(i) {
     runningLevel = level1;
-    if (i == 2)
+    if (i == 2) {
         runningLevel = level2;
-    else if (i == 3)
+        indexLevel = 2; //For Menu Level Selector
+        backToMenu();
+        showcanvas();
+        init();
+    }
+    else if (i == 3) {
         runningLevel = level3;
-    else
-        runningLevel = level1
+        indexLevel = 3; //For Menu Level Selector
+        reloadGame = true;
+        backToMenu();
+        showcanvas();
+        init();
+
+    } else {
+        runningLevel = level1;
+        backToMenu();
+        showcanvas();
+        init();
+    }
 }
 
 
 async function initlevel() {
-    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+    canvas = document.getElementById('canvas');
     if (runningLevel == level1) {
         currentLevel = await initlevel1();
         world = new World(canvas, keyboard, currentLevel);
@@ -257,7 +286,6 @@ function setIntervalFrame(fn, time) {
 
 
 function stopGame() {
-    console.log(intervalsID);
     intervalsID.forEach(clearInterval);
 }
 
@@ -267,7 +295,7 @@ function restartGame() {
 }
 
 
-function nextLevel() {
+async function nextLevel() {
     indexLevel++;
     if (indexLevel > 3) {
         indexLevel = 3;
@@ -277,20 +305,25 @@ function nextLevel() {
     world.character.bottleFuel = 0;
     world.clearCanvas();
     console.log("Level: ", indexLevel);
-    world = 0;
-    selectLevel(indexLevel)
-    initlevel();
+    currentLevel = undefined;
+    await selectLevel(indexLevel)
+    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
 }
 
 
 function checkGameStatus() {
+    showLevelOnCanvas();
     if (world.character.isDead()) {
+        stopGame();
         showTryAgain();
         clearInterval(gameStatusInterval)
-    }
-    if (world.level.endBoss[0].energy <= 0) {
-        showGoNextLevel();
-        clearInterval(gameStatusInterval)
+    } else if (world.level.endBoss[endBoss.length - 1].energy <= 0) {
+        clearInterval(gameStatusInterval);
+        console.log('as');
+        setTimeout(() => {
+            stopGame();
+            showGoNextLevel();
+        }, 2000)
     }
 }
 
@@ -309,6 +342,7 @@ function showTryAgain() {
 
 
 function getTryAgain() {
+    document.getElementById('canvas').classList.add('blur');
     document.getElementById('buttons__newOrNext').classList.remove('d-none');
     document.getElementById('btnReload').classList.remove('d-none');
 }
@@ -325,18 +359,33 @@ function showGoNextLevel() {
         getTryAgain();
         document.getElementById('btnNextLevel').classList.remove('d-none');
     } else if (runningLevel == 'level3') {
+        document.getElementById('canvas').classList.add('blur');
         document.getElementById('outro__wrapper').classList.remove('d-none');
         document.getElementById('outro__img').src = "./img/9_intro_outro_screens/game_over/game over!.png";
         //setTimeout: after 2 seconds. it shound go back to initial page.
+        setTimeout(() => {
+            // world.clearCanvas();
+            world = undefined;
+            currentLevel = undefined;
+            indexLevel = 1;
+            runningLevel = 'level1';
+            level1 = 'level1';
+            document.getElementById('preStart__buttons').classList.remove('d-none')
+            document.getElementById('buttons__newOrNext').classList.add('d-none');
+            document.getElementById('preStart__canvas').classList.add('d-none')
+            document.getElementById('outro__wrapper').classList.add('d-none');
+            document.getElementById('canvas').classList.remove('blur');
+        }, 2000)
     };
 }
 
 
 function showPlayerLost() {
     document.getElementById('outro__wrapper').classList.remove('d-none');
+    document.getElementById('canvas').classList.add('blur');
     setTimeout(() => {
         document.getElementById('outro__wrapper').classList.add('d-none');
-    }, 1900);
+    }, 2000);
 };
 
 
@@ -344,5 +393,17 @@ function hideOutroButtons() {
     document.getElementById('buttons__newOrNext').classList.add('d-none');
     document.getElementById('btnReload').classList.add('d-none');
     document.getElementById('btnNextLevel').classList.add('d-none');
+    document.getElementById('canvas').classList.remove('blur');
+}
+
+
+function showLevelOnCanvas() {
+    if (runningLevel == 'level1')
+        document.getElementById('display__level').innerHTML = 'Level 1';
+    if (runningLevel == 'level2')
+        document.getElementById('display__level').innerHTML = 'Level 2';
+    if (runningLevel == 'level3')
+        document.getElementById('display__level').innerHTML = 'Level 3';
+
 }
 

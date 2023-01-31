@@ -82,6 +82,7 @@ class Character extends MovableObject {
     idle_time = 200;
     sleeping_time = 6000;
     initialTime = 0;
+    canGetHit = true;
 
 
     constructor() {
@@ -109,11 +110,11 @@ class Character extends MovableObject {
     getCharacterMovement() {
         this.getTimePassed();
         this.walking_sound.pause();
-        if (this.hasThrow() && !this.isDead())
+        if (this.hasThrow())
             this.initialTime = new Date().getTime();
-        if (this.canMoveRight() && !this.isDead())
+        if (this.canMoveRight())
             this.moveRight();
-        if (this.canMoveLeft() && !this.isDead())
+        if (this.canMoveLeft())
             this.moveLeft();
         if (this.canJump() && !this.isDead())
             this.jump();
@@ -146,12 +147,12 @@ class Character extends MovableObject {
 
 
     hasThrow() {
-        return this.world.keyboard.SPACE;
+        return this.world.keyboard.SPACE && !this.isDead() && !this.world.level.endBoss[endBoss.length - 1].isDead;
     };
 
 
     canMoveRight() {
-        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 500;
+        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 500 && !this.isDead() && !this.world.level.endBoss[endBoss.length - 1].isDead();
     };
 
 
@@ -165,7 +166,7 @@ class Character extends MovableObject {
 
 
     canMoveLeft() {
-        return this.world.keyboard.LEFT && this.x > 0;
+        return this.world.keyboard.LEFT && this.x > 0 && !this.isDead() && !this.world.level.endBoss[endBoss.length - 1].isDead();
     };
 
     moveLeft() {
@@ -177,7 +178,7 @@ class Character extends MovableObject {
 
 
     canJump() {
-        return this.world.keyboard.UP && !this.isAboveGround();
+        return this.world.keyboard.UP && !this.isAboveGround() && !this.isDead() && !this.world.level.endBoss[endBoss.length - 1].isDead();
     };
 
 
@@ -214,6 +215,7 @@ class Character extends MovableObject {
     characterReset() {
         this.x = 150;
         this.initialTime = 0;
+        this.canGetHit = true;
         this.animateCharacter();
     }
 };

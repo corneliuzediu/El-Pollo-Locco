@@ -1,15 +1,15 @@
 let level2 = 'level2';
 async function initlevel2() {
-    await getValues();
-    await getGround();
-    await getEnemies();
-    await getEndBoss();
-    await getBossLife();
-    await getCoins();
-    await getBottles();
-    await getClouds();
-    await getBackground();
-    return level1 = new Level(
+    await getValues2();
+    await getGround2();
+    await getEnemies2();
+    await getEndBoss2();
+    await getBossLife2();
+    await getCoins2();
+    await getBottles2();
+    await getClouds2();
+    await getBackground2();
+    return new Level(
         ground,
         enemies,
         endBoss,
@@ -25,11 +25,11 @@ async function initlevel2() {
 }
 
 
-function getValues() {
-    multiplier += 2;
+function getValues2() {
+    multiplier += 2; //
     energyRate = 4;
     hitsBoss = 3
-    level_end_x = 2000;
+    level_end_x = 2000; //
     ground = [];
     enemies = [];
     endBoss = [];
@@ -41,50 +41,50 @@ function getValues() {
 }
 
 
-function getGround() {
+function getGround2() {
     ground.push(new Ground);
 }
-function getEnemies() {
+function getEnemies2() {
     for (let i = 0; i <= multiplier; i++) {
         enemies.push(new Chicken());
     };
 }
 
 
-function getEndBoss() {
+function getEndBoss2() {
     endBoss.push(new EndBoss());
 }
 
 
-function getBossLife() {
+function getBossLife2() {
     for (let i = 1; i < hitsBoss + 1; i++) {
         bossTotalLife.push(new BossLife(i));
     }
 }
 
 
-function getCoins() {
+function getCoins2() {
     for (let i = 0; i <= multiplier; i++) {
         coins.push(new Coin());
     }
 }
 
 
-function getBottles() {
+function getBottles2() {
     for (let i = 0; i < 5; i++) {
         bottles.push(new Bottle());
     }
 }
 
 
-function getClouds() {
+function getClouds2() {
     for (let i = 0; i < multiplier / 2; i++) {
         clouds.push(new Cloud());
     }
 }
 
 
-function getBackground() {
+function getBackground2() {
     for (let i = 0; i < (level_end_x / 719) + 2; i++) {
         let x = i % 2;
         if (x == 0) {

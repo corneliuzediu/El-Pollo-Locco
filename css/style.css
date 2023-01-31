@@ -37,6 +37,11 @@ body {
 }
 
 
+.blur{
+    filter: blur(3px);
+}
+
+
 .popup-wrapper {
     position: absolute;
     width: 100%;
@@ -253,6 +258,19 @@ canvas {
     font-size: 3rem;
     margin-block: 1rem;
     -webkit-filter: invert(100%);
+}
+
+/* Display level */
+.display__wrapper{
+    position: absolute;
+    top: 5vh;
+    right: 5vw;
+}
+
+
+.display__wrapper p{
+    font-family: inherit;
+    font-size: 2rem;
 }
 
 

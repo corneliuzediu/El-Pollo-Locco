@@ -1,15 +1,15 @@
 let level3 = 'level3';
 async function initlevel3() {
-    await getValues();
-    await getGround();
-    await getEnemies();
-    await getEndBoss();
-    await getBossLife();
-    await getCoins();
-    await getBottles();
-    await getClouds();
-    await getBackground();
-    return level1 = new Level(
+    await getValues3();
+    await getGround3();
+    await getEnemies3();
+    await getEndBoss3();
+    await getBossLife3();
+    await getCoins3();
+    await getBottles3();
+    await getClouds3();
+    await getBackground3();
+    return new Level(
         ground,
         enemies,
         endBoss,
@@ -25,11 +25,11 @@ async function initlevel3() {
 }
 
 
-function getValues() {
-    multiplier += 4;
+function getValues3() {
+    multiplier += 4; //
     energyRate = 5;
     hitsBoss = 3
-    level_end_x = 2500;
+    level_end_x = 2500; //
     ground = [];
     enemies = [];
     endBoss = [];
@@ -41,52 +41,52 @@ function getValues() {
 }
 
 
-function getGround() {
+function getGround3() {
     ground.push(new Ground);
 }
 
 
-function getEnemies() {
+function getEnemies3() {
     for (let i = 0; i <= multiplier; i++) {
         enemies.push(new Chicken());
     };
 }
 
 
-function getEndBoss() {
+function getEndBoss3() {
     endBoss.push(new EndBoss());
 }
 
 
-function getBossLife() {
+function getBossLife3() {
     for (let i = 1; i < hitsBoss + 1; i++) {
         bossTotalLife.push(new BossLife(i));
     }
 }
 
 
-function getCoins() {
+function getCoins3() {
     for (let i = 0; i <= multiplier; i++) {
         coins.push(new Coin());
     }
 }
 
 
-function getBottles() {
+function getBottles3() {
     for (let i = 0; i < 5; i++) {
         bottles.push(new Bottle());
     }
 }
 
 
-function getClouds() {
+function getClouds3() {
     for (let i = 0; i < multiplier / 2; i++) {
         clouds.push(new Cloud());
     }
 }
 
 
-function getBackground() {
+function getBackground3() {
     for (let i = 0; i < (level_end_x / 719) + 2; i++) {
         let x = i % 2;
         if (x == 0) {

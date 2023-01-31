@@ -205,7 +205,7 @@ class MovableObject extends DrawableObject {
 
 
     collectCoins() {
-        let multiplier = level1.coins.length;
+        let multiplier = currentLevel.coins.length;
         let units = (1 / multiplier) * 100;
         this.coinsBag += units;
         if (this.coinsBag > 90)

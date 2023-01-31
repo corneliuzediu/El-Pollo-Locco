@@ -86,7 +86,9 @@ class EndBoss extends MovableObject {
 
 
     animateEndBoss() {
-        setIntervalFrame(() => this.getEndBossStatus(), this.speedInterval);
+        setIntervalFrame(() => {
+            this.getEndBossStatus();
+        }, this.speedInterval);
     };
 
 
@@ -101,7 +103,7 @@ class EndBoss extends MovableObject {
             this.bossHurtAnimation();
         if (this.isDead())
             this.bossDeadAnimation();
-        if(this.x < -150)
+        if (this.x < -150)
             world.character.energy = 0;
     };
 
@@ -118,12 +120,12 @@ class EndBoss extends MovableObject {
 
     moveLeft() {
         super.moveLeft();
-        if (this.isCloseToTheBoss(200)) {
-            this.speed = 0.5;
-        }
-        if (this.isCloseToTheBoss()) {
+        if (this.isCloseToTheBoss(200))
             this.speed = 0.3;
-        }
+        else if (this.isCloseToTheBoss(100))
+            this.speed = 0.1;
+        else if (this.isCloseToTheBoss(500))
+            this.speed = 0.8;
         this.playAnimation(this.IMAGES_WALKING);
         setTimeout(() => this.playAnimation(this.IMAGES_ALERT), 300);
     };

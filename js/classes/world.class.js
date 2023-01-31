@@ -43,7 +43,7 @@ class World {
             life.y += life.height * this.a;
             setTimeout(() => this.a = 0, 200);
         });
-        this.level.endBoss[0].resetBoss();
+        this.level.endBoss[endBoss.length - 1].resetBoss();
         this.level.enemies.forEach((enemy) => {
             enemy.resetChicken();
         });
@@ -89,11 +89,11 @@ class World {
 
 
     checkThrow() {
-        if (this.keyboard.SPACE && !this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400) && !this.character.isDead() && !this.level.endBoss[0].isBossDead()) {
+        if (this.keyboard.SPACE && !this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400) && !this.character.isDead() && !this.level.endBoss[endBoss.length - 1].isBossDead()) {
             let bottle = new ThrowableObject(this.character.x + 30, this.character.y + 70, this.character.otherDirection);
             this.throw(bottle);
             this.previousThrow = new Date().getTime();
-        } else if (this.keyboard.SPACE && this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400) && !this.character.isDead() && !this.level.endBoss[0].isBossDead()) {
+        } else if (this.keyboard.SPACE && this.character.otherDirection && this.character.bottleFuel != 0 && this.timeThrow(400) && !this.character.isDead() && !this.level.endBoss[endBoss.length - 1].isBossDead()) {
             let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 70, this.character.otherDirection);
             this.throw(bottle);
             this.previousThrow = new Date().getTime();
@@ -176,26 +176,10 @@ class World {
             mo.flipImg(this.ctx);
         }
         mo.draw(this.ctx);
-        if (mo.otherDirection) {
+        if (mo.otherDirection)
             mo.removeFlipImg(this.ctx)
-        }
-        // mo.drawFrame(this.ctx);
     }
 
-
-    initlevel() {
-        if (currentLevel == level2) {
-            initlevel2();
-        } else if (currentLevel == level3) {
-            initlevel3();
-        } else if (currentLevel == level4) {
-            initlevel4();
-        } else if (currentLevel == level5) {
-            initlevel5();
-        } else {
-            initlevel1();
-        }
-    }
 
     stopMovement(bottle, floor, i) {
         bottle.y = floor.y * i - bottle.height / 2;
@@ -209,7 +193,7 @@ class World {
 
     checkCollisionsEnemies() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isCollidingCharacterEnemy(enemy) && !this.character.isCollidingCharacterEnemyFromBottom(enemy) && !enemy.crashed) {
+            if (this.character.canGetHit && this.character.isCollidingCharacterEnemy(enemy) && !this.character.isCollidingCharacterEnemyFromBottom(enemy) && !enemy.crashed) {
                 enemy.crashed = false;
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
@@ -223,7 +207,7 @@ class World {
 
     checkCollisionsEndBoss() {
         this.level.endBoss.forEach((boss) => {
-            if (this.character.isCollidingCharacterEnemy(boss)) {
+            if (this.character.canGetHit && this.character.isCollidingCharacterEnemy(boss)) {
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
             }
@@ -293,20 +277,21 @@ class World {
     checkPositionOnMap() {
         if (this.character.x > 0) {
             this.level.bossTotalLife.forEach((life) => {
-                life.x = endBoss[0].x + endBoss[0].width
+                life.x = endBoss[endBoss.length - 1].x + endBoss[endBoss.length - 1].width
             })
         }
         let maxLifes = this.level.bossTotalLife.length;
         let life = this.level.bossTotalLife;
-        if (this.level.endBoss[0].energy <= 75 && this.hits == 0) {
+        if (this.level.endBoss[endBoss.length - 1].energy <= 75 && this.hits == 0) {
             this.hits++;
             life[maxLifes - this.hits].y = -600;
-        } else if (this.level.endBoss[0].energy < 40 && this.hits == 1) {
+        } else if (this.level.endBoss[endBoss.length - 1].energy < 40 && this.hits == 1) {
             this.hits++
             life[maxLifes - this.hits].y = -600;
-        } else if (this.level.endBoss[0].energy < 1 && this.hits == 2) {
+        } else if (this.level.endBoss[endBoss.length - 1].energy < 1 && this.hits == 2) {
             this.hits++;
             life[maxLifes - this.hits].y = -600;
+            this.character.canGetHit = false;
         }
     }
 }
