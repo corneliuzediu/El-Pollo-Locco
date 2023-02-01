@@ -258,7 +258,7 @@ class World {
 
 
     isThrowOnGroun(bottle, floor) {
-        floor.isCollidingGround(bottle);
+        return floor.isCollidingGround(bottle);
     };
 
 
