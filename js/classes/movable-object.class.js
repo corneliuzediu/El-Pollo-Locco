@@ -26,6 +26,9 @@ class MovableObject extends DrawableObject {
     fallOnGround() {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+        if(this.y > 245){
+            this.y = 245;
+        }
     };
 
 

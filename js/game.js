@@ -1,3 +1,4 @@
+/*      Variables       */
 let canvas;
 let world;
 let indexLevel = 1;
@@ -6,206 +7,134 @@ let runningLevel = level1;
 let currentLevel;
 let gameSwitch = false;
 let musicSwitch = false;
-let canvasFullscreen = false;
 let gameFullscreen = false;
 let reloadGame = false
 let gameStatusInterval;
-let intervalsID = []
+let intervalsID = [];
+let preStartSound = new Audio('audio/pre_start.mp3');
+
 
 
 async function init() {
+    connectControlers();
+    getCanvasOnDisplay();
+    if (isNewGame())
+        await initlevel();
+    else if (reloadGame)
+        await startLevelFromTheBeginning();
+    doGameStatusCheck();
+};
+
+
+function connectControlers() {
     bindMobilBtns();
-    if (canvasFullscreen) {
-        gameSwitch = true;
-        stopPreStartSound();
-        let elementHTML = document.getElementById('preStart__canvas');
-        window.canvas.style = "width: 100%";
-        elementHTML.requestFullscreen();
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        if (!reloadGame) {
-            await initlevel();
-        }
-        else if (reloadGame) {
-            await nextLevel();
-        }
-    } else {
-        canvas = document.getElementById('canvas');
-        gameSwitch = true;
-        stopPreStartSound()
-        if (!reloadGame) {
-            await initlevel();
-        }
-        else if (reloadGame) {
-            await resetLevel();
-            await initlevel();
-            hideOutroButtons();
-        }
-    }
-    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+    getPressDownButton();
+    getRemovePressButton();
+};
+
+
+function getPressDownButton() {
+    document.addEventListener('keydown', (e) => {
+        if (e.keyCode == 65)
+            keyboard.LEFT = true;
+        if (e.keyCode == 68)
+            keyboard.RIGHT = true;
+        if (e.keyCode == 87)
+            keyboard.UP = true;
+        if (e.keyCode == 83)
+            keyboard.DOWN = true;
+        if (e.keyCode == 32)
+            keyboard.SPACE = true;
+        if (e.keyCode == 27)
+            keyboard.EXIT = true;
+    });
 }
 
 
-document.addEventListener('keydown', (e) => {
-    if (e.keyCode == 65)
-        keyboard.LEFT = true;
-    if (e.keyCode == 68)
-        keyboard.RIGHT = true;
-    if (e.keyCode == 87)
-        keyboard.UP = true;
-    if (e.keyCode == 83)
-        keyboard.DOWN = true;
-    if (e.keyCode == 32)
-        keyboard.SPACE = true;
-    if (e.keyCode == 27)
-        keyboard.EXIT = true;
-    if (e.keyCode == 82)
-        tryAgain();
-    if (e.keyCode == 84)
-        nextLevel();
-});
-
-
-document.addEventListener('keyup', (e) => {
-    if (e.keyCode == 65)
-        keyboard.LEFT = false;
-    if (e.keyCode == 68)
-        keyboard.RIGHT = false;
-    if (e.keyCode == 87)
-        keyboard.UP = false;
-    if (e.keyCode == 83)
-        keyboard.DOWN = false;
-    if (e.keyCode == 32)
-        keyboard.SPACE = false;
-    if (e.keyCode == 27)
-        keyboard.EXIT = false;
-});
+function getRemovePressButton() {
+    document.addEventListener('keyup', (e) => {
+        if (e.keyCode == 65)
+            keyboard.LEFT = false;
+        if (e.keyCode == 68)
+            keyboard.RIGHT = false;
+        if (e.keyCode == 87)
+            keyboard.UP = false;
+        if (e.keyCode == 83)
+            keyboard.DOWN = false;
+        if (e.keyCode == 32)
+            keyboard.SPACE = false;
+        if (e.keyCode == 27)
+            keyboard.EXIT = false;
+    });
+};
 
 
 function bindMobilBtns() {
+    getTouchMoveLeft();
+    getTouchMoveRight();
+    getToughtThrow();
+    getTouchJump();
+};
+
+
+function getTouchMoveLeft() {
     document.getElementById('btnLeft').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.LEFT = true;
-    })
+    });
     document.getElementById('btnLeft').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.LEFT = false;
-    })
+    });
+};
 
 
+function getTouchMoveRight() {
     document.getElementById('btnRight').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.RIGHT = true;
-    })
-
-
+    });
     document.getElementById('btnRight').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.RIGHT = false;
-    })
+    });
+};
 
 
+function getToughtThrow() {
     document.getElementById('btnThrow').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.SPACE = true;
-    })
-
-
+    });
     document.getElementById('btnThrow').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.SPACE = false;
-    })
+    });
+};
 
 
+function getTouchJump() {
     document.getElementById('btnJump').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.UP = true;
-    })
-
+    });
     document.getElementById('btnJump').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.UP = false;
-    })
-}
+    });
+};
 
 
-let preStartSound = new Audio('audio/pre_start.mp3')
+function getCanvasOnDisplay() {
+    canvas = document.getElementById('canvas')
+    document.getElementById('musicSwitch__out').classList.add('d-none');
+    gameSwitch = true;
+};
 
 
-function preStart() {
-    const popup = document.getElementById('popup');
-    popup.classList.add('d-none');
-    changeImgMusic();
-}
-
-
-
-function startPreStartSound() {
-    preStartSound.play();
-    preStartSound.loop = true;
-}
-
-
-function stopPreStartSound() {
-    preStartSound.pause();
-}
-
-
-function showcanvas() {
-    document.getElementById('preStart__buttons').classList.add('d-none');
-    document.getElementById('preStart__canvas').classList.remove('d-none');
-}
-
-
-function openLevelSelector() {
-    document.getElementById('preStart__buttons').classList.add('d-none');
-    document.getElementById('preStart__level').classList.remove('d-none');
-}
-
-
-function openOptionsSelector() {
-    document.getElementById('preStart__buttons').classList.add('d-none');
-    document.getElementById('preStart__options').classList.remove('d-none');
-}
-
-
-function openInstructions() {
-    document.getElementById('preStart__buttons').classList.add('d-none');
-    document.getElementById('preStart__instructions').classList.remove('d-none');
-}
-
-
-function backToMenu() {
-    document.getElementById('preStart__buttons').classList.remove('d-none');
-    document.getElementById('preStart__level').classList.add('d-none');
-    document.getElementById('preStart__instructions').classList.add('d-none');
-}
-
-
-async function selectLevel(i) {
-    runningLevel = level1;
-    if (i == 2) {
-        runningLevel = level2;
-        indexLevel = 2; //For Menu Level Selector
-        backToMenu();
-        showcanvas();
-        init();
-    }
-    else if (i == 3) {
-        runningLevel = level3;
-        indexLevel = 3; //For Menu Level Selector
-        reloadGame = true;
-        backToMenu();
-        showcanvas();
-        init();
-
-    } else {
-        runningLevel = level1;
-        backToMenu();
-        showcanvas();
-        init();
-    }
-}
+function isNewGame() {
+    return !reloadGame;
+};
 
 
 async function initlevel() {
@@ -219,61 +148,117 @@ async function initlevel() {
     } else if (runningLevel == level3) {
         currentLevel = await initlevel3();
         world = new World(canvas, keyboard, currentLevel);
-    }
-}
+    };
+};
 
 
-function enterFullscreen() {
-    if (window.screen.availHeight != window.screen.height && !gameSwitch) {
-        document.body.requestFullscreen();
-        canvasFullscreen = true;
-        gameFullscreen = true;
-        changeImgFullscreen();
-    } else if (window.screen.availHeight != window.screen.height && gameSwitch) {
-        let elementHTML = document.getElementById('preStart__canvas');
-        window.canvas.style = "height 100vh;";
-        elementHTML.requestFullscreen();
-        gameFullscreen = true;
-        changeImgFullscreen();
-    } else if (window.screen.availHeight == window.screen.height) {
-        window.canvas.style = "height: 100%";
-        window.canvas.style = "width: 100%";
-        document.exitFullscreen();
-        canvasFullscreen = false;
-        gameFullscreen = false;
-        changeImgFullscreen();
-    }
-}
+async function startLevelFromTheBeginning() {
+    await resetLevel();
+    await initlevel();
+    hideOutroButtons();
+};
 
 
-function changeImgMusic() {
-    const musicOn = document.getElementById('music-btn1');
-    const musicOFF = document.getElementById('music-btn2');
-    if (musicSwitch) {
-        stopPreStartSound();
-        musicOn.classList.add('d-none');
-        musicOFF.classList.remove('d-none');
-        musicSwitch = false;
-    } else if (!musicSwitch) {
-        startPreStartSound();
-        musicOn.classList.remove('d-none');
-        musicOFF.classList.add('d-none');
-        musicSwitch = true;
-    }
-}
+function doGameStatusCheck() {
+    gameStatusInterval = setInterval(() => checkGameStatus(), 100);
+};
 
 
-function changeImgFullscreen() {
-    const fullscreenON = document.getElementById('fullscreen-btn1');
-    const fullscreenOFF = document.getElementById('fullscreen-btn2');
-    if (gameFullscreen) {
-        fullscreenON.classList.add('d-none');
-        fullscreenOFF.classList.remove('d-none');
-    } else if (!gameFullscreen) {
-        fullscreenON.classList.remove('d-none');
-        fullscreenOFF.classList.add('d-none');
-    }
-}
+function checkGameStatus() {
+    showLevelOnCanvas();
+    if (isCharacterDead())
+        youLost();
+    else if (isEndBossDead())
+        youWin();
+};
+
+
+function isCharacterDead() {
+    return world.character.isDead();
+};
+
+
+function youLost() {
+    stopGame();
+    showTryAgain();
+    clearInterval(gameStatusInterval)
+};
+
+
+function isEndBossDead() {
+    return world.level.endBoss[endBoss.length - 1].energy <= 0;
+};
+
+
+function youWin() {
+    clearInterval(gameStatusInterval);
+    setTimeout(() => {
+        stopGame();
+        showGoNextLevel();
+    }, 2000)
+};
+
+
+function stopGame() {
+    intervalsID.forEach(clearInterval);
+};
+
+
+function preStart() {
+    const popup = document.getElementById('popup');
+    popup.classList.add('d-none');
+    changeImgMusic();
+    preStartSound.volume = 0.2;
+};
+
+
+function startPreStartSound() {
+    preStartSound.play();
+    preStartSound.loop = true;
+};
+
+
+function stopPreStartSound() {
+    preStartSound.pause();
+};
+
+
+async function selectLevel(i) {
+    if (i == 2)
+        prepareLevel2();
+    else if (i == 3)
+        prepareLevel3();
+    else
+        prepareLevel1();
+};
+
+
+function prepareLevel1() {
+    runningLevel = level1;
+    startLevel();
+};
+
+
+function prepareLevel2() {
+    runningLevel = level2;
+    indexLevel = 2; //For Menu Level Selector
+    startLevel();
+};
+
+
+function prepareLevel3() {
+    runningLevel = level3;
+    indexLevel = 3; //For Menu Level Selector
+    reloadGame = true;
+    startLevel();
+};
+
+
+function startLevel() {
+    backToMenu();
+    showcanvas();
+    init();
+};
 
 
 function setIntervalFrame(fn, time) {
@@ -282,125 +267,38 @@ function setIntervalFrame(fn, time) {
 };
 
 
-function stopGame() {
-    intervalsID.forEach(clearInterval);
-}
-
-
-function restartGame() {
-    world.restartWorld();
-}
+function goNextLevel() {
+    hideOutroButtons();
+    nextLevel();
+};
 
 
 async function nextLevel() {
     indexLevel++;
-    if (indexLevel > 3) {
+    if (indexLevel > 3)
         indexLevel = 3;
-    }
+    clearCurrentLevel();
+    await selectLevel(indexLevel);
+};
+
+
+function clearCurrentLevel() {
     intervalsID.forEach(clearInterval);
     world.redraw = false;
     world.character.bottleFuel = 0;
     world.clearCanvas();
-    console.log("Level: ", indexLevel);
     currentLevel = undefined;
-    await selectLevel(indexLevel);    
-}
+};
 
-
-function checkGameStatus() {
-    console.log(gameStatusInterval);
-    showLevelOnCanvas();
-    if (world.character.isDead()) {
-        stopGame();
-        showTryAgain();
-        clearInterval(gameStatusInterval)
-    } else if (world.level.endBoss[endBoss.length - 1].energy <= 0) {
-        clearInterval(gameStatusInterval);
-        console.log('as');
-        setTimeout(() => {
-            stopGame();
-            showGoNextLevel();
-        }, 2000)
-    }
-}
 
 function tryAgain() {
     hideOutroButtons();
     stopGame();
     restartGame();
     gameStatusInterval = setInterval(() => checkGameStatus(), 100);
-}
-
-
-function showTryAgain() {
-    showPlayerLost();
-    setTimeout(getTryAgain, 2000);
-}
-
-
-function getTryAgain() {
-    document.getElementById('canvas').classList.add('blur');
-    document.getElementById('buttons__newOrNext').classList.remove('d-none');
-    document.getElementById('btnReload').classList.remove('d-none');
-}
-
-
-function goNextLevel() {
-    hideOutroButtons();
-    nextLevel();
-}
-
-
-function showGoNextLevel() {
-    if (runningLevel != level3) {
-        getTryAgain();
-        document.getElementById('btnNextLevel').classList.remove('d-none');
-    } else if (runningLevel == 'level3') {
-        document.getElementById('canvas').classList.add('blur');
-        document.getElementById('outro__wrapper').classList.remove('d-none');
-        document.getElementById('outro__img').src = "./img/9_intro_outro_screens/game_over/game over!.png";
-        clearInterval(gameStatusInterval);
-        setTimeout(() => {
-            // world.clearCanvas();
-            world = undefined;
-            currentLevel = undefined;
-            indexLevel = 1;
-            runningLevel = 'level1';
-            level1 = 'level1';
-            document.getElementById('preStart__buttons').classList.remove('d-none')
-            document.getElementById('buttons__newOrNext').classList.add('d-none');
-            document.getElementById('preStart__canvas').classList.add('d-none')
-            document.getElementById('outro__wrapper').classList.add('d-none');
-            document.getElementById('canvas').classList.remove('blur');
-        }, 2000)
-    };
-}
-
-
-function showPlayerLost() {
-    document.getElementById('outro__wrapper').classList.remove('d-none');
-    document.getElementById('canvas').classList.add('blur');
-    setTimeout(() => {
-        document.getElementById('outro__wrapper').classList.add('d-none');
-    }, 2000);
 };
 
 
-function hideOutroButtons() {
-    document.getElementById('buttons__newOrNext').classList.add('d-none');
-    document.getElementById('btnReload').classList.add('d-none');
-    document.getElementById('btnNextLevel').classList.add('d-none');
-    document.getElementById('canvas').classList.remove('blur');
-}
-
-
-function showLevelOnCanvas() {
-    if (runningLevel == 'level1')
-        document.getElementById('display__level').innerHTML = 'Level 1';
-    if (runningLevel == 'level2')
-        document.getElementById('display__level').innerHTML = 'Level 2';
-    if (runningLevel == 'level3')
-        document.getElementById('display__level').innerHTML = 'Level 3';
-
-}
-
+function restartGame() {
+    world.restartWorld();
+};

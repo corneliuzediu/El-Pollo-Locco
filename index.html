@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style_media.css">
     <script src="./js/classes/world.class.js"></script>
     <script src="./js/classes/drawable-object.class.js"></script>
     <script src="./js/classes/movable-object.class.js"></script>
@@ -27,6 +28,7 @@
     <script src="./js/levels/level1.js"></script>
     <script src="./js/levels/level2.js"></script>
     <script src="./js/levels/level3.js"></script>
+    <script src="./js/html_manipulation.js"></script>
     <script src="./js/game.js"></script>
     <title>El Pollo Locco</title>
     <link rel="shortcut icon" href="./img/start/chicken-32.ico" type="image/x-icon">
@@ -34,6 +36,12 @@
 
 
 <body class="bg">
+    <nav id="musicSwitch__out" class="options__wrapper musicSwitch__out">
+        <button id="music-btn1-out" class="d-none" onclick="changeImgMusic()"><img id="music-img"
+                src="./img/start/guitar.ico"></button>
+        <button id="music-btn2-out" class="" onclick="changeImgMusic()"><img id="music-img"
+                src="./img/start/no-guitar.ico"></button>
+    </nav>
     <div id="popup" class="popup-wrapper" onclick="preStart()">
         <div class="popup">
             <h3>
@@ -167,11 +175,12 @@
             </li>
         </ul>
     </div>
-
-
-    <!-- "You win" or "You Lost"  -->
-
-
+    <div class="turn_device_wrapper">
+        <div class="turn_device">
+            <img src="./img/start/turn_device.png">
+            <p> Please turn your device!</p>
+        </div>
+    </div>
 </body>
 
 </html>

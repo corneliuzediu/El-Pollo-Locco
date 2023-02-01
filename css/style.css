@@ -17,9 +17,14 @@ body {
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
-
     font-family: 'zabras', 'Arial', 'sans-serfif';
 }
+
+main {
+    width: inherit;
+    height: inherit;
+}
+
 
 .bg,
 .bg::backdrop {
@@ -31,14 +36,18 @@ body {
 }
 
 
-
 .d-none {
     display: none !important;
 }
 
 
-.blur{
+.blur {
     filter: blur(3px);
+}
+
+
+.turn_device_wrapper {
+    display: none;
 }
 
 
@@ -47,11 +56,13 @@ body {
     width: 100%;
     height: 100%;
     z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
 .popup {
-    position: fixed;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -60,14 +71,12 @@ body {
     min-width: 520px;
     min-height: 300px;
     height: 33vh;
-    top: 50%;
-    left: 50%;
     padding: 10px;
-    transform: translate(-50%, -15%);
     background-image: linear-gradient(150deg, red, yellow, red);
     border-radius: 20px;
     filter: sepia(0.6);
 }
+
 
 .popup h3 {
     text-align: center;
@@ -75,6 +84,7 @@ body {
     letter-spacing: 5px;
     margin: auto;
 }
+
 
 .popup img {
     width: 200px;
@@ -123,6 +133,15 @@ canvas {
     gap: 24px;
 }
 
+
+.musicSwitch__out {
+    position: absolute;
+    width: 80%;
+    right: 0px;
+    justify-content: end;
+}
+
+
 .start-btn,
 .level-btn,
 .options-btn,
@@ -153,6 +172,7 @@ canvas {
     cursor: pointer;
     background-color: hsl(0, 0%, 100%, 50%);
 }
+
 
 .start-btn img,
 .level-btn img,
@@ -202,6 +222,7 @@ canvas {
     cursor: pointer;
 }
 
+
 .preStart__level p {
     margin-block: 0;
 }
@@ -216,6 +237,7 @@ canvas {
     border: unset;
 }
 
+
 .backToMenu img {
     width: 100%;
     object-fit: contain;
@@ -228,6 +250,7 @@ canvas {
     transform: scale(1.2);
 }
 
+
 .options__wrapper {
     position: absolute;
     display: flex;
@@ -236,6 +259,7 @@ canvas {
     left: 50%;
     transform: translate(-50%, 100%);
 }
+
 
 .options__wrapper button {
     background-color: unset;
@@ -246,10 +270,12 @@ canvas {
     cursor: pointer;
 }
 
+
 .options__wrapper img {
     height: 100%;
     object-fit: contain;
 }
+
 
 .guideKey {
     display: flex;
@@ -260,15 +286,16 @@ canvas {
     -webkit-filter: invert(100%);
 }
 
+
 /* Display level */
-.display__wrapper{
+.display__wrapper {
     position: absolute;
     top: 5vh;
     right: 5vw;
 }
 
 
-.display__wrapper p{
+.display__wrapper p {
     font-family: inherit;
     font-size: 2rem;
 }
@@ -288,14 +315,14 @@ canvas {
 
 
 /* Outro */
-.outro__wrapper{
+.outro__wrapper {
     position: absolute;
     width: 100%;
     height: 100%;
 }
 
 
-.outro__wrapper img{
+.outro__wrapper img {
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -303,7 +330,6 @@ canvas {
 
 
 /* Classes for mobile */
-
 .buttons__overlay {
     position: absolute;
     display: flex;
@@ -336,9 +362,10 @@ canvas {
     transform: rotateZ(360deg);
 }
 
+
 .buttons__wrapper {
     display: flex;
-    gap: 5px
+    gap: 10px
 }
 
 
@@ -365,34 +392,4 @@ canvas {
 
 .mobil__hide {
     display: none;
-}
-
-@media only screen and (max-width: 750px) {
-    .mobil__hide {
-        display: flex;
-    }
-
-    canvas {
-        width: 100%;
-    }
-}
-
-@media only screen and (max-height: 480px) {
-    .mobil__hide {
-        display: flex;
-    }
-
-    canvas {
-        height: 100vh !important;
-        width: 100%;
-    }
-
-
-    .preStart__canvas {
-        width: 100%;
-    }
-
-    .options__wrapper {
-        display: none;
-    }
 }

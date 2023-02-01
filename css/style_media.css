@@ -1,0 +1,226 @@
+@media(max-width: 830px) {
+    .preStart__buttons {
+        align-items: center;
+    }
+
+
+    .preStart__level,
+    .preStart__instructions {
+        width: 80%;
+    }
+
+
+    .preStart__level li {
+        padding: 5px;
+    }
+
+
+    h1 {
+        font-size: 7rem;
+    }
+
+
+    .start-btn,
+    .level-btn,
+    .options-btn,
+    .instructions-btn {
+        width: 80vw;
+    }
+}
+
+
+@media only screen and (max-width: 750px) {
+    .mobil__hide {
+        display: flex;
+    }
+
+
+    canvas {
+        width: 100%;
+    }
+
+
+    .preStart__level,
+    .preStart__instructions {
+        width: 100%;
+    }
+}
+
+
+@media(max-height:680px) {
+    h1 {
+        margin-bottom: 0rem;
+    }
+
+
+    .start-btn,
+    .level-btn,
+    .options-btn,
+    .instructions-btn {
+        font-size: 2rem;
+    }
+
+
+    .start-btn img,
+    .level-btn img,
+    .instructions-btn img {
+        width: 30px;
+        height: 30px;
+    }
+
+
+    .preStart__level,
+    .preStart__instructions {
+        width: 100%;
+    }
+
+
+    .guideKey {
+        font-size: 2rem;
+        margin-block: 5px;
+    }
+}
+
+
+@media(max-height: 550px) {
+    h1 {
+        font-size: 5rem;
+    }
+}
+
+
+@media only screen and (max-height: 480px) {
+    .mobil__hide {
+        display: flex;
+    }
+
+
+    canvas {
+        height: 100vh !important;
+        width: 100%;
+    }
+
+
+    .musicSwitch__out {
+        justify-content: start;
+    }
+
+
+    .preStart__canvas {
+        width: 100%;
+    }
+
+
+    .popup {
+        min-height: 200px;
+        min-width: 300px;
+    }
+
+
+    .popup h3 {
+        font-size: 2rem;
+    }
+
+
+    .popup img {
+        width: 120px;
+    }
+}
+
+
+@media(max-height:400px) {
+    h1 {
+        font-size: 4rem;
+        margin-bottom: 10px;
+    }
+
+
+    .preStart__buttons {
+        gap: 10px
+    }
+
+
+    .start-btn,
+    .level-btn,
+    .options-btn,
+    .instructions-btn {
+        min-height: 30px;
+        font-size: 1.5rem;
+        width: 350px;
+    }
+
+
+    .start-btn img,
+    .level-btn img,
+    .instructions-btn img {
+        width: 20px;
+        height: 20px;
+        padding: 5px 10px;
+    }
+
+
+    .preStart__level ul {
+        font-size: 2rem;
+    }
+
+
+    .guideKey {
+        font-size: 1.5rem;
+    }
+
+
+    .guideKey img {
+        width: 30px;
+    }
+}
+
+
+@media (max-width:720px)and (orientation:portrait),
+(max-height:480px) and (orientation:portrait) {
+    .turn_device_wrapper {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
+        -webkit-filter: invert(100%);
+    }
+
+
+    .turn_device {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 80vw;
+        padding: 10px 20px;
+        border-radius: 20px;
+        background-color: hsl(0, 0%, 30%);
+    }
+
+
+    .turn_device img {
+        width: 200px;
+        height: 200px;
+    }
+
+
+    .turn_device p {
+        text-align: center;
+        font-family: inherit;
+        font-size: 2rem;
+        text-shadow: 2px 2px 2px rgb(255, 255, 255);
+    }
+
+    
+    .popup {
+        display: none;
+    }
+
+
+    .preStart__buttons {
+        display: none;
+    }
+}
