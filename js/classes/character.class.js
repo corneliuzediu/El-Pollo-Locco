@@ -101,9 +101,9 @@ class Character extends MovableObject {
 
 
     animateCharacter() {
-        setIntervalFrame(() => this.getCharacterAnimation(), 100);
-        setIntervalFrame(() => this.getCharacterMovement(), 100);
-        setIntervalFrame(() => this.getCharacterHurt(), 100);
+        setIntervalFrame(() => this.getCharacterAnimation(), 50);
+        setIntervalFrame(() => this.getCharacterMovement(), 50);
+        setIntervalFrame(() => this.getCharacterHurt(), 50);
     };
 
 
